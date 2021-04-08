@@ -1,6 +1,6 @@
 const Discord = require('discord.js')
 const Player = require('./src/player.js')
-require('dotenv').config();
+require("dotenv").config();
 const bot = new Discord.Client();
 var listejoueur = [];
 var nbWhispJour = 1;
