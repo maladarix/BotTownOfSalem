@@ -104,7 +104,7 @@ bot.on("message", (message) => {
       message.channel.send(wpj);
     }
 
-  if(cmd == "jour") {//offline people :)
+  if(cmd == "jour") {
       if(!god) return message.channel.send(pasGod);
       alive.forEach(player => {
         if(player.user.roles.has(vivant)) {
@@ -114,7 +114,7 @@ bot.on("message", (message) => {
       });
     }
 
-  if(cmd == "nuit") {//offline people :)
+  if(cmd == "nuit") {
     if(!god) return message.channel.send(pasGod)
     alive.forEach(player => {
       if(player.user.roles.has(vivant)) {
@@ -124,7 +124,7 @@ bot.on("message", (message) => {
     });
   }
 
-  if(cmd == "w") {//enlever les utilisations des whisp ex whisp-1
+  if(cmd == "w") {
 
     let demWhisp = new Discord.MessageEmbed()
       .setDescription("#Demande-De-Whisp svp")
