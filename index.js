@@ -1,6 +1,6 @@
 const Discord = require('discord.js')
 const Player = require('./src/player.js')
-require(dotenv).config();
+require('dotenv').config();
 const bot = new Discord.Client();
 var listejoueur = [];
 var nbWhispJour = 1;
@@ -338,4 +338,4 @@ bot.on('message', async (message) => {
   }
 });
 
-process.env.DISCORD_TOKEN
+bot.login(process.env.DISCORD_TOKEN);
