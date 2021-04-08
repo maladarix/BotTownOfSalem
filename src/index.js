@@ -62,6 +62,9 @@ bot.on("message", (message) => {
     .setDescription("Qui?")
     .setColor(color);
 
+
+
+
   if(cmd == "infoPlayer") {
     new Discord.MessageEmbed()
       .setDescription(tagged)
@@ -216,6 +219,7 @@ bot.on("message", (message) => {
       .addField("!pendre", "!pendre @[User] Pendre quelqu'un")
       .addField("!clear", "!clear [Nombre de message a clear]")
       .addField("!help", "!help Avoir de l'aide")
+      .addField("@Bilou9#5756", "Pour summon un être tout puissant qui viendra vous aider")
       .setImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1G9Fn3zO19KotriCvv-1KCyARlFWtHKmYcQ&usqp=CAU")
       .setColor(color);
 
