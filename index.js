@@ -109,6 +109,7 @@ bot.on("message", (message) => {
           player.user.roles.remove(nuit)
           player.whispRemaining = nbWhispJour
           player.hasVoted = false
+          console.log("Jour");
       });
     }
 
@@ -118,6 +119,7 @@ bot.on("message", (message) => {
         player.user.roles.remove(jour)
         player.user.roles.add(nuit)
         player.votesFor = 0
+        console.log("Nuit");
     });
   }
 
@@ -307,4 +309,4 @@ bot.on('message', async (message) => {
   }
 });
 
-bot.login("ODI5MjAxOTU4MTQ4NzY3Nzc0.YG0sgA.11DGgiYT0MiEpKqdsoP7dW53a5Y");
+bot.login("ODI5MjAxOTU4MTQ4NzY3Nzc0.YG0sgA.XXb-r2-NSPn9LG2n8WfteOAB7TA");
