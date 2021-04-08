@@ -1,5 +1,5 @@
 const Discord = require('discord.js')
-const Player = require('./player.js')
+const Player = require('./src/player.js')
 const bot = new Discord.Client();
 var listejoueur = [];
 var nbWhispJour = 1;
@@ -72,7 +72,7 @@ bot.on("message", (message) => {
   }
 
   if(cmd == "role") {
-    tagged.role = args
+    tagged.role = args[0]
   }
 
   if (cmd == "alive") {
@@ -110,6 +110,8 @@ bot.on("message", (message) => {
         if(player.user.roles.has(vivant)) {
           player.user.roles.add(jour)
           player.user.roles.remove(nuit)
+          player.whispRemaining = nbWhispJour
+          player.hasVoted = false
         }
       });
     }
@@ -120,6 +122,7 @@ bot.on("message", (message) => {
       if(player.user.roles.has(vivant)) {
         player.user.roles.remove(jour)
         player.user.roles.add(nuit)
+        player.votesFor = 0
       }
     });
   }
@@ -184,7 +187,32 @@ bot.on("message", (message) => {
 
       if(message.channel.name != pendChan.name) return message.channel.send(pendrChan);
       if(!args[0]) return message.channel.send(qui);
+      if(!author.hasVoted) {
+        tagged.votesFor ++
+        author.hasVoted = true
+        author.registeredVote = tagged
+      }
+      else {
+        author.registeredVote.votesFor --
+        tagged.votesFor ++
+      }
       message.react("👍")
+  }
+
+  if(cmd == "results"){
+    if(!god) return message.channel.send(pasGod)
+    var targetedPlayer = [alive[0]]
+    alive.forEach(player => {
+      if (player.id != targetedPlayer.id){
+        if(targetedPlayer.votesFor < player.votesFor){
+          targetedPlayer = [player]
+        }
+        else if (targetedPlayer.votesFor < player.votesFor)
+        {
+          targetedPlayer.push(player) 
+        }
+      }
+    });
   }
 
   if(cmd == "help") {

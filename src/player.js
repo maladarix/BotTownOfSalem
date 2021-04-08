@@ -13,6 +13,7 @@ class Player {
         this.whispRemaining = 0
         this.hasVoted = false
         this.votesFor = 0
+        this.registeredVote = null
     }
 
 
