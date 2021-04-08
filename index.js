@@ -1,5 +1,6 @@
 const Discord = require('discord.js')
 const Player = require('./src/player.js')
+require(dotenv).config();
 const bot = new Discord.Client();
 var listejoueur = [];
 var nbWhispJour = 1;
@@ -44,15 +45,12 @@ bot.on("message", (message) => {
   let dmChan = message.guild.channels.cache.get("829216633205424128");
   let pendChan = message.guild.channels.cache.get("829269425290215463");
 
-  let alive = function() {
-    let alive = new Array()
-    listejoueur.forEach(player => {
-      if (player.user.roles.has(vivant)){
-        alive.push(player);
-      }
-    })
-    return alive;
-  }
+  let alive = new Array()
+  listejoueur.forEach(player => {
+    if (player.user.roles.has(vivant)){
+      alive.push(player);
+    }
+  })
 
 
   let pasGod = new Discord.MessageEmbed()
@@ -201,6 +199,7 @@ bot.on("message", (message) => {
   }
 
   if(cmd == "results"){
+
     if(!god) return message.channel.send(pasGod)
     var targetedPlayer = [alive[0]]
     alive.forEach(player => {
@@ -212,7 +211,37 @@ bot.on("message", (message) => {
           targetedPlayer.push(player) 
         }
       }
-    });
+    });  
+    if(targetedPlayer.length > 1) {
+      var desc = "Il y a une égalité entre "
+      targetedPlayer.forEach(player => {
+        if(player.id != targetedPlayer[0].id){
+          desc += " et "
+        }
+        desc += player.name
+      });
+      desc += ". Aucun des deux ne sera pendu"
+      return message.channel.send(new Discord.MessageEmbed()
+      .setDescription(desc)
+      .setColor(color))
+    }
+    else if (targetedPlayer.length == 1){
+      if(targetedPlayer.votesFor > alive.length/2){
+        return message.channel.send(new Discord.MessageEmbed()
+      .setDescription("Le village a décidé de pendre " + targetedPlayer[0].name + " par un vote de " + targetedPlayer[0].votesFor + "-" + (alive.length - targetedPlayer[0].votesFor))
+      .setColor(color))
+      }
+      else{
+        return message.channel.send(new Discord.MessageEmbed()
+      .setDescription("Le village a décidé d'épargner' " + targetedPlayer[0].name + " par un vote de " + targetedPlayer[0].votesFor + "-" + (alive.length - targetedPlayer[0].votesFor))
+      .setColor(color))
+      }
+    }
+    else{
+      return message.channel.send(new Discord.MessageEmbed()
+      .setDescription("Il n'y a pas eu de vote aujourd'hui")
+      .setColor(color))
+    }
   }
 
   if(cmd == "help") {
@@ -309,4 +338,4 @@ bot.on('message', async (message) => {
   }
 });
 
-bot.login("ODI5MjAxOTU4MTQ4NzY3Nzc0.YG0sgA.XXb-r2-NSPn9LG2n8WfteOAB7TA");
+process.env.DISCORD_TOKEN
