@@ -35,6 +35,7 @@ bot.on("message", (message) => {
  
 
   //const game
+  let mort = "829832421825708064";
   let jour = "829254726495240214";
   let nuit = "829254687630557185";
   let vivant = "829205364444364800";
@@ -61,9 +62,6 @@ bot.on("message", (message) => {
   let qui = new Discord.MessageEmbed()
     .setDescription("Qui?")
     .setColor(color);
-
-
-
 
   if(cmd == "infoPlayer") {
     new Discord.MessageEmbed()
@@ -107,23 +105,19 @@ bot.on("message", (message) => {
   if(cmd == "jour") {
       if(!god) return message.channel.send(pasGod);
       alive.forEach(player => {
-        if(player.user.roles.has(vivant)) {
           player.user.roles.add(jour)
           player.user.roles.remove(nuit)
           player.whispRemaining = nbWhispJour
           player.hasVoted = false
-        }
       });
     }
 
   if(cmd == "nuit") {
     if(!god) return message.channel.send(pasGod)
     alive.forEach(player => {
-      if(player.user.roles.has(vivant)) {
         player.user.roles.remove(jour)
         player.user.roles.add(nuit)
         player.votesFor = 0
-      }
     });
   }
 
@@ -175,7 +169,12 @@ bot.on("message", (message) => {
     },{
       id: spec,
       allow: ['VIEW_CHANNEL'],
-      }])                  
+      deny: ['SEND_MESSAGES'],
+    },{
+      id: mort,
+      deny: ['VIEW_CHANNEL'],
+    }
+    ])                  
     }) 
   }
 
@@ -207,8 +206,7 @@ bot.on("message", (message) => {
         if(targetedPlayer.votesFor < player.votesFor){
           targetedPlayer = [player]
         }
-        else if (targetedPlayer.votesFor < player.votesFor)
-        {
+        else if (targetedPlayer.votesFor == player.votesFor) {
           targetedPlayer.push(player) 
         }
       }
