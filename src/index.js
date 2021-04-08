@@ -63,9 +63,13 @@ bot.on("message", (message) => {
     .setColor(color);
 
   if(cmd == "infoPlayer") {
-    
-    
+    new Discord.MessageEmbed()
+      .setDescription(tagged)
+      .setColor(color);
+  }
 
+  if(cmd == "role") {
+    tagged.role = args
   }
 
   if (cmd == "alive") {
