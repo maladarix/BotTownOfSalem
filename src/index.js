@@ -1,4 +1,5 @@
 const Discord = require('discord.js')
+const Player = require('./player.js')
 const bot = new Discord.Client();
 var listejoueur = [];
 var nbWhispJour = 1;

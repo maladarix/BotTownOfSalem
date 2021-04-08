@@ -1,4 +1,5 @@
 const Discord = require('discord.js')
+const Commands = require('./commands.js')
 const bot = new Discord.Client();
 
 class Player {
@@ -8,11 +9,13 @@ class Player {
         this.user = joueur
         this.id = joueur.id
         this.name = joueur.nickname
-        this.role = notAssigned
+        this.role = null
         this.whispRemaining = 0
         this.hasVoted = false
+        this.votesFor = 0
     }
 
 
-
 }
+
+module.exports = Player
