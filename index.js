@@ -22,12 +22,18 @@ bot.on("message", (message) => {
       }
     })
   }
+  let author = function() {
+    listejoueur.forEach(player => {
+      if (message.author.id == player.id){
+        return player
+      }
+    })
+  }
   let taggedUser = message.mentions.members.first();
   let color = "#f0b71a";
  
 
   //const game
-  let author = message.author.id;
   let jour = "829254726495240214";
   let nuit = "829254687630557185";
   let vivant = "829205364444364800";
@@ -138,9 +144,9 @@ bot.on("message", (message) => {
     if(!taggedUser) return message.channel.send(trouvePas);
     if(!taggedUser.roles.cache.has("829205364444364800")) return message.channel.send(pasVivant);
     let channelName = taggedUser.displayName + " et " + message.author.username;
-    if(tagged.whispRemaining == 0) return message.channel.send(maxwhisp)
+    if(author.whispRemaining == 0) return message.channel.send(maxwhisp)
 
-    tagged.whispRemaining--;
+    author.whispRemaining--;
 
     message.guild.channels.create(channelName,{type:"text",})
     .then((channel) => {
@@ -150,7 +156,7 @@ bot.on("message", (message) => {
       id: vivant,
       deny: ['VIEW_CHANNEL'],
     },{
-      id: author,
+      id: author.id,
       allow: ['VIEW_CHANNEL'],
     },{
       id: tagged.id,
