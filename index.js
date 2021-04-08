@@ -15,8 +15,16 @@ bot.on("message", (message) => {
   let MessageArray = message.content.split(" ");
   let cmd = MessageArray[0].slice(prefix.length);
   let args = MessageArray.slice(1);
-  let tagged = message.mentions.members.first() || message.guild.members.cache.get(args[0]);
+  let tagged = function() {
+    listejoueur.forEach(player => {
+      if (message.mentions.members.first().id == player.id){
+        return player
+      }
+    })
+  }
+  let taggedUser = message.mentions.members.first();
   let color = "#f0b71a";
+ 
 
   //const game
   let author = message.author.id;
@@ -27,10 +35,17 @@ bot.on("message", (message) => {
   let god = message.member.roles.cache.has("829228486660063262");
   let dmChan = message.guild.channels.cache.get("829216633205424128");
   let pendChan = message.guild.channels.cache.get("829269425290215463");
-  let whisp0 = "829422788385308712"
-  let whisp1 = "829422855808483369"
-  let whisp2 = "829422881142210601"
-  let whisp3 = "829422907998208010"
+
+  let alive = function() {
+    let alive = new Array()
+    listejoueur.forEach(player => {
+      if (player.user.roles.has(vivant)){
+        alive.push(player);
+      }
+    })
+    return alive;
+  }
+
 
   let pasGod = new Discord.MessageEmbed()
     .setDescription("Tu n'est pas " + `<@&${"829228486660063262"}>` )
@@ -40,12 +55,23 @@ bot.on("message", (message) => {
     .setDescription("Qui?")
     .setColor(color);
 
+  if(cmd == "infoPlayer") {
+    
+    
+
+  }
+
+  if (cmd == "alive") {
+    if(!god) return message.channel.send(pasGod);
+    taggedUser.roles.add(vivant)
+  }
+
   if(cmd == "add") {
     if(!god) return message.channel.send(pasGod);
     if(!args[0]) return message.channel.send(qui);
-    listejoueur.push(tagged);
+    let newPlayer = new Player(taggedUser)
+    listejoueur.push(newPlayer);
     message.channel.send(listejoueur);
-    tagged.roles.add(vivant);
   }
 
   if(cmd == "swhisp") {
@@ -64,20 +90,24 @@ bot.on("message", (message) => {
       message.channel.send(wpj);
     }
 
-  if(cmd == "jour") {//offline people :(
+  if(cmd == "jour") {//offline people :)
       if(!god) return message.channel.send(pasGod);
-      message.guild.members.cache.forEach(member => member.roles.add(jour));
-      message.guild.members.cache.forEach(member => member.roles.remove(nuit))
-      message.guild.members.cache.forEach(member => member.roles.add(whisp0));
-      message.guild.members.cache.forEach(member => member.roles.remove(whisp3));
-      message.guild.members.cache.forEach(member => member.roles.remove(whisp2));
-      message.guild.members.cache.forEach(member => member.roles.remove(whisp1));
-  }
+      alive.forEach(player => {
+        if(player.user.roles.has(vivant)) {
+          player.user.roles.add(jour)
+          player.user.roles.remove(nuit)
+        }
+      });
+    }
 
-  if(cmd == "nuit") {//offline people :(
+  if(cmd == "nuit") {//offline people :)
     if(!god) return message.channel.send(pasGod)
-      message.guild.members.cache.forEach(member => member.roles.add(nuit))
-      message.guild.members.cache.forEach(member => member.roles.remove(jour))
+    alive.forEach(player => {
+      if(player.user.roles.has(vivant)) {
+        player.user.roles.remove(jour)
+        player.user.roles.add(nuit)
+      }
+    });
   }
 
   if(cmd == "w") {//enlever les utilisations des whisp ex whisp-1
@@ -105,23 +135,12 @@ bot.on("message", (message) => {
     if(message.channel.name != dmChan.name) return message.channel.send(demWhisp);
     if(message.mentions.members.first().id === message.author.id) return message.channel.send(pastoi);
     if(!args[0]) return message.channel.send(qui);
-    if(!tagged) return message.channel.send(trouvePas);
-    if(!tagged.roles.cache.has("829205364444364800")) return message.channel.send(pasVivant);
-    let channelName = tagged.displayName + " et " + message.author.username;
-    if(nbWhispJour == 3 && message.member.roles.cache.has(whisp3)) return message.channel.send(maxwhisp);
-    if(nbWhispJour == 2 && message.member.roles.cache.has(whisp2)) return message.channel.send(maxwhisp);
-    if(nbWhispJour == 1 && message.member.roles.cache.has(whisp1)) return message.channel.send(maxwhisp);
+    if(!taggedUser) return message.channel.send(trouvePas);
+    if(!taggedUser.roles.cache.has("829205364444364800")) return message.channel.send(pasVivant);
+    let channelName = taggedUser.displayName + " et " + message.author.username;
+    if(tagged.whispRemaining == 0) return message.channel.send(maxwhisp)
 
-    if(message.member.roles.cache.has(whisp0)) {
-      message.member.roles.remove(whisp0);
-      message.member.roles.add(whisp1);
-    }else if(message.member.roles.cache.has(whisp1)) {
-      message.member.roles.remove(whisp1);
-      message.member.roles.add(whisp2);
-    }else if(message.member.roles.cache.has(whisp2)) {
-      message.member.roles.remove(whisp2);
-      message.member.roles.add(whisp3);
-    };
+    tagged.whispRemaining--;
 
     message.guild.channels.create(channelName,{type:"text",})
     .then((channel) => {
