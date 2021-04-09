@@ -13,7 +13,7 @@ var nbWhispJour = 1;
   let quiVeutJouer = "829873265194303498";
   let turtleId = "829880491272437790"
   let eyesId = "578445682379456823465237844875623845645"
-  let anyroles = ["Bodyguard", "Doctor", "Escort", "Maire", "Medium", "Retributionist", "Transporteur", "Investigateur", "Guetteur", "Shérif", "Spy", "Vétéran", "Vigilante", "Conseiller",
+  let anyroles = ["Bodyguard", "Doctor", "Escort", "Maire", "Medium", "Retributionist", "Transporteur", "Investigateur", "Lookout", "Shérif", "Spy", "Vétéran", "Vigilante", "Conseiller",
    "Consort", "Blackmailer", "Janitor", "Disguiser", "Forger", "Framer", "Ambusher", "Hypnotist", "Armnesiac", "Survivor", "Executionner", "Jester", "Sorcière", "Serial Killer", "Arsonist"]
   let rolescourrant = ["Jailor", "Godfather", "Mafioso"]
   /*1. Jailor
@@ -88,6 +88,7 @@ bot.on("message", (message) => {
     .setColor(color);
 
   if(cmd == "start") {
+    if(!pasGod) return message.channel.send(pasGod)
     let vet = false
     let mai = false
     let ret = false
@@ -183,25 +184,26 @@ bot.on("message", (message) => {
     rolescourrant.push(randomtown2)
     console.log(rolescourrant);
     console.log(good,randomtown1,element,vet,mai,ret)
+    message.channel.send("liste des roles " + rolescourrant)
     rolescourrant = ["Jailor", "Godfather", "Mafioso"]
   }
 
   else if(cmd == "début") {
+    if(!god) return message.channel.send(pasGod)
 
   }
 
   else if(cmd == "infoPlayer") {
+    if(!god) return message.channel.send(pasGod)
+    if(!args[0]) return message.channel.send(qui)
     new Discord.MessageEmbed()
       .setDescription(tagged)
       .setColor(color);
   }
 
-  else if(cmd == "role") {
-    tagged.role = args[0]
-  }
-
   else if (cmd == "alive") {
     if(!god) return message.channel.send(pasGod);
+    if(!args[0]) return message.channel.send(qui)
     taggedUser.roles.add(vivant)
   }
 
@@ -404,8 +406,13 @@ bot.on("message", (message) => {
       .addField("!w", "!w @[User] Whisper quelqu'un")
       .addField("!pendre", "!pendre @[User] Pendre quelqu'un")
       .addField("!clear", "!clear [Nombre de message a clear]")
+      .addField("start", "Pour commencer la game")
+      .addField("!début", "Envoyer les message de début")
+      .addField("!infoPlayer", "!infoPlayer @[User] pour avoir de l'info sur le joueur")
+      .addField("!alive", "!alive @[User] pour mettre quelqu'un en vie")
+      .addField("!add", "!add @[User] pour ajouter un joueur à la liste de joueur")
+      .addField("!result,", "!result pour avoir le résultat du vote")
       .addField("!help", "!help Avoir de l'aide")
-      .addField("@Bilou9#5756", "Pour summon un être tout puissant qui viendra vous aider")
       .setImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1G9Fn3zO19KotriCvv-1KCyARlFWtHKmYcQ&usqp=CAU")
       .setColor(color);
 
@@ -414,17 +421,14 @@ bot.on("message", (message) => {
       .addField("!w", "!w @[User] Whisper quelqu'un")
       .addField("!pendre", "!pendre @[User] Pendre quelqu'un")
       .addField("!help", "!help Avoir de l'aide")
+      .addField("@Bilou9#5756", "Pour summon un être tout puissant qui viendra vous aider") //faudrait que tu le mettre dans le bon help si tu veux qu'ont le voit ;)
       .setImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmUWvLwPHHKnsJvCvA2WUg5A5adoYpBQx9Pg&usqp=CAU")
       .setColor(color);
 
     if(god) {
-
       message.channel.send(helpcommandsgod);
-
     }else{
-
       message.channel.send(helpcommandsvivant); 
-
     }
   }
 });
