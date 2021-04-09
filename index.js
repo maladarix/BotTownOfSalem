@@ -1,9 +1,13 @@
-const Discord = require('discord.js')
+const Discord = require('discord.js');
+const Commands = require('./src/commands.js');
 const Player = require('./src/player.js')
 require("dotenv").config();
 const bot = new Discord.Client();
 var listejoueur = [];
 var nbWhispJour = 1;
+var nbrJoueurMax = 0;
+var whispersChannels = [];
+
   //const game
   let mort = "829832421825708064";
   let jour = "829254726495240214";
@@ -11,11 +15,20 @@ var nbWhispJour = 1;
   let vivant = "829205364444364800";
   let spec = "829250418244321280";
   let quiVeutJouer = "829873265194303498";
-  let turtleId = "829880491272437790"
-  let eyesId = "578445682379456823465237844875623845645"
+  let jailed = "???????????";
+  let jail = "???????????????????";
+  let mafiaChat = "???????????????????";
+  let spyHideout = "?????????????????"
+  let turtleId = "830121244208267334"
+  let eyesId = "830121185885945880"
   let anyroles = ["Bodyguard", "Doctor", "Escort", "Maire", "Medium", "Retributionist", "Transporteur", "Investigateur", "Lookout", "Shérif", "Spy", "Vétéran", "Vigilante", "Conseiller",
    "Consort", "Blackmailer", "Janitor", "Disguiser", "Forger", "Framer", "Ambusher", "Hypnotist", "Armnesiac", "Survivor", "Executionner", "Jester", "Sorcière", "Serial Killer", "Arsonist"]
   let rolescourrant = ["Jailor", "Godfather", "Mafioso"]
+  let color = "#f0b71a";
+  let messageJouer = new Discord.MessageEmbed()
+  .setDescription("Réagissez avec une tortue si vous voulez jouer et avec des yeux si vous voulez spectate.")
+  .setColor(color)
+  let prefix = "!";
   /*1. Jailor
 2. Town investigative ///////
 3. Town investigative ///////
@@ -35,6 +48,16 @@ var nbWhispJour = 1;
 unique: vétéran, Maire, retributionist, Ambusher
 */
 
+let alive = function (){
+  let alive = new Array()
+  listejoueur.forEach(player => {
+    if (player.serverRoles.includes(vivant)){
+      alive.push(player);
+    }
+  })
+  console.log(alive.length)
+  return alive
+}
 
 bot.on('ready', () => {
     console.log("bot online")
@@ -42,7 +65,6 @@ bot.on('ready', () => {
 })
 
 bot.on("message", (message) => {
-  let prefix = "!";
   if(message.author.bot) return;
   if(!message.content.startsWith(prefix)) return;
   let MessageArray = message.content.split(" ");
@@ -65,19 +87,12 @@ bot.on("message", (message) => {
     }
   })
   var taggedUser = message.mentions.members.first();
-  let color = "#f0b71a";
  
   let god = message.member.roles.cache.has("829228486660063262");
   let dmChan = message.guild.channels.cache.get("829216633205424128");
   let pendChan = message.guild.channels.cache.get("829269425290215463");
+ 
 
-
-  let alive = new Array()
-  listejoueur.forEach(player => {
-    if (player.serverRoles.includes(vivant)){
-      alive.push(player);
-    }
-  })
 
   let pasGod = new Discord.MessageEmbed()
     .setDescription("Tu n'est pas " + `<@&${"829228486660063262"}>` )
@@ -87,108 +102,9 @@ bot.on("message", (message) => {
     .setDescription("Qui?")
     .setColor(color);
 
-  if(cmd == "start") {
-    if(!pasGod) return message.channel.send(pasGod)
-    let vet = false
-    let mai = false
-    let ret = false
-    let amb = false
-
-    let towninves1 = (anyroles[Math.floor(Math.random() * (11 - 7) + 7)])
-    let towninves2 = null
-    do{
-      towninves2 = anyroles[Math.floor(Math.random() * (11 - 7) + 7)]
-    }while (towninves2 == towninves1)
-
-    rolescourrant.push(towninves1, towninves2) //town investigative
-    rolescourrant.push(anyroles[Math.floor(Math.random() * 2)]) //town protective
-    rolescourrant.push(anyroles[Math.floor(Math.random() * (13 - 11) + 11)]) //town killing
-    rolescourrant.push(anyroles[Math.floor(Math.random() * (7 - 2) + 2)]) //town support
-    rolescourrant.push(anyroles[Math.floor(Math.random() * (25 - 22) + 22)]) //neutral evil
-    rolescourrant.push(anyroles[Math.floor(Math.random() * (22 - 13) + 13)]) //random mafia
-    rolescourrant.push(anyroles[Math.floor(Math.random() * (29 - 27) + 27)]) //neutral killing
     
-    let good = false
-    let randomtown1 = null
-    let randomtown2 = null  
-    let element = null 
-    
-    for (let index = 0; index < rolescourrant.length; index++) {
-      element = rolescourrant[index];
-      if(element == "Vétéran"){
-        vet = true
-      }
-      if(element == "Maire") {
-        mai = true
-      }
-      if(element == "Retributionist") {
-        ret = true
-      }
-    }
-      do{
-      randomtown1 = anyroles[Math.floor(Math.random() * 13)]
-      if(randomtown1 === "Vétéran") {
-        if(!vet) {
-          good = true 
-        }
-      }else if(randomtown1 === "Maire") {
-        if(!mai) {
-          good = true
-        }
-      }else if(randomtown1 === "Retributionist") {
-        if(!ret) {
-          good = true
-        }
-      }else
-       good = true     
-    }while(!good)
 
-    rolescourrant.push(randomtown1)
-    good = false
-    randomtown2 = null  
-    element = null
-    vet = false
-    mai = false
-    ret = false
-
-    for (let index = 0; index < rolescourrant.length; index++) {
-      element = rolescourrant[index];
-      if(element === "Vétéran"){
-        vet = true
-      }
-      if(element === "Maire") {
-        mai = true
-      }
-      if(element === "Retributionist") {
-        ret = true
-      }
-    }
-      
-      do{
-      randomtown2 = anyroles[Math.floor(Math.random() * 13)]
-      if(randomtown2 == "Vétéran") {
-        if(!vet) {
-          good = true 
-        }
-      }else if(randomtown2 == "Maire") {
-        if(!mai) {
-          good = true
-        }
-      }else if(randomtown2 == "Retributionist") {
-        if(!ret) {
-          good = true
-        }
-      }else
-      good = true
-    }while(!good)
-    rolescourrant.push(randomtown2)
-    console.log(rolescourrant);
-    console.log(good,randomtown1,element,vet,mai,ret)
-    message.channel.send("liste des roles " + rolescourrant)
-    rolescourrant = ["Jailor", "Godfather", "Mafioso"]
-  }
-
-  else if(cmd == "début") {
+  if(cmd == "début") {
     if(!god) return message.channel.send(pasGod)
 
   }
@@ -196,9 +112,9 @@ bot.on("message", (message) => {
   else if(cmd == "infoPlayer") {
     if(!god) return message.channel.send(pasGod)
     if(!args[0]) return message.channel.send(qui)
-    new Discord.MessageEmbed()
+    message.channel.send(new Discord.MessageEmbed()
       .setDescription(tagged)
-      .setColor(color);
+      .setColor(color))
   }
 
   else if (cmd == "alive") {
@@ -212,8 +128,6 @@ bot.on("message", (message) => {
     if(!args[0]) return message.channel.send(qui);
     let newPlayer = new Player(taggedUser)
     listejoueur.push(newPlayer);
-    console.log(newPlayer)
-    console.log(listejoueur)
   }
 
   else if(cmd == "swhisp") {
@@ -251,6 +165,11 @@ bot.on("message", (message) => {
         player.votesFor = 0
         player.whispRemaining = 0
     });
+
+    whispersChannels.forEach(whisper => {
+      message.guild.channels.cache.get(whisper).delete;
+    });
+    whispersChannels = []
   }
 
   else if(cmd == "w") {
@@ -306,7 +225,8 @@ bot.on("message", (message) => {
       id: mort,
       deny: ['VIEW_CHANNEL'],
     }
-    ])                  
+    ])
+    whispersChannels.push(channel.id)                  
     }) 
   }
 
@@ -440,7 +360,20 @@ bot.on('message', async (message) => {
   .setDescription("Tu n'est pas " + `<@&${"829228486660063262"}>` )
   .setColor(color);
   var color = "#f0b71a";
-
+  let qvjChan = message.guild.channels.cache.get(quiVeutJouer);
+  if(message.author.bot) return;
+  if(!message.content.startsWith(prefix)) return;
+  let MessageArray = message.content.split(" ");
+  let cmd = MessageArray[0].slice(prefix.length);
+  let args = MessageArray.slice(1);
+  if(cmd == "start"){
+    if(god) {
+      nbrJoueurMax = args[0];
+      const reactionMessage = await qvjChan.send(messageJouer)
+      await reactionMessage.react(turtleId)
+      await reactionMessage.react(eyesId)
+    }
+  }
   if (message.content.toLowerCase().startsWith("!" + 'clear')) {
     if (!god)
       return message.channel.send(pasGod);
@@ -472,23 +405,59 @@ bot.on('message', async (message) => {
 });
 
 bot.on("messageReactionAdd", (reaction, user) => {
+  if(user.bot) return;
   var reactor = null
   listejoueur.forEach(player => {
     if (user.username == player.name){
       reactor = player
     }
   })
+  if (reactor == null){
+    reaction.message.channel.send(new Discord.MessageEmbed()
+            .setDescription("Vous ne faites pas parti du serveur, veuillez contacter un admin")
+            .setColor(color))
+  }
+  else{
   try{
     if(reaction.message.channel == quiVeutJouer){
       if(reaction.emoji.id == turtleId){
-        reactor.user.roles.add(vivant)
+        if(!reactor.serverRoles.includes(vivant)){
+          if (alive().length != nbrJoueurMax)
+          {
+            reactor.user.roles.add(vivant)
+            reactor.serverRoles.push(vivant)
+            reactor.user.roles.remove(spec)
+
+            if (alive().length == nbrJoueurMax){
+              Commands.prototype.start()
+            }
+          }
+          else{
+            reaction.message.channel.send(new Discord.MessageEmbed()
+            .setDescription("La partie est déjà commencé, vous pouvez tout de même spectate avec des yeux")
+            .setColor(color))
+          }
+        }
+        else{
+          reaction.message.channel.send(new Discord.MessageEmbed()
+            .setDescription("Vous faites déjà partie de la partie!")
+            .setColor(color))
+        }
       } 
       if(reaction.emoji == eyesId){
-        reactor.user.roles.add(spec)
+        if(!reactor.serverRoles.includes(vivant)){
+          reactor.user.roles.add(spec)
+        }
+        else{
+          reaction.message.channel.send(new Discord.MessageEmbed()
+            .setDescription("Vous ne pouvez pas spectate si vous faites déjà partie de la partie!")
+            .setColor(color))
+        }
       }
     }
   }
-  catch(err){}
+  catch(err){console.log(err);}
+}
 })
 
 bot.login(process.env.DISCORD_TOKEN);
