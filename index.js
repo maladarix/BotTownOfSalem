@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const Commands = require('./src/commands.js');
 const Player = require('./src/player.js')
-require("dotenv").config();
+const config = require('./config/config.json');
 const bot = new Discord.Client();
 var listejoueur = [];
 var nbWhispJour = 1;
@@ -460,4 +460,4 @@ bot.on("messageReactionAdd", (reaction, user) => {
 }
 })
 
-bot.login(process.env.DISCORD_TOKEN);
+bot.login(config.DISCORD_BOT.TOKEN);
