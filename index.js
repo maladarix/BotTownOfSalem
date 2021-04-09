@@ -460,4 +460,4 @@ bot.on("messageReactionAdd", (reaction, user) => {
 }
 })
 
-bot.login(config.DISCORD_BOT.TOKEN);
+bot.login(process.env.BOT_TOKEN);
