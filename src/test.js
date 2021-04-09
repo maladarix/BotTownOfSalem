@@ -1,4 +1,5 @@
 const Player = require('./player.js')
+const index = require('./index.js')
 
 
 let player = new Player()

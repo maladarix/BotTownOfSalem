@@ -7,8 +7,9 @@ class Player {
     constructor(joueur)
     {
         this.user = joueur
-        this.id = joueur.id
-        this.name = joueur.nickname
+        this.id = joueur.user.id
+        this.name = joueur.user.username
+        this.serverRoles = joueur._roles
         this.role = null
         this.whispRemaining = 0
         this.hasVoted = false

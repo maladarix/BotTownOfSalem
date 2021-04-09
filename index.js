@@ -4,6 +4,16 @@ require("dotenv").config();
 const bot = new Discord.Client();
 var listejoueur = [];
 var nbWhispJour = 1;
+  //const game
+  let mort = "829832421825708064";
+  let jour = "829254726495240214";
+  let nuit = "829254687630557185";
+  let vivant = "829205364444364800";
+  let spec = "829250418244321280";
+  let quiVeutJouer = "829873265194303498";
+  let turtleId = "829880491272437790"
+  let eyesId = "578445682379456823465237844875623845645"
+
 
 bot.on('ready', () => {
     console.log("bot online")
@@ -17,37 +27,33 @@ bot.on("message", (message) => {
   let MessageArray = message.content.split(" ");
   let cmd = MessageArray[0].slice(prefix.length);
   let args = MessageArray.slice(1);
-  let tagged = function() {
+  var tagged = null
+  var author = null
+  try{
     listejoueur.forEach(player => {
-      if (message.mentions.members.first().id == player.id){
-        return player
+      if (message.mentions.members.first().user.username == player.name){
+        tagged = player
       }
     })
   }
-  let author = function() {
-    listejoueur.forEach(player => {
-      if (message.author.id == player.id){
-        return player
-      }
-    })
-  }
-  let taggedUser = message.mentions.members.first();
+  catch(err){tagged = null}
+
+  listejoueur.forEach(player => {
+    if (message.author.username == player.name){
+      author = player
+    }
+  })
+  var taggedUser = message.mentions.members.first();
   let color = "#f0b71a";
  
-
-  //const game
-  let mort = "829832421825708064";
-  let jour = "829254726495240214";
-  let nuit = "829254687630557185";
-  let vivant = "829205364444364800";
-  let spec = "829250418244321280";
   let god = message.member.roles.cache.has("829228486660063262");
   let dmChan = message.guild.channels.cache.get("829216633205424128");
   let pendChan = message.guild.channels.cache.get("829269425290215463");
 
+
   let alive = new Array()
   listejoueur.forEach(player => {
-    if (player.user.roles.has(vivant)){
+    if (player.serverRoles.includes(vivant)){
       alive.push(player);
     }
   })
@@ -81,7 +87,8 @@ bot.on("message", (message) => {
     if(!args[0]) return message.channel.send(qui);
     let newPlayer = new Player(taggedUser)
     listejoueur.push(newPlayer);
-    message.channel.send(listejoueur);
+    console.log(newPlayer)
+    console.log(listejoueur)
   }
 
   if(cmd == "swhisp") {
@@ -102,12 +109,12 @@ bot.on("message", (message) => {
 
   if(cmd == "jour") {
       if(!god) return message.channel.send(pasGod);
+      console.log(alive[0].name)
       alive.forEach(player => {
           player.user.roles.add(jour)
           player.user.roles.remove(nuit)
           player.whispRemaining = nbWhispJour
           player.hasVoted = false
-          console.log("Jour");
       });
     }
 
@@ -117,7 +124,7 @@ bot.on("message", (message) => {
         player.user.roles.remove(jour)
         player.user.roles.add(nuit)
         player.votesFor = 0
-        console.log("Nuit");
+        player.whispRemaining = 0
     });
   }
 
@@ -144,8 +151,8 @@ bot.on("message", (message) => {
       .setColor(color);
         
     if(message.channel.name != dmChan.name) return message.channel.send(demWhisp);
-    if(message.mentions.members.first().id === message.author.id) return message.channel.send(pastoi);
     if(!args[0]) return message.channel.send(qui);
+    if(message.mentions.members.first().id == message.author.id) return message.channel.send(pastoi);
     if(!taggedUser) return message.channel.send(trouvePas);
     if(!taggedUser.roles.cache.has("829205364444364800")) return message.channel.send(pasVivant);
     let channelName = taggedUser.displayName + " et " + message.author.username;
@@ -185,7 +192,7 @@ bot.on("message", (message) => {
       .setColor(color);
 
       if(message.channel.name != pendChan.name) return message.channel.send(pendrChan);
-      if(!args[0]) return message.channel.send(qui);
+      if(tagged == null) return message.channel.send(qui);
       if(!author.hasVoted) {
         tagged.votesFor ++
         author.hasVoted = true
@@ -199,15 +206,14 @@ bot.on("message", (message) => {
   }
 
   if(cmd == "results"){
-
     if(!god) return message.channel.send(pasGod)
     var targetedPlayer = [alive[0]]
     alive.forEach(player => {
-      if (player.id != targetedPlayer.id){
-        if(targetedPlayer.votesFor < player.votesFor){
+      if (player.id != targetedPlayer[0].id){
+        if(targetedPlayer[0].votesFor < player.votesFor){
           targetedPlayer = [player]
         }
-        else if (targetedPlayer.votesFor == player.votesFor) {
+        else if (targetedPlayer[0].votesFor == player.votesFor) {
           targetedPlayer.push(player) 
         }
       }
@@ -226,14 +232,14 @@ bot.on("message", (message) => {
       .setColor(color))
     }
     else if (targetedPlayer.length == 1){
-      if(targetedPlayer.votesFor > alive.length/2){
+      if(targetedPlayer[0].votesFor > (alive.length/2)){
         return message.channel.send(new Discord.MessageEmbed()
       .setDescription("Le village a décidé de pendre " + targetedPlayer[0].name + " par un vote de " + targetedPlayer[0].votesFor + "-" + (alive.length - targetedPlayer[0].votesFor))
       .setColor(color))
       }
       else{
         return message.channel.send(new Discord.MessageEmbed()
-      .setDescription("Le village a décidé d'épargner' " + targetedPlayer[0].name + " par un vote de " + targetedPlayer[0].votesFor + "-" + (alive.length - targetedPlayer[0].votesFor))
+      .setDescription("Le village a décidé d'épargner " + targetedPlayer[0].name + " par un vote de " + targetedPlayer[0].votesFor + "-" + (alive.length - targetedPlayer[0].votesFor))
       .setColor(color))
       }
     }
@@ -337,5 +343,25 @@ bot.on('message', async (message) => {
     }
   }
 });
+
+bot.on("messageReactionAdd", (reaction, user) => {
+  var reactor = null
+  listejoueur.forEach(player => {
+    if (user.username == player.name){
+      reactor = player
+    }
+  })
+  try{
+    if(reaction.message.channel == quiVeutJouer){
+      if(reaction.emoji.id == turtleId){
+        reactor.user.roles.add(vivant)
+      } 
+      if(reaction.emoji == eyesId){
+        reactor.user.roles.add(spec)
+      }
+    }
+  }
+  catch(err){}
+})
 
 bot.login(process.env.DISCORD_TOKEN);
