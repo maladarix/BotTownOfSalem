@@ -13,11 +13,32 @@ var nbWhispJour = 1;
   let quiVeutJouer = "829873265194303498";
   let turtleId = "829880491272437790"
   let eyesId = "578445682379456823465237844875623845645"
+  let anyroles = ["Bodyguard", "Doctor", "Escort", "Maire", "Medium", "Retributionist", "Transporteur", "Investigateur", "Guetteur", "Shérif", "Spy", "Vétéran", "Vigilante", "Conseiller",
+   "Consort", "Blackmailer", "Janitor", "Disguiser", "Forger", "Framer", "Ambusher", "Hypnotist", "Armnesiac", "Survivor", "Executionner", "Jester", "Sorcière", "Serial Killer", "Arsonist"]
+  let rolescourrant = ["Jailor", "Godfather", "Mafioso"]
+  /*1. Jailor
+2. Town investigative ///////
+3. Town investigative ///////
+4. Town protective    ///////
+5. Town killing       ///////
+6. Town Support       ///////
+7. Random town        ///////
+8. Random town        ///////
+9. Neutral Killing    ///////
+10. Godfather         ///////
+11. Mafioso           ///////
+12. Random mafia      ///////
+13. Neutral Evil      ///////
+14. Any
+15. Any
+
+unique: vétéran, Maire, retributionist, Ambusher
+*/
 
 
 bot.on('ready', () => {
     console.log("bot online")
-    bot.user.setActivity("Thown Of Salem");
+    bot.user.setActivity("Town Of Salem");
 })
 
 bot.on("message", (message) => {
@@ -58,7 +79,6 @@ bot.on("message", (message) => {
     }
   })
 
-
   let pasGod = new Discord.MessageEmbed()
     .setDescription("Tu n'est pas " + `<@&${"829228486660063262"}>` )
     .setColor(color);
@@ -67,22 +87,125 @@ bot.on("message", (message) => {
     .setDescription("Qui?")
     .setColor(color);
 
-  if(cmd == "infoPlayer") {
+  if(cmd == "start") {
+    let vet = false
+    let mai = false
+    let ret = false
+    let amb = false
+
+    let towninves1 = (anyroles[Math.floor(Math.random() * (11 - 7) + 7)])
+    let towninves2 = null
+    do{
+      towninves2 = anyroles[Math.floor(Math.random() * (11 - 7) + 7)]
+    }while (towninves2 == towninves1)
+
+    rolescourrant.push(towninves1, towninves2) //town investigative
+    rolescourrant.push(anyroles[Math.floor(Math.random() * 2)]) //town protective
+    rolescourrant.push(anyroles[Math.floor(Math.random() * (13 - 11) + 11)]) //town killing
+    rolescourrant.push(anyroles[Math.floor(Math.random() * (7 - 2) + 2)]) //town support
+    rolescourrant.push(anyroles[Math.floor(Math.random() * (25 - 22) + 22)]) //neutral evil
+    rolescourrant.push(anyroles[Math.floor(Math.random() * (22 - 13) + 13)]) //random mafia
+    rolescourrant.push(anyroles[Math.floor(Math.random() * (29 - 27) + 27)]) //neutral killing
+    
+    let good = false
+    let randomtown1 = null
+    let randomtown2 = null  
+    let element = null 
+    
+    for (let index = 0; index < rolescourrant.length; index++) {
+      element = rolescourrant[index];
+      if(element == "Vétéran"){
+        vet = true
+      }
+      if(element == "Maire") {
+        mai = true
+      }
+      if(element == "Retributionist") {
+        ret = true
+      }
+    }
+      do{
+      randomtown1 = anyroles[Math.floor(Math.random() * 13)]
+      if(randomtown1 === "Vétéran") {
+        if(!vet) {
+          good = true 
+        }
+      }else if(randomtown1 === "Maire") {
+        if(!mai) {
+          good = true
+        }
+      }else if(randomtown1 === "Retributionist") {
+        if(!ret) {
+          good = true
+        }
+      }else
+       good = true     
+    }while(!good)
+
+    rolescourrant.push(randomtown1)
+    good = false
+    randomtown2 = null  
+    element = null
+    vet = false
+    mai = false
+    ret = false
+
+    for (let index = 0; index < rolescourrant.length; index++) {
+      element = rolescourrant[index];
+      if(element === "Vétéran"){
+        vet = true
+      }
+      if(element === "Maire") {
+        mai = true
+      }
+      if(element === "Retributionist") {
+        ret = true
+      }
+    }
+      
+      do{
+      randomtown2 = anyroles[Math.floor(Math.random() * 13)]
+      if(randomtown2 == "Vétéran") {
+        if(!vet) {
+          good = true 
+        }
+      }else if(randomtown2 == "Maire") {
+        if(!mai) {
+          good = true
+        }
+      }else if(randomtown2 == "Retributionist") {
+        if(!ret) {
+          good = true
+        }
+      }else
+      good = true
+    }while(!good)
+    rolescourrant.push(randomtown2)
+    console.log(rolescourrant);
+    console.log(good,randomtown1,element,vet,mai,ret)
+    rolescourrant = ["Jailor", "Godfather", "Mafioso"]
+  }
+
+  else if(cmd == "début") {
+
+  }
+
+  else if(cmd == "infoPlayer") {
     new Discord.MessageEmbed()
       .setDescription(tagged)
       .setColor(color);
   }
 
-  if(cmd == "role") {
+  else if(cmd == "role") {
     tagged.role = args[0]
   }
 
-  if (cmd == "alive") {
+  else if (cmd == "alive") {
     if(!god) return message.channel.send(pasGod);
     taggedUser.roles.add(vivant)
   }
 
-  if(cmd == "add") {
+  else if(cmd == "add") {
     if(!god) return message.channel.send(pasGod);
     if(!args[0]) return message.channel.send(qui);
     let newPlayer = new Player(taggedUser)
@@ -91,7 +214,7 @@ bot.on("message", (message) => {
     console.log(listejoueur)
   }
 
-  if(cmd == "swhisp") {
+  else if(cmd == "swhisp") {
 
     let combien = new Discord.MessageEmbed()
       .setDescription("Combien de message?")
@@ -107,7 +230,7 @@ bot.on("message", (message) => {
       message.channel.send(wpj);
     }
 
-  if(cmd == "jour") {
+  else if(cmd == "jour") {
       if(!god) return message.channel.send(pasGod);
       console.log(alive[0].name)
       alive.forEach(player => {
@@ -118,7 +241,7 @@ bot.on("message", (message) => {
       });
     }
 
-  if(cmd == "nuit") {
+  else if(cmd == "nuit") {
     if(!god) return message.channel.send(pasGod)
     alive.forEach(player => {
         player.user.roles.remove(jour)
@@ -128,7 +251,7 @@ bot.on("message", (message) => {
     });
   }
 
-  if(cmd == "w") {
+  else if(cmd == "w") {
 
     let demWhisp = new Discord.MessageEmbed()
       .setDescription("#Demande-De-Whisp svp")
@@ -185,7 +308,7 @@ bot.on("message", (message) => {
     }) 
   }
 
-  if(cmd == "p") {
+  else if(cmd == "p") {
 
     let pendrChan = new Discord.MessageEmbed()
       .setDescription("#Vote-Pour-Pendre SVP")
@@ -205,7 +328,7 @@ bot.on("message", (message) => {
       message.react("👍")
   }
 
-  if(cmd == "results"){
+  else if(cmd == "results"){
     if(!god) return message.channel.send(pasGod)
     var targetedPlayer = [alive[0]]
     alive.forEach(player => {
@@ -250,7 +373,7 @@ bot.on("message", (message) => {
     }
   }
 
-  if(cmd == "help") {
+  else if(cmd == "help") {
     let help = new Discord.MessageEmbed()
       .setTitle("Commandes Help")
       .addField("!helpgame", "Pour avoir de l'aide sur le jeux")
@@ -260,7 +383,7 @@ bot.on("message", (message) => {
       message.channel.send(help);
   }
 
-  if(cmd == "helpgame") {
+  else if(cmd == "helpgame") {
     let helpgame = new Discord.MessageEmbed()
       .setTitle("Wiki du jeux")
       .addField("Town roles", "https://town-of-salem.fandom.com/wiki/Town")
@@ -272,7 +395,7 @@ bot.on("message", (message) => {
       message.channel.send(helpgame);
   }
 
-  if(cmd == "helpcommands") {
+  else if(cmd == "helpcommands") {
     let helpcommandsgod = new Discord.MessageEmbed()
       .setTitle("Commandes God")
       .addField("!swhisp", "!swhisp [nombre de whisp max par jours]")
