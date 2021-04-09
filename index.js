@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const Commands = require('./src/commands.js');
 const Player = require('./src/player.js')
-const config = require('./config/config.json');
+require("dotenv").config()
 const bot = new Discord.Client();
 var listejoueur = [];
 var nbWhispJour = 1;
@@ -26,7 +26,7 @@ var whispersChannels = [];
   let rolescourrant = ["Jailor", "Godfather", "Mafioso"]
   let color = "#f0b71a";
   let messageJouer = new Discord.MessageEmbed()
-  .setDescription("Réagissez avec une tortue si vous voulez jouer et avec des yeux si vous voulez spectate.")
+  .setDescription("Hey! Nouvelle game! Réagissez avec une tortue 🐢 si vous voulez jouer et avec des yeux 👀 si vous voulez spectate.")
   .setColor(color)
   let prefix = "!";
   /*1. Jailor
@@ -366,15 +366,22 @@ bot.on('message', async (message) => {
   let MessageArray = message.content.split(" ");
   let cmd = MessageArray[0].slice(prefix.length);
   let args = MessageArray.slice(1);
+
+
   if(cmd == "start"){
-    if(god) {
+
+    let combien = new Discord.MessageEmbed()
+    .setDescription("Combien de joueurs?")
+    .setColor(color);
+
+    if(!god) return message.channel.send(pasGod)
+    if(!args[0]) return message.channel.send(combien)
       nbrJoueurMax = args[0];
       const reactionMessage = await qvjChan.send(messageJouer)
       await reactionMessage.react(turtleId)
       await reactionMessage.react(eyesId)
     }
-  }
-  if (message.content.toLowerCase().startsWith("!" + 'clear')) {
+  else if (cmd == "clear") {
     if (!god)
       return message.channel.send(pasGod);
     if (!isNaN(message.content.split(' ')[1])) {
@@ -391,14 +398,14 @@ bot.on('message', async (message) => {
         message.channel.send(`Le bot a supprimé \`${_message.size}\` messages :broom:`).then((sent) => {
           setTimeout(function () {
             sent.delete();
-          }, 2500);
+          }, 3000);
         });
       });
     } else {
       message.channel.send('Combien de message?').then((sent) => {
         setTimeout(function () {
           sent.delete();
-        }, 2500);
+        }, 3000);
       });
     }
   }
