@@ -66,6 +66,20 @@ bot.on('ready', () => {
 
 bot.on("message", (message) => {
   if(message.author.bot) return;
+  let jailChan = message.guild.channels.cache.get(jail);
+  let jailedChan = message.guild.channels.cache.get(jailed);
+  let spyChan = message.guild.channels.cache.get(spyHideout);
+  let mafiaChan = message.guild.channels.cache.get(mafiaChat)
+
+  if (message.channel == mafiaChan){
+    spyChan.send(message.content)
+  }
+  if (message.channel == jailChan){
+    jailedChan.send(message.content)
+  }
+  if (message.channel == jailedChan){
+    jailChan.send(message.content)
+  }
   if(!message.content.startsWith(prefix)) return;
   let MessageArray = message.content.split(" ");
   let cmd = MessageArray[0].slice(prefix.length);
@@ -91,6 +105,10 @@ bot.on("message", (message) => {
   let god = message.member.roles.cache.has("829228486660063262");
   let dmChan = message.guild.channels.cache.get("829216633205424128");
   let pendChan = message.guild.channels.cache.get("829269425290215463");
+  let jailChan = message.guild.channels.cache.get(jail);
+  let jailedChan = message.guild.channels.cache.get(jailed);
+  let spyChan = message.guild.channels.cache.get(spyHideout);
+  let mafiaChan = message.guild.channels.cache.get(mafiaChat)
  
 
 
