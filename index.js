@@ -7,18 +7,19 @@ var listejoueur = [];
 var nbWhispJour = 1;
 var nbrJoueurMax = 0;
 var whispersChannels = [];
+var interfaces = [];
 
   //const game
-  let mort = "829832421825708064";
-  let jour = "829254726495240214";
-  let nuit = "829254687630557185";
-  let vivant = "829205364444364800";
-  let spec = "829250418244321280";
-  let quiVeutJouer = "829873265194303498";
-  let jailed = "???????????";
-  let jail = "???????????????????";
-  let mafiaChat = "???????????????????";
-  let spyHideout = "?????????????????"
+  let mort = "829832421825708064"
+  let jour = "829254726495240214"
+  let nuit = "829254687630557185"
+  let vivant = "829205364444364800"
+  let spec = "829250418244321280"
+  let quiVeutJouer = "829873265194303498"
+  let jailed = "830240201111896135"
+  let jail = "830240173727547424"
+  let mafiaChat = "830240221584687104"
+  let spyHideout = "830240252248850433"
   let turtleId = "830121244208267334"
   let eyesId = "830121185885945880"
   let anyroles = ["Bodyguard", "Doctor", "Escort", "Maire", "Medium", "Retributionist", "Transporteur", "Investigateur", "Lookout", "Shérif", "Spy", "Vétéran", "Vigilante", "Conseiller",
@@ -55,7 +56,6 @@ let alive = function (){
       alive.push(player);
     }
   })
-  console.log(alive.length)
   return alive
 }
 
@@ -86,6 +86,7 @@ bot.on("message", (message) => {
   let args = MessageArray.slice(1);
   var tagged = null
   var author = null
+
   try{
     listejoueur.forEach(player => {
       if (message.mentions.members.first().user.username == player.name){
@@ -105,13 +106,7 @@ bot.on("message", (message) => {
   let god = message.member.roles.cache.has("829228486660063262");
   let dmChan = message.guild.channels.cache.get("829216633205424128");
   let pendChan = message.guild.channels.cache.get("829269425290215463");
-  let jailChan = message.guild.channels.cache.get(jail);
-  let jailedChan = message.guild.channels.cache.get(jailed);
-  let spyChan = message.guild.channels.cache.get(spyHideout);
-  let mafiaChan = message.guild.channels.cache.get(mafiaChat)
  
-
-
   let pasGod = new Discord.MessageEmbed()
     .setDescription("Tu n'est pas " + `<@&${"829228486660063262"}>` )
     .setColor(color);
@@ -120,11 +115,63 @@ bot.on("message", (message) => {
     .setDescription("Qui?")
     .setColor(color);
 
-    
-
-  if(cmd == "début") {
+  if(cmd == "end") {
     if(!god) return message.channel.send(pasGod)
+    
+  }
 
+  else if(cmd == "mafia") {
+    if(!god) return message.channel.send(pasGod)
+    if(!args[0]) return message.channel.send(qui)
+      tagged.role = "Mafia" 
+      mafiaChan.updateOverwrite(
+      tagged.id,
+      {VIEW_CHANNEL: true}
+    )
+  }
+
+  else if(cmd == "spy") {
+    if(!god) return message.channel.send(pasGod)
+    if(!args[0]) return message.channel.send(qui)
+      tagged.role = "Spy" 
+      spyChan.updateOverwrite(
+      tagged.id,
+      {VIEW_CHANNEL: true}
+    )
+  }  
+
+  else if(cmd == "jailor") {
+    if(!god) return message.channel.send(pasGod)
+    if(!args[0]) return message.channel.send(qui)
+      tagged.role = "Jailor" 
+      jailChan.updateOverwrite(
+      tagged.id,
+      {VIEW_CHANNEL: true}
+    )
+  }
+
+  else if(cmd == "kill") {
+    if(!god) return message.channel.send(pasGod)
+    if(!args[0]) return message.channel.send(qui)
+    tagged.serverRoles = [mort]
+    taggedUser.roles.add(mort)
+    taggedUser.roles.remove(vivant)
+  }
+  
+  else if(cmd == "jail") {
+    if(!god) return message.channel.send(pasGod)
+    if(!args[0]) return message.channel.send(qui)
+      jailedChan.updateOverwrite(
+      tagged.id,
+      {"VIEW_CHANNEL": true})
+
+      mafiaChan.updateOverwrite(
+      tagged.id,
+      {"VIEW_CHANNEL": false})
+
+      spyChan.updateOverwrite(
+      tagged.id,
+      {"VIEW_CHANNEL": false})
   }
 
   else if(cmd == "infoPlayer") {
@@ -165,27 +212,41 @@ bot.on("message", (message) => {
     }
 
   else if(cmd == "jour") {
-      if(!god) return message.channel.send(pasGod);
-      console.log(alive[0].name)
-      alive.forEach(player => {
-          player.user.roles.add(jour)
-          player.user.roles.remove(nuit)
-          player.whispRemaining = nbWhispJour
-          player.hasVoted = false
-      });
-    }
+    if(!god) return message.channel.send(pasGod);
+    alive().forEach(player => {
+      player.user.roles.add(jour)
+      player.user.roles.remove(nuit)
+      player.whispRemaining = nbWhispJour
+      player.hasVoted = false
 
+      jailedChan.updateOverwrite(
+      player.id,
+      {"VIEW_CHANNEL": false})
+
+      if(player.role == "Mafia") {
+        mafiaChan.updateOverwrite(
+        player.id,
+        {"VIEW_CHANNEL": true})
+
+        }else if (player.role == "Spy") {
+          spyChan.updateOverwrite(
+          player.id,
+          {"VIEW_CHANNEL": true})
+        }
+      }
+    );
+  }
   else if(cmd == "nuit") {
     if(!god) return message.channel.send(pasGod)
-    alive.forEach(player => {
-        player.user.roles.remove(jour)
-        player.user.roles.add(nuit)
-        player.votesFor = 0
-        player.whispRemaining = 0
+    alive().forEach(player => {
+      player.user.roles.remove(jour)
+      player.user.roles.add(nuit)
+      player.votesFor = 0
+      player.whispRemaining = 0
     });
 
     whispersChannels.forEach(whisper => {
-      message.guild.channels.cache.get(whisper).delete;
+      message.guild.channels.cache.get(whisper).delete();
     });
     whispersChannels = []
   }
@@ -244,7 +305,8 @@ bot.on("message", (message) => {
       deny: ['VIEW_CHANNEL'],
     }
     ])
-    whispersChannels.push(channel.id)                  
+    whispersChannels.push(channel.id)
+    console.log(whispersChannels)                 
     }) 
   }
 
@@ -270,8 +332,8 @@ bot.on("message", (message) => {
 
   else if(cmd == "results"){
     if(!god) return message.channel.send(pasGod)
-    var targetedPlayer = [alive[0]]
-    alive.forEach(player => {
+    var targetedPlayer = [alive()[0]]
+    alive().forEach(player => {
       if (player.id != targetedPlayer[0].id){
         if(targetedPlayer[0].votesFor < player.votesFor){
           targetedPlayer = [player]
@@ -295,14 +357,14 @@ bot.on("message", (message) => {
       .setColor(color))
     }
     else if (targetedPlayer.length == 1){
-      if(targetedPlayer[0].votesFor > (alive.length/2)){
+      if(targetedPlayer[0].votesFor > (alive().length/2)){
         return message.channel.send(new Discord.MessageEmbed()
-      .setDescription("Le village a décidé de pendre " + targetedPlayer[0].name + " par un vote de " + targetedPlayer[0].votesFor + "-" + (alive.length - targetedPlayer[0].votesFor))
+      .setDescription("Le village a décidé de pendre " + targetedPlayer[0].name + " par un vote de " + targetedPlayer[0].votesFor + "-" + (alive().length - targetedPlayer[0].votesFor))
       .setColor(color))
       }
       else{
         return message.channel.send(new Discord.MessageEmbed()
-      .setDescription("Le village a décidé d'épargner " + targetedPlayer[0].name + " par un vote de " + targetedPlayer[0].votesFor + "-" + (alive.length - targetedPlayer[0].votesFor))
+      .setDescription("Le village a décidé d'épargner " + targetedPlayer[0].name + " par un vote de " + targetedPlayer[0].votesFor + "-" + (alive().length - targetedPlayer[0].votesFor))
       .setColor(color))
       }
     }
@@ -439,8 +501,8 @@ bot.on("messageReactionAdd", (reaction, user) => {
   })
   if (reactor == null){
     reaction.message.channel.send(new Discord.MessageEmbed()
-            .setDescription("Vous ne faites pas parti du serveur, veuillez contacter un admin")
-            .setColor(color))
+      .setDescription("Vous ne faites pas parti du serveur, veuillez contacter un admin")
+      .setColor(color))
   }
   else{
   try{
@@ -453,9 +515,33 @@ bot.on("messageReactionAdd", (reaction, user) => {
             reactor.serverRoles.push(vivant)
             reactor.user.roles.remove(spec)
 
+            let interface = reactor.user.displayName
+            reaction.message.guild.channels.create(interface + " Interface",{type:"text",})
+            .then((channel) => {
+              channel.setParent("829239671925637150")
+              channel.overwritePermissions([
+              {
+                id: vivant,
+                deny: ['VIEW_CHANNEL'],
+              },{
+                id: reactor.id,
+                allow: ['VIEW_CHANNEL'],
+              },{
+                id: spec,
+                allow: ['VIEW_CHANNEL'],
+                deny: ['SEND_MESSAGES'],
+              },{
+                id: mort,
+                deny: ['VIEW_CHANNEL'],
+              }
+              ])
+
+              interfaces.push(channel.id)
+            })
+
             if (alive().length == nbrJoueurMax){
-              Commands.prototype.start()
-            }
+                Commands.prototype.start()
+              }
           }
           else{
             reaction.message.channel.send(new Discord.MessageEmbed()
