@@ -15,7 +15,7 @@ class Player {
         this.hasVoted = false
         this.votesFor = 0
         this.registeredVote = null
-        this.lastwhill = null
+        this.lastwill = null
     }
 
 
