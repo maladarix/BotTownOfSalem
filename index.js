@@ -570,21 +570,21 @@ bot.on('message', async (message) => {
 
 bot.on("messageReactionAdd", (reaction, user) => {
   if(user.bot) return;
-  console.log(reaction.emoji.id)
   var reactor = null
   listejoueur.forEach(player => {
     if (user.username == player.name){
       reactor = player
     }
   })
-  if (reactor == null){
-    reaction.message.channel.send(new Discord.MessageEmbed()
-      .setDescription("Vous ne faites pas parti du serveur, veuillez contacter un admin")
-      .setColor(color))
-  }
-  else{
-  try{
-    if(reaction.message.channel == quiVeutJouer) {
+  
+  if(reaction.message.channel == quiVeutJouer) {
+    if (reactor == null){
+      reaction.message.channel.send(new Discord.MessageEmbed()
+        .setDescription("Vous ne faites pas parti du serveur, veuillez contacter un admin")
+        .setColor(color))
+    }
+    else{
+    try{
       if(reaction.emoji.id == turtleId){
         if(!reactor.serverRoles.includes(vivant)) {
           if (alive().length != nbrJoueurMax) {
@@ -652,8 +652,8 @@ bot.on("messageReactionAdd", (reaction, user) => {
         }
       }
     }
+    catch(err){console.log(err);}
   }
-  catch(err){console.log(err);}
 }
 })
 
