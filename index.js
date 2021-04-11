@@ -118,7 +118,7 @@ bot.on("message", (message) => {
     .setDescription("Qui?")
     .setColor(color);
 
-  if(cmd == "end") {
+  if(cmd == "end") { //y faut delete les roles: mafia/jester
     if(!god) return message.channel.send(pasGod)
     for(let i = 0; i < listejoueur.length; i++)
     {
@@ -139,8 +139,7 @@ bot.on("message", (message) => {
       { 
         id: message.guild.id,
         deny: ['VIEW_CHANNEL'],
-      },
-      {
+      },{
         id: vivant,
         deny: ['VIEW_CHANNEL'],
       },{
@@ -156,8 +155,7 @@ bot.on("message", (message) => {
       {
         id: message.guild.id,
         deny: ['VIEW_CHANNEL'],
-      },
-      {
+      },{
         id: vivant,
         deny: ['VIEW_CHANNEL'],
       },{
@@ -173,8 +171,7 @@ bot.on("message", (message) => {
       {
         id: message.guild.id,
         deny: ['VIEW_CHANNEL'],
-      },
-      {
+      },{
         id: vivant,
         deny: ['VIEW_CHANNEL'],
       },{
@@ -191,6 +188,18 @@ bot.on("message", (message) => {
       message.guild.channels.cache.get(interface).delete();
     });
     interfaces = []
+  }
+
+  else if(cmd == "lastwhill") {
+
+    let noargLW = new Discord.MessageEmbed()
+    .setDescription("Il me faut quelque chose d'écrit!")
+    .setColor(color)
+    if(!args[0]) return message.channel.send(noargLW)
+    let messageLW = args
+
+    message.channel.send(args)
+
   }
 
   else if(cmd == "mafia") {
@@ -363,8 +372,7 @@ bot.on("message", (message) => {
     {
       id: channel.guild.id,
       deny: ['VIEW_CHANNEL'],
-    },
-    {
+    },{
       id: vivant,
       deny: ['VIEW_CHANNEL'],
     },{
