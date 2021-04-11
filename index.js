@@ -30,6 +30,9 @@ var interfaces = [];
   .setDescription("Hey! Nouvelle game! Réagissez avec une tortue 🐢 si vous voulez jouer et avec des yeux 👀 si vous voulez spectate.")
   .setColor(color)
   let prefix = "!";
+  var tagged = null
+  var author = null  
+  
   /*1. Jailor
 2. Town investigative ///////
 3. Town investigative ///////
@@ -84,8 +87,7 @@ bot.on("message", (message) => {
   let MessageArray = message.content.split(" ");
   let cmd = MessageArray[0].slice(prefix.length);
   let args = MessageArray.slice(1);
-  var tagged = null
-  var author = null
+
 
   try{
     listejoueur.forEach(player => {
@@ -506,14 +508,19 @@ bot.on("messageReactionAdd", (reaction, user) => {
   }
   else{
   try{
-    if(reaction.message.channel == quiVeutJouer){
+    if(reaction.message.channel == quiVeutJouer) {
       if(reaction.emoji.id == turtleId){
-        if(!reactor.serverRoles.includes(vivant)){
-          if (alive().length != nbrJoueurMax)
-          {
+        if(!reactor.serverRoles.includes(vivant)) {
+          if (alive().length != nbrJoueurMax) {
             reactor.user.roles.add(vivant)
             reactor.serverRoles.push(vivant)
             reactor.user.roles.remove(spec)
+
+            let messainter = new Discord.MessageEmbed()
+            .setDescription(`Bonjour ceci est ton interface avec le jeu. Je m'explique. Ici tu auras la description de ton rôle, et tu pourras écrire tes actions que tu 
+              veux effectuer dans la nuit. De plus, tu pourras poser toutes tes questions par rapport au fonctionnement du jeu. Finalement, tu peux écrire ici un last will qui 
+              sera révélé à tout le monde lors de ta mort. Ce channel sera vidé chaque jour à l'exception de ce message, de ta description de rôle, ainsi que de ton last will.`)
+            .setColor(color)
 
             let interface = reactor.user.displayName
             reaction.message.guild.channels.create(interface + " Interface",{type:"text",})
@@ -534,8 +541,7 @@ bot.on("messageReactionAdd", (reaction, user) => {
                 id: mort,
                 deny: ['VIEW_CHANNEL'],
               }
-              ])
-
+              ]).then(channel.send(messainter))
               interfaces.push(channel.id)
             })
 
