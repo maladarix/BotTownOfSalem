@@ -10,18 +10,19 @@ var whispersChannels = [];
 var interfaces = [];
 
   //const game
-  let mort = "829832421825708064"
-  let jour = "829254726495240214"
-  let nuit = "829254687630557185"
-  let vivant = "829205364444364800"
-  let spec = "829250418244321280"
-  let quiVeutJouer = "829873265194303498"
-  let jailed = "830240201111896135"
-  let jail = "830240173727547424"
-  let mafiaChat = "830240221584687104"
-  let spyHideout = "830240252248850433"
-  let turtleId = "830121244208267334"
-  let eyesId = "830121185885945880"
+  let mort = "824726156141658132"
+  let jour = "825029496305614927"
+  let nuit = "824749359118811187"
+  let vivant = "824725851198849075"
+  let spec = "824726635902271518"
+  let quiVeutJouer = "824725623346954271"
+  let jailed = "824761075387727912"
+  let jail = "824728100645896314"
+  let mafiaChat = "824731087863021588"
+  let spyHideout = "824762348396216401"
+  let turtleId = "830113799763525642"
+  let eyesId = "830114000448258058"
+  let godId = "824725152692174879"
   let anyroles = ["Bodyguard", "Doctor", "Escort", "Maire", "Medium", "Retributionist", "Transporteur", "Investigateur", "Lookout", "Shérif", "Spy", "Vétéran", "Vigilante", "Conseiller",
    "Consort", "Blackmailer", "Janitor", "Disguiser", "Forger", "Framer", "Ambusher", "Hypnotist", "Armnesiac", "Survivor", "Executionner", "Jester", "Sorcière", "Serial Killer", "Arsonist"]
   let rolescourrant = ["Jailor", "Godfather", "Mafioso"]
@@ -105,12 +106,12 @@ bot.on("message", (message) => {
   })
   var taggedUser = message.mentions.members.first();
  
-  let god = message.member.roles.cache.has("829228486660063262");
-  let dmChan = message.guild.channels.cache.get("829216633205424128");
-  let pendChan = message.guild.channels.cache.get("829269425290215463");
+  let god = message.member.roles.cache.has(godId);
+  let dmChan = message.guild.channels.cache.get("824726760808513606");
+  let pendChan = message.guild.channels.cache.get("824727128758943795");
  
   let pasGod = new Discord.MessageEmbed()
-    .setDescription("Tu n'est pas " + `<@&${"829228486660063262"}>` )
+    .setDescription("Tu n'est pas " + `<@&${godId}>` )
     .setColor(color);
 
   let qui = new Discord.MessageEmbed()
@@ -119,7 +120,77 @@ bot.on("message", (message) => {
 
   if(cmd == "end") {
     if(!god) return message.channel.send(pasGod)
-    
+    for(let i = 0; i < listejoueur.length; i++)
+    {
+      listejoueur[i].user.roles.remove(vivant)
+      listejoueur[i].user.roles.remove(mort)
+      listejoueur[i].user.roles.remove(spec)
+      listejoueur[i].user.roles.remove(jour)
+      listejoueur[i].user.roles.remove(nuit)
+      listejoueur[i] = new Player(listejoueur[i].user)
+      if (!listejoueur[i].serverRoles.includes(godId)){
+        listejoueur[i].serverRoles = []
+      }
+      else{
+        listejoueur[i].serverRoles = [godId]
+      }
+    }
+    mafiaChan.overwritePermissions([
+      { 
+        id: message.guild.id,
+        deny: ['VIEW_CHANNEL'],
+      },
+      {
+        id: vivant,
+        deny: ['VIEW_CHANNEL'],
+      },{
+        id: spec,
+        allow: ['VIEW_CHANNEL'],
+        deny: ['SEND_MESSAGES'],
+      },{
+        id: mort,
+        deny: ['VIEW_CHANNEL'],
+      }
+    ])
+    jailChan.overwritePermissions([
+      {
+        id: message.guild.id,
+        deny: ['VIEW_CHANNEL'],
+      },
+      {
+        id: vivant,
+        deny: ['VIEW_CHANNEL'],
+      },{
+        id: spec,
+        allow: ['VIEW_CHANNEL'],
+        deny: ['SEND_MESSAGES'],
+      },{
+        id: mort,
+        deny: ['VIEW_CHANNEL'],
+      }
+    ])
+    spyChan.overwritePermissions([
+      {
+        id: message.guild.id,
+        deny: ['VIEW_CHANNEL'],
+      },
+      {
+        id: vivant,
+        deny: ['VIEW_CHANNEL'],
+      },{
+        id: spec,
+        allow: ['VIEW_CHANNEL'],
+        deny: ['SEND_MESSAGES'],
+      },{
+        id: mort,
+        deny: ['VIEW_CHANNEL'],
+      }
+    ])
+
+    interfaces.forEach(interface => {
+      message.guild.channels.cache.get(interface).delete();
+    });
+    interfaces = []
   }
 
   else if(cmd == "mafia") {
@@ -279,7 +350,7 @@ bot.on("message", (message) => {
     if(!args[0]) return message.channel.send(qui);
     if(message.mentions.members.first().id == message.author.id) return message.channel.send(pastoi);
     if(!taggedUser) return message.channel.send(trouvePas);
-    if(!taggedUser.roles.cache.has("829205364444364800")) return message.channel.send(pasVivant);
+    if(!taggedUser.roles.cache.has(vivant)) return message.channel.send(pasVivant);
     let channelName = taggedUser.displayName + " et " + message.author.username;
     if(author.whispRemaining == 0) return message.channel.send(maxwhisp)
 
@@ -289,6 +360,10 @@ bot.on("message", (message) => {
     .then((channel) => {
     channel.setParent("829239671925637150")
     channel.overwritePermissions([
+    {
+      id: channel.guild.id,
+      deny: ['VIEW_CHANNEL'],
+    },
     {
       id: vivant,
       deny: ['VIEW_CHANNEL'],
@@ -437,9 +512,9 @@ bot.on("message", (message) => {
 
 bot.on('message', async (message) => {
 
-  var god = message.member.roles.cache.has("829228486660063262");
+  var god = message.member.roles.cache.has(godId);
   var pasGod = new Discord.MessageEmbed()
-  .setDescription("Tu n'est pas " + `<@&${"829228486660063262"}>` )
+  .setDescription("Tu n'est pas " + `<@&${godId}>` )
   .setColor(color);
   var color = "#f0b71a";
   let qvjChan = message.guild.channels.cache.get(quiVeutJouer);
@@ -495,6 +570,7 @@ bot.on('message', async (message) => {
 
 bot.on("messageReactionAdd", (reaction, user) => {
   if(user.bot) return;
+  console.log(reaction.emoji.id)
   var reactor = null
   listejoueur.forEach(player => {
     if (user.username == player.name){
@@ -525,8 +601,12 @@ bot.on("messageReactionAdd", (reaction, user) => {
             let interface = reactor.user.displayName
             reaction.message.guild.channels.create(interface + " Interface",{type:"text",})
             .then((channel) => {
-              channel.setParent("829239671925637150")
+              channel.setParent("824726713605947403")
               channel.overwritePermissions([
+              {
+                id: channel.guild.id,
+                deny: ['VIEW_CHANNEL'],
+              },
               {
                 id: vivant,
                 deny: ['VIEW_CHANNEL'],
