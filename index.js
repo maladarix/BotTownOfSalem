@@ -196,9 +196,15 @@ bot.on("message", (message) => {
     .setDescription("Il me faut quelque chose d'écrit!")
     .setColor(color)
     if(!args[0]) return message.channel.send(noargLW)
-    let messageLW = args
+    let messageLW = ""
 
-    message.channel.send(args)
+    args.forEach(mot => {
+      messageLW += mot + " "
+    });
+
+    console.log(messageLW)
+
+    message.channel.send(messageLW)
 
   }
 
