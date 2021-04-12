@@ -141,7 +141,10 @@ bot.on("message", (message) => {
       }
     }
     mafiaChan.overwritePermissions([
-      { 
+      {
+        id: jour,
+        deny: ['VIEW_CHANNEL'],
+      },{ 
         id: message.guild.id,
         deny: ['VIEW_CHANNEL'],
       },{
@@ -189,12 +192,23 @@ bot.on("message", (message) => {
       }
     ])
 
+    whispersChannels.forEach(whisper => {
+      message.guild.channels.cache.get(whisper).delete();
+    });
+    whispersChannels = []
+
     interfaces.forEach(interface => {
       message.guild.channels.cache.get(interface).delete();
     });
     interfaces = []
-  }
 
+    let gameend = new Discord.MessageEmbed()
+    .setDescription("La partie est terminée!")
+    .setColor(color)
+
+    message.channel.send(gameend)
+
+  }
   else if(cmd == "role") {
 
     let quelrole = new Discord.MessageEmbed()
@@ -409,7 +423,7 @@ bot.on("message", (message) => {
 
     message.guild.channels.create(channelName,{type:"text",})
     .then((channel) => {
-    channel.setParent("829239671925637150")
+    channel.setParent("824726713605947403")
     channel.overwritePermissions([
     {
       id: channel.guild.id,
@@ -548,7 +562,7 @@ bot.on("message", (message) => {
       .setColor(color);
 
     let helpcommandsvivant = new Discord.MessageEmbed()
-      .setTitle("**Commandes Vivants")
+      .setTitle("**Commandes Vivants**")
       .addField("!w @[User]", "Whisper quelqu'un")
       .addField("!p @[User]", "Pendre quelqu'un")
       .addField("!help", "Pour avoir de l'aide")
@@ -647,10 +661,10 @@ bot.on("messageReactionAdd", (reaction, user) => {
             reactor.user.roles.remove(spec)
 
             let messainter = new Discord.MessageEmbed()
-            .setDescription(`Bonjour ceci est ton interface avec le jeu. Je m'explique. Ici tu auras la description de ton rôle, et tu pourras écrire tes" + 
+            .setDescription("Bonjour ceci est ton interface avec le jeu. Je m'explique. Ici tu auras la description de ton rôle, et tu pourras écrire tes" + 
             " actions que tu veux effectuer dans la nuit. De plus, tu pourras poser toutes tes questions par rapport au fonctionnement du jeu. Finalement, " + 
             "tu peux écrire ici un last will qui sera révélé à tout le monde lors de ta mort. Ce channel sera vidé chaque jour à l'exception de ce message, " +
-            "de ta description de rôle, ainsi que de ton last will.`)
+            "de ta description de rôle, ainsi que de ton last will.")
             .setColor(color)
 
             let interface = reactor.user.displayName
