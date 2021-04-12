@@ -9,52 +9,44 @@ var nbrJoueurMax = 0;
 var whispersChannels = [];
 var interfaces = [];
 
-  //const game
-  let mort = "824726156141658132"
-  let jour = "825029496305614927"
-  let nuit = "824749359118811187"
-  let vivant = "824725851198849075"
-  let spec = "824726635902271518"
-  let devid = "830253971637665832"
-  let quiVeutJouer = "824725623346954271"
-  let jailed = "824761075387727912"
-  let jail = "824728100645896314"
-  let mafiaChat = "824731087863021588"
-  let spyHideout = "824762348396216401"
-  let turtleId = "830113799763525642"
-  let eyesId = "830114000448258058"
-  let godId = "824725152692174879"
-  let anyroles = ["Bodyguard", "Doctor", "Escort", "Maire", "Medium", "Retributionist", "Transporteur", "Investigateur", "Lookout", "Shérif", "Spy", "Vétéran", "Vigilante", "Conseiller",
-   "Consort", "Blackmailer", "Janitor", "Disguiser", "Forger", "Framer", "Ambusher", "Hypnotist", "Armnesiac", "Survivor", "Executionner", "Jester", "Sorcière", "Serial Killer", "Arsonist"]
-  let rolescourrant = ["Jailor", "Godfather", "Mafioso"]
-  let graveyard = "825868136782757918"
+//const game
+let classique15 = ["Jailor", "Town investigative", "Town investigative", "Town protective", "Town killing", "Town support", "Random town", "Random town", "Godfather", "Mafioso", 
+"Random mafia", "Neutral evil", "Neutral killing", "Any", "Any"]
 
-  let color = "#f0b71a";
-  let messageJouer = new Discord.MessageEmbed()
-  .setDescription("Hey! Nouvelle game! Réagissez avec une tortue 🐢 si vous voulez jouer et avec des yeux 👀 si vous voulez spectate.")
-  .setColor(color)
-  let prefix = "!";
-  var tagged = null
-  var author = null  
-  
-  /*1. Jailor
-2. Town investigative ///////
-3. Town investigative ///////
-4. Town protective    ///////
-5. Town killing       ///////
-6. Town Support       ///////
-7. Random town        ///////
-8. Random town        ///////
-9. Neutral Killing    ///////
-10. Godfather         ///////
-11. Mafioso           ///////
-12. Random mafia      ///////
-13. Neutral Evil      ///////
-14. Any
-15. Any
+let Allanyballenced15 = ["Random town", "Random town", "Random town", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any"]
 
-unique: vétéran, Maire, retributionist, Ambusher
-*/
+let classique20 = ["Jailor", "Doctor", "Investigator", "Town investigative", "Town investigative", "Town support", "Town killing", "Random town", "Random town", "Random town",
+"Vampire hunter", "Godfather", "Mafioso", "Random mafia", "Random mafia", "Vampire", "Neutral killing", "Neutral evil", "Any", "Any"]
+
+let anyroles = ["Bodyguard", "Doctor", "Escort", "Maire", "Medium", "Retributionist", "Transporteur", "Investigateur", "Lookout", "Shérif", "Spy", "Vétéran", "Vigilante", "Conseiller",
+"Consort", "Blackmailer", "Janitor", "Disguiser", "Forger", "Framer", "Ambusher", "Hypnotist", "Armnesiac", "Survivor", "Executionner", "Jester", "Sorcière", "Serial Killer", "Arsonist"]
+let rolescourrant = ["Jailor", "Godfather", "Mafioso"]
+
+//                                        id serv officiel        id serv test
+let mort = "829832421825708064"         //824726156141658132    829832421825708064
+let jour = "829254726495240214"         //825029496305614927    829254726495240214
+let nuit = "829254687630557185"         //824749359118811187    829254687630557185
+let vivant = "829205364444364800"       //824725851198849075    829205364444364800
+let spec = "829250418244321280"         //824726635902271518    829250418244321280
+let devid = "830253971637665832"        //830253971637665832
+let quiVeutJouer = "829873265194303498" //824725623346954271    829873265194303498
+let jailed = "830240201111896135"       //824761075387727912    830240201111896135
+let jail = "830240173727547424"         //824728100645896314    830240173727547424
+let mafiaChat = "830240221584687104"    //824731087863021588    830240221584687104
+let spyHideout = "830240252248850433"   //824762348396216401    830240252248850433
+let turtleId = "830113799763525642"     //830113799763525642
+let eyesId = "830114000448258058"       //830114000448258058
+let godId = "829228486660063262"        //824725152692174879    829228486660063262
+let graveyard = "825868136782757918"    //825868136782757918
+let gamemode = null
+
+let color = "#f0b71a";
+let messageJouer = new Discord.MessageEmbed()
+.setDescription("Hey! Nouvelle game! Réagissez avec une tortue 🐢 si vous voulez jouer et avec des yeux 👀 si vous voulez spectate.")
+.setColor(color)
+let prefix = "!";
+var tagged = null
+var author = null  
 
 let alive = function (){
   let alive = new Array()
@@ -224,29 +216,36 @@ bot.on("message", (message) => {
 
   else if(cmd == "lastwill") { 
     var messageLW = "" 
-    if(args.length >= 1) {
+    if(args.length >= 1 && taggedUser == null) {
       args.forEach(mot => {
       messageLW += mot + " "
     });
     author.lastwill = messageLW
     message.react("👍")
 
-    }else{
-      if(author.lastwill == null || "") {
+    }else if(author.lastwill == null || "") {
   
-        let pasLW = new Discord.MessageEmbed()
-        .setDescription("Tu n'as pas encore de last will")
-        .setColor(color)
+      let pasLW = new Discord.MessageEmbed()
+      .setDescription("Tu n'as pas encore de last will")
+      .setColor(color)
   
-        message.channel.send(pasLW)
-      }else{
+      message.channel.send(pasLW)
+    }else if(taggedUser == null){
   
-        let LW = new Discord.MessageEmbed()
-        .setDescription(author.lastwill)
-        .setColor(color)
+      let LW = new Discord.MessageEmbed()
+      .setDescription(author.lastwill)
+      .setColor(color)
   
-        message.channel.send(LW)
-      }
+      message.channel.send(LW)
+    }else if(taggedUser != null) {
+
+      let LWtagged = new Discord.MessageEmbed()
+      .setDescription(tagged.lastwill)
+      .setColor(color)
+
+      message.channel.send(LWtagged)
+    }else if(taggedUser != null && (!god || !dev) ){
+      message.channel.send(pasGod)
     }
   }
 
@@ -446,8 +445,7 @@ bot.on("message", (message) => {
       deny: ['VIEW_CHANNEL'],
     }
     ])
-    whispersChannels.push(channel.id)
-    console.log(whispersChannels)                 
+    whispersChannels.push(channel.id)                 
     }) 
   }
 
@@ -516,6 +514,92 @@ bot.on("message", (message) => {
     }
   }
 
+  else if(cmd == "gamemode") {
+
+    let mdjsvp = new Discord.MessageEmbed()
+    .setTitle("Quel mode de jeux?")
+    .addField("Partie classique à 20 joueurs (class20)", `1. Jailor
+    2. Doctor
+    3. Investigator
+    4. Town investigative
+    5. Town investigative
+    6. Town Support
+    7. Town killing
+    8. Random town
+    9. Random town
+    10. Random town
+    11. Vampire Hunter
+    12. Godfather
+    13. Mafioso
+    14. Random Mafia
+    15. Random mafia
+    16. Vampire
+    17. Neutral Evil
+    18. Neutral Killing
+    19. Any
+    20. Any`)
+    .addField("All Any balanced à 15 joueurs (any15)", `1. Random town
+    2. Random town
+    3. Random town
+    4. Any
+    5. Any
+    6. Any
+    7. Any
+    8. Any
+    9. Any
+    10. Any
+    11. Any
+    12. Any
+    13. Any
+    14. Any
+    15. Any`)
+    .addField("Partie classique à 15 joueurs (class15)", `1. Jailor
+    2. Town investigative
+    3. Town investigative
+    4. Town protective
+    5. Town killing
+    6. Town Support
+    7. Random town
+    8. Random town
+    9. Neutral Killing
+    10. Godfather
+    11. Mafioso
+    12. Random mafia
+    13. Neutral Evil
+    14. Any
+    15. Any`)
+    .setColor(color)
+
+    if(!god) return message.channel.send(pasGod)
+    if(!args[0]) return message.channel.send(mdjsvp)
+
+    if(args[0] == "class20") {
+
+      let class20em = new Discord.MessageEmbed()
+      .setDescription("Mode de jeu classique 20 joueurs choisi!")
+      .setColor(color)
+      message.channel.send(class20em)
+      gamemode = "Classique 20 joueurs"
+
+    }else if(args[0] == "class15") {
+
+      let class15em = new Discord.MessageEmbed()
+      .setDescription("Mode de jeu classique 15 joueurs choisi!")
+      .setColor(color)
+      message.channel.send(class15em)
+      gamemode = "Classique 15 joueurs"
+
+    }else if(args[0] == "any15") {
+
+      let any15em = new Discord.MessageEmbed()
+      .setDescription("Mode de jeu All Any balanced choisi!")
+      .setColor(color)
+      message.channel.send(any15em)
+      gamemode = "All Any balanced"
+    }
+
+  }
+
   else if(cmd == "help") {
     let help = new Discord.MessageEmbed()
       .setTitle("Commandes Help")
@@ -543,6 +627,7 @@ bot.on("message", (message) => {
       .setTitle("**Commandes God**")
       .addField("!add @[User]", "Pour ajouter un joueur à la liste de joueur")
       .addField("!swhisp [nbWhisp]", "Mettre la limite de whisp par jour")
+      .addField("!gamemode [gamemode]", "Choisie le gamemode de la partie")
       .addField("!jour", "Permet de mettre le jour")
       .addField("!nuit", "Permet de mettre la nuit")
       .addField("!clear [nbMessage]", "Supprime des messages")
@@ -555,6 +640,7 @@ bot.on("message", (message) => {
       .addField("!jail @[User]", "Pour mettre quelqu'un en jail")
       .addField("!kill @[User]", "Pour tuer quelqu'un")
       .addField("!lastwill", "Écrit ton last will ici. Tu peux aussi voir ton last will comme ça: !lastwill")
+      .addField("!lastwill [User]", "Pour voir le lastwill d'un joueur")
       .addField("!w @[User]", "Whisper quelqu'un")
       .addField("!p @[User]", "Pendre quelqu'un")
       .addField("!help", "Avoir de l'aide")
@@ -582,6 +668,7 @@ bot.on("message", (message) => {
 bot.on('message', async (message) => {
 
   var god = message.member.roles.cache.has(godId);
+  var dev = message.member.roles.cache.has(devid);
   var pasGod = new Discord.MessageEmbed()
   .setDescription("Tu n'est pas " + `<@&${godId}>` )
   .setColor(color);
@@ -596,6 +683,11 @@ bot.on('message', async (message) => {
 
   if(cmd == "start"){
 
+    let quelgm = new Discord.MessageEmbed()
+    .setDescription("Quel gamemode? !gamemode")
+    .setColor(color)
+
+    if(gamemode = null) return message.channel.send(quelgm)
     let combien = new Discord.MessageEmbed()
     .setDescription("Combien de joueurs?")
     .setColor(color);
@@ -607,7 +699,7 @@ bot.on('message', async (message) => {
       await reactionMessage.react(turtleId)
       await reactionMessage.react(eyesId)
     }
-  else if (cmd == "clear") {
+  else if(cmd == "clear") {
     if (!god && !dev) return message.channel.send(pasGod);
     if (!isNaN(message.content.split(' ')[1])) {
       let amount = 0;
