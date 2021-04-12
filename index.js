@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const Commands = require('./src/commands.js');
-const Player = require('./src/player.js')
+const Player = require('./src/player.js');
+const Partie = require('./src/game.js')
 require("dotenv").config()
 const bot = new Discord.Client();
 var listejoueur = [];
@@ -38,7 +39,6 @@ let turtleId = "830113799763525642"     //830113799763525642
 let eyesId = "830114000448258058"       //830114000448258058
 let godId = "829228486660063262"        //824725152692174879    829228486660063262
 let graveyard = "825868136782757918"    //825868136782757918
-let gamemode = null
 
 let color = "#f0b71a";
 let messageJouer = new Discord.MessageEmbed()
@@ -47,6 +47,7 @@ let messageJouer = new Discord.MessageEmbed()
 let prefix = "!";
 var tagged = null
 var author = null  
+var partie = null
 
 let alive = function (){
   let alive = new Array()
@@ -84,6 +85,7 @@ bot.on("message", (message) => {
   let MessageArray = message.content.split(" ");
   let cmd = MessageArray[0].slice(prefix.length);
   let args = MessageArray.slice(1);
+
 
 
   try{
@@ -579,7 +581,8 @@ bot.on("message", (message) => {
       .setDescription("Mode de jeu classique 20 joueurs choisi!")
       .setColor(color)
       message.channel.send(class20em)
-      gamemode = "Classique 20 joueurs"
+      partie.gamemode = "Classique 20 joueurs"
+      console.log(partie.gamemode)
 
     }else if(args[0] == "class15") {
 

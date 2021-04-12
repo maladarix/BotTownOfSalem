@@ -4,8 +4,8 @@ const bot = new Discord.Client();
 
 class Player {
 
-    constructor(joueur)
-    {
+    constructor(joueur){
+        
         this.user = joueur
         this.id = joueur.user.id
         this.name = joueur.user.username
@@ -17,8 +17,6 @@ class Player {
         this.registeredVote = null
         this.lastwill = null
     }
-
-
 }
 
 module.exports = Player
