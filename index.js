@@ -221,7 +221,7 @@ bot.on("message", (message) => {
       if(author.lastwill == null || "") {
   
         let pasLW = new Discord.MessageEmbed()
-        .setDescription("Tu n'as pas encore de lastwill")
+        .setDescription("Tu n'as pas encore de last will")
         .setColor(color)
   
         message.channel.send(pasLW)
@@ -269,8 +269,8 @@ bot.on("message", (message) => {
   else if(cmd == "kill") {
 
     let graveyardmot = new Discord.MessageEmbed()
-    .setDescription("Le lastwill de " + tagged.name + " était: " + tagged.lastwill/* +
-    " Son rôle était: " + tagged.role*/)
+    .setDescription("Le lastwill de " + tagged.name + " était: " + tagged.lastwill)
+    //.addField("Son rôle était: " + tagged.role*/)
     .setColor(color)
 
     if(!god && !dev) return message.channel.send(pasGod)
@@ -377,7 +377,7 @@ bot.on("message", (message) => {
   else if(cmd == "w") {
 
     let demWhisp = new Discord.MessageEmbed()
-      .setDescription("#Demande-De-Whisp svp")
+      .setDescription("#demande-de-whisper svp")
       .setColor(color);
 
     let trouvePas = new Discord.MessageEmbed()
@@ -439,7 +439,7 @@ bot.on("message", (message) => {
   else if(cmd == "p") {
 
     let pendrChan = new Discord.MessageEmbed()
-      .setDescription("#Vote-Pour-Pendre SVP")
+      .setDescription("#vote-pour-pendre SVP")
       .setColor(color);
 
       if(message.channel.name != pendChan.name) return message.channel.send(pendrChan);
@@ -525,7 +525,7 @@ bot.on("message", (message) => {
 
   else if(cmd == "helpcommands") {
     let helpcommandsgod = new Discord.MessageEmbed()
-      .setTitle("Commandes God")
+      .setTitle("**Commandes God**")
       .addField("!add @[User]", "Pour ajouter un joueur à la liste de joueur")
       .addField("!swhisp [nbWhisp]", "Mettre la limite de whisp par jour")
       .addField("!jour", "Permet de mettre le jour")
@@ -539,7 +539,7 @@ bot.on("message", (message) => {
       .addField("!role @[User] [role]", "Pour ajouter un rôle a un joueur")
       .addField("!jail @[User]", "Pour mettre quelqu'un en jail")
       .addField("!kill @[User]", "Pour tuer quelqu'un")
-      .addField("!lastwill", "Écrit ton lastwill ici. Tu peut aussi voir ton lastwill comme ça: !lastwill")
+      .addField("!lastwill", "Écrit ton last will ici. Tu peux aussi voir ton last will comme ça: !lastwill")
       .addField("!w @[User]", "Whisper quelqu'un")
       .addField("!p @[User]", "Pendre quelqu'un")
       .addField("!help", "Avoir de l'aide")
@@ -547,12 +547,12 @@ bot.on("message", (message) => {
       .setColor(color);
 
     let helpcommandsvivant = new Discord.MessageEmbed()
-      .setTitle("Commandes Vivants")
-      .addField("!w", "!w @[User] Whisper quelqu'un")
-      .addField("!p", "!p @[User] Pendre quelqu'un")
-      .addField("!help", "!help pout avoir de l'aide")
-      .addField("!lastwill", "Écrit ton lastwill ici. Tu peut aussi voir ton lastwill comme ça: !lastwill")
-      .addField("@Bilou", "Pour summon un être tout puissant qui viendra vous aider") //faudrait que tu le mettre dans le bon help si tu veux qu'ont le voit ;)
+      .setTitle("**Commandes Vivants")
+      .addField("!w @[User]", "Whisper quelqu'un")
+      .addField("!p @[User]", "Pendre quelqu'un")
+      .addField("!help", "Pour avoir de l'aide")
+      .addField("!lastwill", "Écrit ton last will ici. Tu peut aussi voir ton last will comme ça: !lastwill")
+      .addField("@Bilou", "Pour summon un être tout puissant qui viendra vous aider")
       .setImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmUWvLwPHHKnsJvCvA2WUg5A5adoYpBQx9Pg&usqp=CAU")
       .setColor(color);
 
@@ -646,7 +646,10 @@ bot.on("messageReactionAdd", (reaction, user) => {
             reactor.user.roles.remove(spec)
 
             let messainter = new Discord.MessageEmbed()
-            .setDescription(`Bonjour ceci est ton interface avec le jeu. Je m'explique. Ici tu auras la description de ton rôle, et tu pourras écrire tes actions que tu veux effectuer dans la nuit. De plus, tu pourras poser toutes tes questions par rapport au fonctionnement du jeu. Finalement, tu peux écrire ici un last will qui sera révélé à tout le monde lors de ta mort. Ce channel sera vidé chaque jour à l'exception de ce message, de ta description de rôle, ainsi que de ton last will.`)
+            .setDescription(`Bonjour ceci est ton interface avec le jeu. Je m'explique. Ici tu auras la description de ton rôle, et tu pourras écrire tes" + 
+            " actions que tu veux effectuer dans la nuit. De plus, tu pourras poser toutes tes questions par rapport au fonctionnement du jeu. Finalement, " + 
+            "tu peux écrire ici un last will qui sera révélé à tout le monde lors de ta mort. Ce channel sera vidé chaque jour à l'exception de ce message, " +
+            "de ta description de rôle, ainsi que de ton last will.`)
             .setColor(color)
 
             let interface = reactor.user.displayName
@@ -682,7 +685,7 @@ bot.on("messageReactionAdd", (reaction, user) => {
           }
           else{
             reaction.message.channel.send(new Discord.MessageEmbed()
-            .setDescription("La partie est déjà commencé, vous pouvez tout de même spectate avec des yeux")
+            .setDescription("La partie est déjà commencée, vous pouvez tout de même spectate avec des yeux")
             .setColor(color))
           }
         }
