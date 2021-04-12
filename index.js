@@ -395,11 +395,12 @@ bot.on("message", (message) => {
     let maxwhisp = new Discord.MessageEmbed()
       .setDescription(`Il y a un maximum de ${nbWhispJour} whisp par jour`)
       .setColor(color);
-        
+    
+
     if(message.channel.name != dmChan.name) return message.channel.send(demWhisp);
     if(!args[0]) return message.channel.send(qui);
-    if(message.mentions.members.first().id == message.author.id) return message.channel.send(pastoi);
     if(!taggedUser) return message.channel.send(trouvePas);
+    if(message.mentions.members.first().id == message.author.id) return message.channel.send(pastoi);
     if(!taggedUser.roles.cache.has(vivant)) return message.channel.send(pasVivant);
     let channelName = taggedUser.displayName + " et " + message.author.username;
     if(author.whispRemaining == 0) return message.channel.send(maxwhisp)
