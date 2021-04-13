@@ -4,23 +4,13 @@ const Player = require('./src/player.js');
 const Partie = require('./src/game.js')
 require("dotenv").config()
 const bot = new Discord.Client();
-var listejoueur = [];
 var nbWhispJour = 1;
 var nbrJoueurMax = 0;
 var whispersChannels = [];
 var interfaces = [];
+var listejoueur = [];
 
 //const game
-let classique15 = ["Jailor", "Town investigative", "Town investigative", "Town protective", "Town killing", "Town support", "Random town", "Random town", "Godfather", "Mafioso", 
-"Random mafia", "Neutral evil", "Neutral killing", "Any", "Any"]
-
-let Allanyballenced15 = ["Random town", "Random town", "Random town", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any"]
-
-let classique20 = ["Jailor", "Doctor", "Investigator", "Town investigative", "Town investigative", "Town support", "Town killing", "Random town", "Random town", "Random town",
-"Vampire hunter", "Godfather", "Mafioso", "Random mafia", "Random mafia", "Vampire", "Neutral killing", "Neutral evil", "Any", "Any"]
-
-let anyroles = ["Bodyguard", "Doctor", "Escort", "Maire", "Medium", "Retributionist", "Transporteur", "Investigateur", "Lookout", "Shérif", "Spy", "Vétéran", "Vigilante", "Conseiller",
-"Consort", "Blackmailer", "Janitor", "Disguiser", "Forger", "Framer", "Ambusher", "Hypnotist", "Armnesiac", "Survivor", "Executionner", "Jester", "Sorcière", "Serial Killer", "Arsonist"]
 let rolescourrant = ["Jailor", "Godfather", "Mafioso"]
 
 //                                        id serv officiel        id serv test
@@ -47,7 +37,7 @@ let messageJouer = new Discord.MessageEmbed()
 let prefix = "!";
 var tagged = null
 var author = null  
-var partie = null
+const partie = new Partie()
 
 let alive = function (){
   let alive = new Array()
@@ -790,7 +780,7 @@ bot.on("messageReactionAdd", (reaction, user) => {
             })
 
             if (alive().length == nbrJoueurMax){
-                Commands.prototype.start()
+                Commands.prototype.start(partie)
               }
           }
           else{

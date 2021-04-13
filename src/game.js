@@ -4,11 +4,12 @@ const bot = new Discord.Client();
 
 class Partie{
 
-    constructor(game) {
+    constructor() {
 
         this.gamemode = null
         this.jour = 0
         this.isStarted = null
+        this.aliveplayer = []
         
     }
 }
