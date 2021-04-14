@@ -364,6 +364,7 @@ bot.on("message", (message) => {
       }
     );
   }
+
   else if(cmd == "nuit") {
     if(!god && !dev) return message.channel.send(pasGod)
     alive().forEach(player => {
@@ -506,6 +507,11 @@ bot.on("message", (message) => {
     }
   }
 
+  else if(cmd == "s") {
+    Commands.prototype.start(partie)
+    message.channel.send(partie.listeroles)
+  }
+
   else if(cmd == "gamemode") {
 
     let mdjsvp = new Discord.MessageEmbed()
@@ -572,7 +578,6 @@ bot.on("message", (message) => {
       .setColor(color)
       message.channel.send(class20em)
       partie.gamemode = "Classique 20 joueurs"
-      console.log(partie.gamemode)
 
     }else if(args[0] == "class15") {
 
@@ -580,7 +585,7 @@ bot.on("message", (message) => {
       .setDescription("Mode de jeu classique 15 joueurs choisi!")
       .setColor(color)
       message.channel.send(class15em)
-      gamemode = "Classique 15 joueurs"
+      partie.gamemode = "Classique 15 joueurs"
 
     }else if(args[0] == "any15") {
 
@@ -588,9 +593,9 @@ bot.on("message", (message) => {
       .setDescription("Mode de jeu All Any balanced choisi!")
       .setColor(color)
       message.channel.send(any15em)
-      gamemode = "All Any balanced"
+      partie.gamemode = "All Any balanced"
     }
-
+    console.log(partie.gamemode)
   }
 
   else if(cmd == "help") {

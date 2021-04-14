@@ -10,6 +10,7 @@ class Partie{
         this.jour = 0
         this.isStarted = null
         this.aliveplayer = []
+        this.listeroles = []
         
     }
 }
