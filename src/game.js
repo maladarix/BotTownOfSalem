@@ -1,6 +1,5 @@
-const Discord = require('discord.js')
+const index = require('../index')
 const Commands = require('./commands.js')
-const bot = new Discord.Client();
 
 class Partie{
 
@@ -9,7 +8,6 @@ class Partie{
         this.gamemode = null
         this.jour = 0
         this.isStarted = null
-        this.aliveplayer = []
         this.listeroles = []
         
     }

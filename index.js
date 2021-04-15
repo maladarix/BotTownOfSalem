@@ -11,8 +11,6 @@ var interfaces = [];
 var listejoueur = [];
 
 //const game
-let rolescourrant = ["Jailor", "Godfather", "Mafioso"]
-
 //                                        id serv officiel        id serv test
 let mort = "829832421825708064"         //824726156141658132    829832421825708064
 let jour = "829254726495240214"         //825029496305614927    829254726495240214
@@ -25,10 +23,11 @@ let jailed = "830240201111896135"       //824761075387727912    8302402011118961
 let jail = "830240173727547424"         //824728100645896314    830240173727547424
 let mafiaChat = "830240221584687104"    //824731087863021588    830240221584687104
 let spyHideout = "830240252248850433"   //824762348396216401    830240252248850433
-let turtleId = "830113799763525642"     //830113799763525642
-let eyesId = "830114000448258058"       //830114000448258058
+let turtleId = "830121244208267334"     //830113799763525642    830121244208267334
+let eyesId = "830121185885945880"       //830114000448258058    830121185885945880
 let godId = "829228486660063262"        //824725152692174879    829228486660063262
 let graveyard = "825868136782757918"    //825868136782757918
+let parentwhisp = "829239671925637150"  //824726713605947403    829239671925637150
 
 let color = "#f0b71a";
 let messageJouer = new Discord.MessageEmbed()
@@ -508,6 +507,7 @@ bot.on("message", (message) => {
   }
 
   else if(cmd == "s") {
+    partie.aliveplayers = alive
     Commands.prototype.start(partie)
     message.channel.send(partie.listeroles)
   }
@@ -595,7 +595,6 @@ bot.on("message", (message) => {
       message.channel.send(any15em)
       partie.gamemode = "All Any balanced"
     }
-    console.log(partie.gamemode)
   }
 
   else if(cmd == "help") {
@@ -684,8 +683,7 @@ bot.on('message', async (message) => {
     let quelgm = new Discord.MessageEmbed()
     .setDescription("Quel gamemode? !gamemode")
     .setColor(color)
-
-    if(gamemode = null) return message.channel.send(quelgm)
+    if(partie.gamemode == null) return message.channel.send(quelgm)
     let combien = new Discord.MessageEmbed()
     .setDescription("Combien de joueurs?")
     .setColor(color);
@@ -760,7 +758,7 @@ bot.on("messageReactionAdd", (reaction, user) => {
             let interface = reactor.user.displayName
             reaction.message.guild.channels.create(interface + " Interface",{type:"text",})
             .then((channel) => {
-              channel.setParent("824726713605947403")
+              channel.setParent(parentwhisp)
               channel.overwritePermissions([
               {
                 id: channel.guild.id,

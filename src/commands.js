@@ -1,6 +1,5 @@
-const Discord = require('discord.js');
 const Partie = require('./game');
-const bot = new Discord.Client();
+const index = require('../index');
 
 let towninvest = ["Investigateur", "Lookout", "Sheriff", "Spy"]
 let townprotec = ["Bodyguard", "Doctor"]
@@ -34,7 +33,8 @@ let classique20 = ["Jailor", "Doctor", "Investigateur", "Town investigative", "T
 
 let currentgamemode = []
 let gameroles = []
-let isinvest1 = false
+
+let listerandom = []
 
 class commands{
     
@@ -83,7 +83,14 @@ class commands{
                 this.getAny()
             } else return
         })
+
         partie.listeroles = gameroles
+        listerandom = index.alive().sort(() => Math.random() - 0.5)
+        
+        for (let index = 0; index < listerandom.length; index++) {
+        listerandom[index].role = gameroles[index]
+            console.log(listerandom[index].name + listerandom[index].role)
+        }
     }
 
     getTownInvest(){
@@ -294,7 +301,6 @@ class commands{
                 good = true
         }while (!good)
         gameroles.push(any)
-        console.log(gameroles)
     }
 }
 

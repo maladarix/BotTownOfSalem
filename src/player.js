@@ -1,6 +1,4 @@
-const Discord = require('discord.js')
 const Commands = require('./commands.js')
-const bot = new Discord.Client();
 
 class Player {
 
