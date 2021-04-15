@@ -1,3 +1,5 @@
+const Action = require('.../action.js')
+
 class Invest {
     constructor(){
         this.name = "Investigator"
@@ -9,7 +11,7 @@ class Invest {
     }
 
     action(author, target){
-        return
+        return new Action("Investigate", author, target)
     }
 }
 

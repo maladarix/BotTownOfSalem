@@ -1,3 +1,5 @@
+const Action = require('.../action.js')
+
 class Doc {
     constructor(){
         this.name = "Docteur"
@@ -9,7 +11,7 @@ class Doc {
     }
 
     action(author, target){
-        return
+        return new Action("Heal", author, target)
     }
 }
 

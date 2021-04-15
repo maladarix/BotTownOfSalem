@@ -1,16 +1,18 @@
+const Action = require('.../action.js')
+
 class Jailor {
     constructor(){
         this.name = "Jailor"
-        this.description = "Une belle femme qui utilise sa beauté pour distraire les autres."
-        this.isUnique = false
+        this.description = "Vous êtes un gardien de prison qui emprisonne secrètement des suspects."
+        this.isUnique = true
         this.needsTwoTargets = false
         this.alignement = "Town Killing"
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Jailor"
     }
 
     action(author, target){
-        return
+        return new Action("Unstoppable Attack", author, target)
     }
 } 
 
-module.exports = Escort
+module.exports = Jailor
