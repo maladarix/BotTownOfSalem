@@ -12,3 +12,5 @@ class Invest {
         return
     }
 }
+
+module.exports = Invest
