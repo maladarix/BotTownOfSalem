@@ -11,7 +11,7 @@ class Jailor {
     }
 
     action(author, target){
-        return new Action("Unstoppable Attack", author, target)
+        return new Action("Execute", author, target)
     }
 } 
 

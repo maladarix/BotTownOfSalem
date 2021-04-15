@@ -9,8 +9,8 @@ class Retri {
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Retributionist"
     }
 
-    action(author, target){
-        return
+    action(author, target1, target2){
+        return new Action("Retribute", author, target1, target2)
     }
 }
 

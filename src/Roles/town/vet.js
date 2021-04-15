@@ -10,7 +10,7 @@ class vet {
     }
 
     action(author, target){
-        return
+        return new Action("OnAlert", author, target)
     }
 }
 

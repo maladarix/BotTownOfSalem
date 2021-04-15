@@ -10,7 +10,7 @@ class vampHunter {
     }
 
     action(author, target){
-        return
+        return new Action("HuntVamps", author, target)
     }
 }
 

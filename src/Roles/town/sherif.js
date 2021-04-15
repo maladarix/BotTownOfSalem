@@ -10,7 +10,7 @@ class Sherif {
     }
 
     action(author, target){
-        return
+        return new Action("sherif", author, target)
     }
 }
 

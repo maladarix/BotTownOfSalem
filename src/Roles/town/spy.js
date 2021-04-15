@@ -10,7 +10,7 @@ class Spy {
     }
 
     action(author, target){
-        return
+        return new Action("Bug", author, target)
     }
 }
 

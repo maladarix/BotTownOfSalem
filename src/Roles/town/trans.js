@@ -9,8 +9,8 @@ class Transporteur {
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Transporter"
     }
 
-    action(author, target){
-        return
+    action(author, target1, target2){
+        return new Action("transport", author, target1, target2)
     }
 }
 

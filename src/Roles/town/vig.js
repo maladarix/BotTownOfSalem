@@ -10,7 +10,7 @@ class Vigilante {
     }
 
     action(author, target){
-        return
+        return new Action("VigKill", author, target)
     }
 }
 
