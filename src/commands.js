@@ -4,7 +4,7 @@ const index = require('../index');
 let towninvest = ["Investigateur", "Lookout", "Sheriff", "Agent Infiltré", "Spy"]
 let townprotec = ["Bodyguard", "Doctor"]
 let townsupport = ["Escort", "Maire", "Medium", "Retributioniste", "Transporteur"]
-let townkilling = ["Vigilante", "Vampire hunter", "Vétéran", "Jailor"]//                                                                                  roles uniques
+let townkilling = ["Vigilante", "Vampire hunter", "Vétéran", "Loup-garou", "Jailor"]//                                                                                  roles uniques
 let randomtown = ["Investigateur", "Lookout", "Sheriff", "Spy", "Bodyguard", "Doctor", "Escort", "Vigilante", "Medium", "Vampire hunter", "Transporteur", "Jailor", "Retributioniste",
  "Vétéran", "Maire"]
 
@@ -15,13 +15,13 @@ let randommafia = ["Disguiser", "Forger", "Framer", "Janitor", "Hypnotist", "Bla
 
 let neutralbening = ["Armnesiac", "Survivor"]
 let neutralkilling = ["Arsonist", "Serial killer"]
-let neutralevil = ["Executioner", "Jester"]
+let neutralevil = ["Executioner", "Jester", "Sorcières"]
 let neutralchaos = ["Vampire"]
 let randomneutral = ["Armnesiac", "Survivor", "Arsonist", "Serial killer", "Executioner", "Jester", "Vampire"]
 
-let anyrole = ["Investigateur", "Lookout", "Sheriff", "Agent Infiltré", "Spy", "Bodyguard", "Doctor", "Escort", "Vigilante", "Medium", "Vampire hunter", "Transporteur", "Jailor", "Retributioniste", "Vétéran",
- "Maire","Disguiser", "Forger", "Framer", "Janitor", "Hypnotist", "Blackmailer", "Conseiller", "Consort", "Godfather", "Mafioso", "Ambusher", "Armnesiac", "Survivor", "Arsonist",
-  "Serial killer", "Executioner", "Jester", "Vampire"]
+let anyrole = ["Investigateur", "Lookout", "Sheriff", "Agent Infiltré", "Spy", "Bodyguard", "Doctor", "Escort", "Vigilante", "Medium", "Vampire hunter", "Transporteur", "Jailor", "Retributioniste",
+ "Vétéran", "Loup-garou", "Maire","Disguiser", "Forger", "Framer", "Janitor", "Hypnotist", "Blackmailer", "Conseiller", "Consort", "Godfather", "Mafioso", "Ambusher", "Armnesiac", "Survivor",
+  "Arsonist", "Serial killer", "Executioner", "Jester", "Vampire", "Sorcières"]
 
 let classique15 = ["Jailor", "Town investigative", "Town investigative", "Town protective", "Town killing", "Town support", "Random town", "Random town", "Godfather", "Mafioso", 
 "Random mafia", "Neutral evil", "Neutral killing", "Any", "Any"]

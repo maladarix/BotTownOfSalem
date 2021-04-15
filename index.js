@@ -250,10 +250,10 @@ bot.on("message", (message) => {
     )
   }
 
-  else if(cmd == "spy") {
+  else if(cmd == "agent") {
     if(!god && !dev) return message.channel.send(pasGod)
     if(!args[0]) return message.channel.send(qui)
-      tagged.role = "Spy" 
+      tagged.role = "Agent Infiltré" 
       spyChan.updateOverwrite(
       tagged.id,
       {VIEW_CHANNEL: true}
@@ -504,12 +504,6 @@ bot.on("message", (message) => {
       .setDescription("Il n'y a pas eu de vote aujourd'hui")
       .setColor(color))
     }
-  }
-
-  else if(cmd == "s") {
-    partie.aliveplayers = alive
-    Commands.prototype.start(partie)
-    message.channel.send(partie.listeroles)
   }
 
   else if(cmd == "gamemode") {
@@ -784,6 +778,9 @@ bot.on("messageReactionAdd", (reaction, user) => {
 
             if (alive().length == nbrJoueurMax){
                 Commands.prototype.start(partie, alive())
+                reaction.message.channel.send(new Discord.MessageEmbed()
+                .setDescription("La partie commence!")
+                .setColor(color))
               }
           }
           else{
