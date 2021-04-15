@@ -1,3 +1,5 @@
+const Action = require('.../action.js')
+
 class Bg {
     constructor(){
         this.name = "Bodyguard"
@@ -9,7 +11,7 @@ class Bg {
     }
 
     action(author, target){
-        return
+        return new Action("Guard", author, target)
     }
 }
 

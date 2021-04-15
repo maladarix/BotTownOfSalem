@@ -1,3 +1,5 @@
+const Action = require('.../action.js')
+
 class Escort {
     constructor(){
         this.name = "Escorte"
@@ -9,7 +11,7 @@ class Escort {
     }
 
     action(author, target){
-        return
+        return new Action("Roleblock", author, target)
     }
 }
 
