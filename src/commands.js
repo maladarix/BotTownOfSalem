@@ -81,7 +81,7 @@ class commands{
                 this.getNeutralEvil()
             }else if(role == "Any") {
                 this.getAny()
-            } else return
+            }else return
         })
 
         partie.listeroles = gameroles

@@ -28,6 +28,7 @@ let eyesId = "830121185885945880"       //830114000448258058    8301211858859458
 let godId = "829228486660063262"        //824725152692174879    829228486660063262
 let graveyard = "825868136782757918"    //825868136782757918
 let parentwhisp = "829239671925637150"  //824726713605947403    829239671925637150
+let parentInterface = "832301102236958770"
 
 let color = "#f0b71a";
 let messageJouer = new Discord.MessageEmbed()
@@ -752,7 +753,7 @@ bot.on("messageReactionAdd", (reaction, user) => {
             let interface = reactor.user.displayName
             reaction.message.guild.channels.create(interface + " Interface",{type:"text",})
             .then((channel) => {
-              channel.setParent(parentwhisp)
+              channel.setParent(parentInterface)
               channel.overwritePermissions([
               {
                 id: channel.guild.id,
