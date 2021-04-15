@@ -1,7 +1,7 @@
 const Partie = require('./game');
 const index = require('../index');
 
-let towninvest = ["Investigateur", "Lookout", "Sheriff", "Spy"]
+let towninvest = ["Investigateur", "Lookout", "Sheriff", "Agent Infiltré", "Spy"]
 let townprotec = ["Bodyguard", "Doctor"]
 let townsupport = ["Escort", "Maire", "Medium", "Retributioniste", "Transporteur"]
 let townkilling = ["Vigilante", "Vampire hunter", "Vétéran", "Jailor"]//                                                                                  roles uniques
@@ -19,7 +19,7 @@ let neutralevil = ["Executioner", "Jester"]
 let neutralchaos = ["Vampire"]
 let randomneutral = ["Armnesiac", "Survivor", "Arsonist", "Serial killer", "Executioner", "Jester", "Vampire"]
 
-let anyrole = ["Investigateur", "Lookout", "Sheriff", "Spy", "Bodyguard", "Doctor", "Escort", "Vigilante", "Medium", "Vampire hunter", "Transporteur", "Jailor", "Retributioniste", "Vétéran",
+let anyrole = ["Investigateur", "Lookout", "Sheriff", "Agent Infiltré", "Spy", "Bodyguard", "Doctor", "Escort", "Vigilante", "Medium", "Vampire hunter", "Transporteur", "Jailor", "Retributioniste", "Vétéran",
  "Maire","Disguiser", "Forger", "Framer", "Janitor", "Hypnotist", "Blackmailer", "Conseiller", "Consort", "Godfather", "Mafioso", "Ambusher", "Armnesiac", "Survivor", "Arsonist",
   "Serial killer", "Executioner", "Jester", "Vampire"]
 
@@ -38,7 +38,7 @@ let listerandom = []
 
 class commands{
     
-    start(partie) {
+    start(partie, players) {
         gameroles = []
         if(partie.gamemode == "Classique 20 joueurs") {
             currentgamemode = classique20
@@ -85,11 +85,11 @@ class commands{
         })
 
         partie.listeroles = gameroles
-        listerandom = index.alive().sort(() => Math.random() - 0.5)
+        listerandom = players.sort(() => Math.random() - 0.5)
         
         for (let index = 0; index < listerandom.length; index++) {
         listerandom[index].role = gameroles[index]
-            console.log(listerandom[index].name + listerandom[index].role)
+            console.log(listerandom[index].name + ", " + listerandom[index].role)
         }
     }
 
@@ -119,6 +119,7 @@ class commands{
         let mai = false
         let ret = false
         let jai = false
+        let age = false
         let good = false
         let element = null
         let randomtownroletown = null
@@ -133,6 +134,8 @@ class commands{
                 mai = true
             }if(element == "Retributioniste") {
                 ret = true
+            }if(element == "Agent Infiltré") {
+                age = true
             }
         }
         do{
@@ -151,6 +154,10 @@ class commands{
                 }
             }else if(randomtownroletown === "Vétéran") {
                 if(!vet) {
+                    good = true
+                }
+            }else if(randomtownroletown === "Agent Infiltré") {
+                if(!age) {
                     good = true
                 }
             }else

@@ -783,7 +783,7 @@ bot.on("messageReactionAdd", (reaction, user) => {
             })
 
             if (alive().length == nbrJoueurMax){
-                Commands.prototype.start(partie)
+                Commands.prototype.start(partie, alive())
               }
           }
           else{
