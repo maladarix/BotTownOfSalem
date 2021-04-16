@@ -790,6 +790,7 @@ bot.on("messageReactionAdd", (reaction, user) => {
                 reaction.message.channel.send(new Discord.MessageEmbed()
                 .setDescription("La partie commence!")
                 .setColor(color))
+                reaction.message.channel.send(partie.listeroles)
               }
           }
           else{

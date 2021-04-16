@@ -2,35 +2,39 @@ const Partie = require('./game');
 const index = require('../index');
 const roles = require('./Roles/roles')
 
-let towninvest = [roles.getInvest(), roles.getLoukout(), roles.getSheriff(), roles.getAgent(), roles.getSpy()]
-let townprotec = [roles.getBG(), roles.getDoc()]
-let townsupport = [roles.getEscort(), roles.getMaire(), roles.getMedium(), roles.getRetri(), roles.getTrans()]
-let townkilling = [roles.getVig(), roles.getVampHunter(), roles.getVet(), roles.getWerewolf(), roles.getJailor()]
+let towninvest = [roles.prototype.getInvest(), roles.prototype.getLoukout(), roles.prototype.getSheriff(), roles.prototype.getAgent(), roles.prototype.getSpy()]
+let townprotec = [roles.prototype.getBg(), roles.prototype.getDoc()]
+let townsupport = [roles.prototype.getEscort(), roles.prototype.getMaire(), roles.prototype.getMedium(), roles.prototype.getRetri(), roles.prototype.getTrans()]
+let townkilling = [roles.prototype.getVig(), roles.prototype.getVampHunter(), roles.prototype.getVet(), roles.prototype.getWerewolf(), roles.prototype.getJailor()]
 
-let randomtown = [roles.getInvest(), roles.getLoukout(), roles.getSheriff(), roles.getAgent(), roles.getSpy(), roles.getBG(), roles.getDoc(), roles.getEscort(), roles.getMaire(),
-roles.getMedium(), roles.getRetri(), roles.getTrans(), roles.getVig(), roles.getVampHunter(), roles.getVet(), roles.getWerewolf(), roles.getJailor()]
-
-
-let mafiadeception = [roles.getDisg(), roles.getForger(), roles.getFramer(), roles.getJani(), roles.getHypno()]
-let mafiasupport = [roles.getBlackmail(), roles.getConsig(), roles.getConsort()]
-let mafiakilling = [roles.getGodfather(), roles.getMafioso(), roles.getAmb()]
-
-let randommafia = [roles.getDisg(), roles.getForger(), roles.getFramer(), roles.getJani(), roles.getHypno(), roles.getBlackmail(), roles.getConsig(), roles.getConsort(), roles.getGodfather(),
-roles.getMafioso(), roles.getAmb()]
+let randomtown = [roles.prototype.getInvest(), roles.prototype.getLoukout(), roles.prototype.getSheriff(), roles.prototype.getAgent(), roles.prototype.getSpy(), roles.prototype.getBg(),
+    roles.prototype.getDoc(), roles.prototype.getEscort(), roles.prototype.getMaire(), roles.prototype.getMedium(), roles.prototype.getRetri(), roles.prototype.getTrans(),
+    roles.prototype.getVig(), roles.prototype.getVampHunter(), roles.prototype.getVet(), roles.prototype.getWerewolf(), roles.prototype.getJailor()]
 
 
-let neutralbening = [roles.getAmne(), roles.getSurv()]
-let neutralkilling = [roles.getArso(), roles.getSerialk()]
-let neutralevil = [roles.getExec(), roles.getJester(), roles.getWitch()]
-let neutralchaos = [roles.getVamp()]
+let mafiadeception = [roles.prototype.getDisg(), roles.prototype.getForger(), roles.prototype.getFramer(), roles.prototype.getJani(), roles.prototype.getHypno()]
+let mafiasupport = [roles.prototype.getBlackmail(), roles.prototype.getConsig(), roles.prototype.getConsort()]
+let mafiakilling = [roles.prototype.getGodfather(), roles.prototype.getMafioso(), roles.prototype.getAmb()]
 
-let randomneutral = [roles.getAmne(), roles.getSurv(), roles.getArso(), roles.getSerialk(), roles.getExec(), roles.getJester(), roles.getWitch(), roles.getVamp()]
+let randommafia = [roles.prototype.getDisg(), roles.prototype.getForger(), roles.prototype.getFramer(), roles.prototype.getJani(), roles.prototype.getHypno(), roles.prototype.getBlackmail(),
+    roles.prototype.getConsig(), roles.prototype.getConsort(), roles.prototype.getGodfather(), roles.prototype.getMafioso(), roles.prototype.getAmb()]
 
 
-let anyrole = [roles.getInvest(), roles.getLoukout(), roles.getSheriff(), roles.getAgent(), roles.getSpy(), roles.getBG(), roles.getDoc(), roles.getEscort(), roles.getMaire(),
-roles.getMedium(), roles.getRetri(), roles.getTrans(), roles.getVig(), roles.getVampHunter(), roles.getVet(), roles.getWerewolf(), roles.getJailor(), roles.getDisg(), roles.getForger(),
-roles.getFramer(), roles.getJani(), roles.getHypno(), roles.getBlackmail(), roles.getConsig(), roles.getConsort(), roles.getGodfather(), roles.getMafioso(), roles.getAmb(), roles.getAmne(),
-roles.getSurv(), roles.getArso(), roles.getSerialk(), roles.getExec(), roles.getJester(), roles.getWitch(), roles.getVamp()]
+let neutralbening = [roles.prototype.getAmne(), roles.prototype.getSurv()]
+let neutralkilling = [roles.prototype.getArso(), roles.prototype.getSerialk()]
+let neutralevil = [roles.prototype.getExec(), roles.prototype.getJester(), roles.prototype.getWitch()]
+let neutralchaos = [roles.prototype.getVamp()]
+
+let randomneutral = [roles.prototype.getAmne(), roles.prototype.getSurv(), roles.prototype.getArso(), roles.prototype.getSerialk(), roles.prototype.getExec(), roles.prototype.getJester(),
+    roles.prototype.getWitch(), roles.prototype.getVamp()]
+
+
+let anyrole = [roles.prototype.getInvest(), roles.prototype.getLoukout(), roles.prototype.getSheriff(), roles.prototype.getAgent(), roles.prototype.getSpy(), roles.prototype.getBg(),
+    roles.prototype.getDoc(), roles.prototype.getEscort(), roles.prototype.getMaire(), roles.prototype.getMedium(), roles.prototype.getRetri(), roles.prototype.getTrans(),
+    roles.prototype.getVig(), roles.prototype.getVampHunter(), roles.prototype.getVet(), roles.prototype.getWerewolf(), roles.prototype.getJailor(), roles.prototype.getDisg(), 
+    roles.prototype.getForger(), roles.prototype.getFramer(), roles.prototype.getJani(), roles.prototype.getHypno(), roles.prototype.getBlackmail(), roles.prototype.getConsig(),
+    roles.prototype.getConsort(), roles.prototype.getGodfather(), roles.prototype.getMafioso(), roles.prototype.getAmb(), roles.prototype.getAmne(), roles.prototype.getSurv(),
+    roles.prototype.getArso(), roles.prototype.getSerialk(), roles.prototype.getExec(), roles.prototype.getJester(), roles.prototype.getWitch(), roles.prototype.getVamp()]
 
 let classique15 = ["Jailor", "Town investigative", "Town investigative", "Town protective", "Town killing", "Town support", "Random town", "Random town", "Godfather", "Mafioso", 
 "Random mafia", "Neutral evil", "Neutral killing", "Any", "Any"]
@@ -135,15 +139,15 @@ class commands{
 
         for (let index = 0; index < gameroles.length; index++) {
             element = gameroles[index];
-            if(element == "Jailor") {
+            if(element.name == "Jailor") {
                 jai = true
-            }if(element == "Vétéran") {
+            }if(element.name == "Vétéran") {
                 vet = true
-            }if(element == "Maire") {
+            }if(element.name == "Maire") {
                 mai = true
-            }if(element == "Retributioniste") {
+            }if(element.name == "Retributioniste") {
                 ret = true
-            }if(element == "Agent Infiltré") {
+            }if(element.name == "Agent Infiltré") {
                 age = true
             }
         }
@@ -226,31 +230,31 @@ class commands{
     }
 
     getJailor(){
-        gameroles.push("Jailor")
+        roles.prototype.getJailor()
     }
 
     getGodfather(){
-        gameroles.push("Godfather")
+        roles.prototype.getGodfather()
     }
 
     getMafioso(){
-        gameroles.push("Mafioso")
+        roles.prototype.getMafioso()
     }
 
     getDoctor(){
-        gameroles.push("Doctor")
+        roles.prototype.getDoc()
     }
 
     getInvestigateur(){
-        gameroles.push("Investigateur")
+        roles.prototype.getInvest()
     }
 
     getVampireHunter(){
-        gameroles.push("Vampire Hunter")
+        roles.prototype.getVampHunter()
     }
 
     getVampire(){
-        gameroles.push("Vampire")
+        roles.prototype.getVamp()
     }
 
     getAny(){
@@ -267,19 +271,19 @@ class commands{
 
         for (let index = 0; index < gameroles.length; index++) {
             element = gameroles[index];
-            if(element == "Godfather") {
+            if(element.name == "Godfather") {
                 god = true
-            }if(element == "Mafioso") {
+            }if(element.name == "Mafioso") {
                 maf = true
-            }if(element == "Ambusher") {
+            }if(element.name == "Ambusher") {
                 amb = true
-            }if(element == "Jailor") {
+            }if(element.name == "Jailor") {
                 jai = true
-            }if(element == "Vétéran") {
+            }if(element.name == "Vétéran") {
                 vet = true
-            }if(element == "Maire") {
+            }if(element.name == "Maire") {
                 mai = true
-            }if(element == "Retributioniste") {
+            }if(element.name == "Retributioniste") {
                 ret = true
             }
         }
@@ -317,6 +321,7 @@ class commands{
                 good = true
         }while (!good)
         gameroles.push(any)
+        console.log(gameroles)
     }
 }
 
