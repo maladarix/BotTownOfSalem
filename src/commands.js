@@ -2,27 +2,35 @@ const Partie = require('./game');
 const index = require('../index');
 const roles = require('./Roles/roles')
 
-let towninvest = [roles.getInvest(), "Lookout", "Sheriff", "Agent Infiltré", "Spy"]
-let townprotec = ["Bodyguard", "Doctor"]
-let townsupport = ["Escort", "Maire", "Medium", "Retributioniste", "Transporteur"]
-let townkilling = ["Vigilante", "Vampire hunter", "Vétéran", "Loup-garou", "Jailor"]//                                                                                  roles uniques
-let randomtown = ["Investigateur", "Lookout", "Sheriff", "Spy", "Bodyguard", "Doctor", "Escort", "Vigilante", "Medium", "Vampire hunter", "Transporteur", "Jailor", "Retributioniste",
- "Vétéran", "Maire"]
+let towninvest = [roles.getInvest(), roles.getLoukout(), roles.getSheriff(), roles.getAgent(), roles.getSpy()]
+let townprotec = [roles.getBG(), roles.getDoc()]
+let townsupport = [roles.getEscort(), roles.getMaire(), roles.getMedium(), roles.getRetri(), roles.getTrans()]
+let townkilling = [roles.getVig(), roles.getVampHunter(), roles.getVet(), roles.getWerewolf(), roles.getJailor()]
 
-let mafiadeception = ["Disguiser", "Forger", "Framer", "Janitor", "Hypnotist"]
-let mafiasupport = ["Blackmailer", "Conseiller", "Consort"]
-let mafiakilling = ["Godfather", "Mafioso", "Ambusher"]
-let randommafia = ["Disguiser", "Forger", "Framer", "Janitor", "Hypnotist", "Blackmailer", "Conseiller", "Consort", "Godfather", "Mafioso", "Ambusher"]
+let randomtown = [roles.getInvest(), roles.getLoukout(), roles.getSheriff(), roles.getAgent(), roles.getSpy(), roles.getBG(), roles.getDoc(), roles.getEscort(), roles.getMaire(),
+roles.getMedium(), roles.getRetri(), roles.getTrans(), roles.getVig(), roles.getVampHunter(), roles.getVet(), roles.getWerewolf(), roles.getJailor()]
 
-let neutralbening = ["Armnesiac", "Survivor"]
-let neutralkilling = ["Arsonist", "Serial killer"]
-let neutralevil = ["Executioner", "Jester", "Sorcières"]
-let neutralchaos = ["Vampire"]
-let randomneutral = ["Armnesiac", "Survivor", "Arsonist", "Serial killer", "Executioner", "Jester", "Vampire"]
 
-let anyrole = ["Investigateur", "Lookout", "Sheriff", "Agent Infiltré", "Spy", "Bodyguard", "Doctor", "Escort", "Vigilante", "Medium", "Vampire hunter", "Transporteur", "Jailor", "Retributioniste",
- "Vétéran", "Loup-garou", "Maire","Disguiser", "Forger", "Framer", "Janitor", "Hypnotist", "Blackmailer", "Conseiller", "Consort", "Godfather", "Mafioso", "Ambusher", "Armnesiac", "Survivor",
-  "Arsonist", "Serial killer", "Executioner", "Jester", "Vampire", "Sorcières"]
+let mafiadeception = [roles.getDisg(), roles.getForger(), roles.getFramer(), roles.getJani(), roles.getHypno()]
+let mafiasupport = [roles.getBlackmail(), roles.getConsig(), roles.getConsort()]
+let mafiakilling = [roles.getGodfather(), roles.getMafioso(), roles.getAmb()]
+
+let randommafia = [roles.getDisg(), roles.getForger(), roles.getFramer(), roles.getJani(), roles.getHypno(), roles.getBlackmail(), roles.getConsig(), roles.getConsort(), roles.getGodfather(),
+roles.getMafioso(), roles.getAmb()]
+
+
+let neutralbening = [roles.getAmne(), roles.getSurv()]
+let neutralkilling = [roles.getArso(), roles.getSerialk()]
+let neutralevil = [roles.getExec(), roles.getJester(), roles.getWitch()]
+let neutralchaos = [roles.getVamp()]
+
+let randomneutral = [roles.getAmne(), roles.getSurv(), roles.getArso(), roles.getSerialk(), roles.getExec(), roles.getJester(), roles.getWitch(), roles.getVamp()]
+
+
+let anyrole = [roles.getInvest(), roles.getLoukout(), roles.getSheriff(), roles.getAgent(), roles.getSpy(), roles.getBG(), roles.getDoc(), roles.getEscort(), roles.getMaire(),
+roles.getMedium(), roles.getRetri(), roles.getTrans(), roles.getVig(), roles.getVampHunter(), roles.getVet(), roles.getWerewolf(), roles.getJailor(), roles.getDisg(), roles.getForger(),
+roles.getFramer(), roles.getJani(), roles.getHypno(), roles.getBlackmail(), roles.getConsig(), roles.getConsort(), roles.getGodfather(), roles.getMafioso(), roles.getAmb(), roles.getAmne(),
+roles.getSurv(), roles.getArso(), roles.getSerialk(), roles.getExec(), roles.getJester(), roles.getWitch(), roles.getVamp()]
 
 let classique15 = ["Jailor", "Town investigative", "Town investigative", "Town protective", "Town killing", "Town support", "Random town", "Random town", "Godfather", "Mafioso", 
 "Random mafia", "Neutral evil", "Neutral killing", "Any", "Any"]

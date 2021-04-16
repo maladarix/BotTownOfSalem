@@ -1,4 +1,4 @@
-const Action = require('.../action.js')
+const Action = require('../../action')
 class Sherif {
     constructor(){
         this.name = "Sherif"
