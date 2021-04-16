@@ -6,6 +6,7 @@ class Player {
         
         this.user = joueur
         this.id = joueur.user.id
+        this.interface = ""
         this.name = joueur.user.username
         this.serverRoles = joueur._roles
         this.role = null

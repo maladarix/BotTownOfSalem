@@ -1,7 +1,8 @@
 const Partie = require('./game');
 const index = require('../index');
+const roles = require('./Roles/roles')
 
-let towninvest = ["Investigateur", "Lookout", "Sheriff", "Agent Infiltré", "Spy"]
+let towninvest = [roles.getInvest(), "Lookout", "Sheriff", "Agent Infiltré", "Spy"]
 let townprotec = ["Bodyguard", "Doctor"]
 let townsupport = ["Escort", "Maire", "Medium", "Retributioniste", "Transporteur"]
 let townkilling = ["Vigilante", "Vampire hunter", "Vétéran", "Loup-garou", "Jailor"]//                                                                                  roles uniques
