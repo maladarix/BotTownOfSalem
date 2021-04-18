@@ -8,6 +8,8 @@ class witch {
         this.needsTwoTargets = false
         this.alignement = "Neutral Evil"
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Witch"
+        this.winwith = "Mafias, Vampires, Sorcières, Survivants, Pyromanes, Serial killers, Loup-garou"
+        this.hab = "Vous contrôlez une personne au choix chaque nuit."
     }
 
     action(author, target){

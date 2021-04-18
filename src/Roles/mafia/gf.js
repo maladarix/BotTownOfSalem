@@ -8,6 +8,8 @@ class Gf {
         this.needsTwoTargets = false
         this.alignement = "Mafia Killing"
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Godfather"
+        this.winwith = "Mafias, Sorcières, Survivants."
+        this.hab = "Ordonnez au mafioso de tuer une cible"
     }
 
     action(author, target){

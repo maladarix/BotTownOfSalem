@@ -8,6 +8,8 @@ class vamp {
         this.needsTwoTargets = false
         this.alignement = "Neutral Chaos"
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Vampire"
+        this.winwith = "Vampires, Sorcières, Survivants."
+        this.hab = "Vous votez pour mordre quelqu’un."
     }
 
     action(author, target){

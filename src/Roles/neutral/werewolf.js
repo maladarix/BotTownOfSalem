@@ -8,6 +8,8 @@ class werewolf {
         this.needsTwoTargets = false
         this.alignement = "Neutral Killing"
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Werewolf"
+        this.winwith = "Survivants, Sorcières."
+        this.hab = "Vous ravagez une maison par nuit. Ce qui tuera votre cible et tous ses visiteurs (attaque puissante)"
     }
 
     action(author, target){

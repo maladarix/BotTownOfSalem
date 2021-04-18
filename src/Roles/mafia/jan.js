@@ -8,6 +8,8 @@ class Jan {
         this.needsTwoTargets = false
         this.alignement = "Mafia Deception"
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Janitor"
+        this.winwith = "Mafias, Sorcières, Survivants."
+        this.hab = "Choisissez qui vous nettoierai (limite de 3)."
     }
 
     action(author, target){

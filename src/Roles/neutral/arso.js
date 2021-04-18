@@ -8,6 +8,8 @@ class arso {
         this.needsTwoTargets = false
         this.alignement = "Neutral Killing"
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Arsonist"
+        this.winwith = "Vous-même, vous devez être le seul survivant."
+        this.hab = "Chaque nuit, vous pouvez mettre de l’essence sur quelqu’un. Lorsque vous le voulez, vous pouvez décider de mettre le feu et toutes les personnes avec de l’essence mourront. Vous pouvez aussi vous nettoyer si vous le voulez."
     }
 
     action(author, target){

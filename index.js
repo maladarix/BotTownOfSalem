@@ -6,9 +6,11 @@ require("dotenv").config()
 const bot = new Discord.Client();
 var nbWhispJour = 1;
 var nbrJoueurMax = 0;
-var whispersChannels = [];
-var interfaces = [];
-var listejoueur = [];
+var whispersChannels = []
+var interfaces = []
+var listejoueur = []
+let listeroles = []
+let joueurroles = []
 
 //const game
 //                                        id serv officiel        id serv test
@@ -29,6 +31,7 @@ let godId = "829228486660063262"            //824725152692174879    829228486660
 let graveyard = "825868136782757918"        //825868136782757918
 let parentwhisp = "829239671925637150"      //824726713605947403    829239671925637150
 let parentInterface = "829239671925637150"  //832301102236958770    829239671925637150
+let adminchat = "833229701190385676"        //                      833229701190385676
 
 let color = "#f0b71a";
 let messageJouer = new Discord.MessageEmbed()
@@ -61,6 +64,7 @@ bot.on("message", (message) => {
   let spyChan = message.guild.channels.cache.get(spyHideout);
   let mafiaChan = message.guild.channels.cache.get(mafiaChat);
   let graveyardChan = message.guild.channels.cache.get(graveyard);
+  let adminchannel = message.guild.channels.cache.get(adminchat)
 
   if (message.channel == mafiaChan){
     spyChan.send(message.content)
@@ -306,7 +310,7 @@ bot.on("message", (message) => {
     if(!god && !dev) return message.channel.send(pasGod)
     if(!args[0]) return message.channel.send(qui)
     message.channel.send(new Discord.MessageEmbed()
-      .addField("Name, Role, Whisp restant, Vote For", tagged.name + " " + tagged.role + " " + tagged.whispRemaining + " " + tagged.votesFor)
+      .addField("Name, Role, Whisp restant, Vote For", tagged.name + " " + tagged.role.name + " " + tagged.whispRemaining + " " + tagged.votesFor)
       .setColor(color))
   }
 
@@ -337,7 +341,7 @@ bot.on("message", (message) => {
       if(!args[0]) return message.channel.send(combien);
       nbWhispJour = args[0];
       message.channel.send(wpj);
-    }
+  }
 
   else if(cmd == "jour") {
     if(!god && !dev) return message.channel.send(pasGod);
@@ -460,6 +464,37 @@ bot.on("message", (message) => {
         tagged.votesFor ++
       }
       message.react("👍")
+  }
+
+  else if(cmd == "roles") {
+    (partie.listeroles).forEach(role => {
+      console.log(role.name)
+      listeroles.push(role.name)
+    });
+    alive().forEach(player => {
+      let interfacechan =  message.guild.channels.cache.get(player.interface)
+      interfacechan.send(new Discord.MessageEmbed()
+      .setTitle("Ton rôle")
+      .setDescription("Voici des infos sur ton rôle")
+      .addField("Ton rôle", player.role.name)
+      .addField("Allignement", player.role.alignement)
+      .addField("Description", player.role.description)
+      .addField("Habiletée", player.role.hab)
+      .addField("Gagnez avec", player.role.winwith)
+      .addField("Rôle unique?", player.role.isUnique)
+      .addField("Plus d'info sur ton wiki", player.role.wikiLink)
+      .setColor(color))
+      joueurroles.push(player.name + ", " + player.role.name)
+    });
+      adminchannel.send(new Discord.MessageEmbed()
+      .setTitle("Liste des joueurs avec leurs roles")
+      .setDescription(joueurroles)
+      .setColor(color))
+
+      adminchannel.send(new Discord.MessageEmbed()
+      .setTitle("Liste de rôle " + "(" + partie.gamemode + ")")
+      .setDescription(listeroles)
+      .setColor(color))
   }
 
   else if(cmd == "results"){
@@ -622,6 +657,7 @@ bot.on("message", (message) => {
       .addField("!gamemode [gamemode]", "Choisie le gamemode de la partie")
       .addField("!jour", "Permet de mettre le jour")
       .addField("!nuit", "Permet de mettre la nuit")
+      .addField("!roles", "Donne les rôles a chaques joueurs")
       .addField("!clear [nbMessage]", "Supprime des messages")
       .addField("!debug @[User]", "Pour avoir de l'info sur le joueur")
       .addField("!alive @[User]", "Pour mettre quelqu'un en vie")
@@ -773,25 +809,14 @@ bot.on("messageReactionAdd", (reaction, user) => {
                 id: mort,
                 deny: ['VIEW_CHANNEL'],
               }
-              ]).then(channel.send(messainter)).then(channel.send(new Discord.MessageEmbed()
-              .setTitle("Ton Rôle")
-              .addField("Ton Nom", reactor.name)
-              .addField("Ton rôle", reactor.role.name)
-              .addField("Alignement", reactor.role.alignement)
-              .addField("Description de ton rôle")
-              .addField("WikiLink")
-              .setColor(color)))
+              ]).then(channel.send(messainter))
               reactor.interface = channel.id
               interfaces.push(channel.id)
               })
 
             if (alive().length == nbrJoueurMax){
-                Commands.prototype.start(partie, alive())
-                reaction.message.channel.send(new Discord.MessageEmbed()
-                .setDescription("La partie commence!")
-                .setColor(color))
-                reaction.message.channel.send(partie.listeroles)
-              }
+              Commands.prototype.start(partie, alive())
+            } 
           }
           else{
             reaction.message.channel.send(new Discord.MessageEmbed()

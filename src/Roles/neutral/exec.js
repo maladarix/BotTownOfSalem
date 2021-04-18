@@ -8,6 +8,8 @@ class exec {
         this.needsTwoTargets = false
         this.alignement = "Neutral Evil"
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Executioner"
+        this.winwith = "Tout le monde sauf votre cible"
+        this.hab = "Aucune"
     }
 
     action(author, target){

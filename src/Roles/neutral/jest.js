@@ -8,6 +8,8 @@ class jester {
         this.needsTwoTargets = false
         this.alignement = "Neutral Evil"
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Jester"
+        this.winwith = "Tout le monde"
+        this.hab = "Si vous accomplissez votre rêve de vous faire pendre, vous pourrez tuer quelqu’un qui vous a accusé la nuit dernière, juste parce que c’est drôle de tuer des gens."
     }
 
     action(author, target){

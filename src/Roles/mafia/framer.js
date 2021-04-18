@@ -8,6 +8,8 @@ class framer {
         this.needsTwoTargets = false
         this.alignement = "Mafia Deception"
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Framer"
+        this.winwith = "Mafias, Sorcières, Survivants."
+        this.hab = "Set-up quelqu’un pour le rendre suspicieux aux yeux des enquêteurs."
     }
 
     action(author, target){

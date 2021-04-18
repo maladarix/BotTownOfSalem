@@ -7,6 +7,8 @@ class agent {
         this.needsTwoTargets = false
         this.alignement = "Town Investigative"
         this.wikiLink = ""
+        this.winwith = "Town, Survivants"
+        this.hab = "Voir le chat de la mafia sans voir leurs noms."
     }
 
     action(author, target){

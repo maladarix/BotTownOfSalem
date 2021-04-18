@@ -8,6 +8,8 @@ class Lookout {
         this.needsTwoTargets = false
         this.alignement = "Town Killing"
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/lookout"
+        this.winwith = "Town, Survivants."
+        this.hab = "Surveiller une personne chaque nuit afin de voir qui la visite"
     }
 
     action(author, target){
