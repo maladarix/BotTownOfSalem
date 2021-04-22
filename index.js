@@ -124,6 +124,7 @@ bot.on("message", (message) => {
       listejoueur[i] = new Player(listejoueur[i].user)
       numJour = 0
       numNuit = 0
+      listejoueur[i].scroll = null
       if (!listejoueur[i].serverRoles.includes(godId)){
         listejoueur[i].serverRoles = []
       }
@@ -255,6 +256,52 @@ bot.on("message", (message) => {
     taggedUser.roles.remove(vivant)
     message.channel.send(graveyardmot)
   }
+
+  else if(cmd == "mvp") {
+    if(!god && !dev) return message.channel.send(pasGod)
+    if(!args[0]) return message.channel.send(qui)
+    tagged.mvp ++
+    message.channel.send(new Discord.MessageEmbed()
+    .setDescription(tagged.name + " est le MVP de la game!")
+    .setColor(color))
+  }
+
+  else if(cmd == "scroll") {
+
+    if(author.scroll != null) {
+      message.channel.send(new Discord.MessageEmbed()
+      .setDescription("Tu as déja utiliser ton scroll")
+      .setColor(color))
+    }
+
+    if(!args[0]) return message.channel.send(new Discord.MessageEmbed()
+    .setDescription("Quel rôle que tu voudrais jouer?")
+    .setColor(color))
+
+    if(args[0] != "investigateur" || "lookout" || "sherif" || "spy" || "agent" || "jailor" || "vampirehunter" || "veteran" ||
+      "vigilante" || "bodyguard" || "doctor" || "escorte" || "maire" || "medium" || "retributionist" || "transporter" || "disguiser" || 
+      "forger" || "framer" || "hypnotiseur" || "consierge" || "ambusher" || "godfather" || "mafioso" || "blackmailer" ||
+      "conseiller" || "consort" || "amnesiac" || "surviant" || "vampire" || "bourreau" || "jester" || "sorcière" || "arsonist" || "serialkiller" || "loupgarou")
+      message.channel.send(new Discord.MessageEmbed()
+      .setDescription("Je ne trouve pas ce rôle")
+      .setColor(color))
+
+    if(author.mvp == 0){
+      message.channel.send(new Discord.MessageEmbed()
+      .setDescription("Tu n'as pas été MVP!")
+      .setColor(color))
+    }else if(author.inac >= 1) {
+      message.channel.send(new Discord.MessageEmbed()
+      .setDescription("Tu as été inactif dans les 2 dernières game!")
+      .setColor(color))
+    }else{
+      author.scroll == args[0]
+      message.channel.send(new Discord.MessageEmbed()
+      .setDescription("Parfait, ton scroll à été utilisé! Tu as plus de chance d'être " + args[0])
+      .setColor(color))
+      author.mvp --
+    }
+  }
   
   else if(cmd == "jail") {
     if(!god && !dev) return message.channel.send(pasGod)
@@ -314,7 +361,11 @@ bot.on("message", (message) => {
   else if(cmd == "jour") {
     if(!god && !dev) return message.channel.send(pasGod);
     numJour + 1
-    adminchannel.send("Jour" + numJour)
+
+    adminchannel.send(new Discord.MessageEmbed()
+    .setDescription("Jour " + numJour)
+    .setColor(color))
+
     alive().forEach(player => {
       player.user.roles.add(jour)
       player.user.roles.remove(nuit)
@@ -324,6 +375,8 @@ bot.on("message", (message) => {
       jailedChan.updateOverwrite(
       player.id,
       {"VIEW_CHANNEL": false})
+
+      pendChan.send(Math.floor((alive().length / 2) + 1) + " votes sont nécéssaire pour pendre.")
 
       if(player.role == "Mafia") {
         mafiaChan.updateOverwrite(
@@ -342,7 +395,11 @@ bot.on("message", (message) => {
   else if(cmd == "nuit") {
     if(!god && !dev) return message.channel.send(pasGod)
     numNuit + 1
-    adminchannel.send("Nuit " + numNuit)
+    
+    adminchannel.send(new Discord.MessageEmbed()
+    .setDescription("Nuit " + numNuit)
+    .setColor(color))
+
     alive().forEach(player => {
       player.user.roles.remove(jour)
       player.user.roles.add(nuit)
@@ -578,7 +635,7 @@ bot.on("message", (message) => {
     15. Any`)
     .setColor(color)
 
-    if(!god) return message.channel.send(pasGod)
+    if(!god && !dev) return message.channel.send(pasGod)
     if(!args[0]) return message.channel.send(mdjsvp)
 
     if(args[0] == "class20") {
