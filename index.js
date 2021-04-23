@@ -4,7 +4,6 @@ const Player = require('./src/player.js');
 const Partie = require('./src/game.js')
 require("dotenv").config()
 const bot = new Discord.Client();
-var nbWhispJour = 1;
 var nbrJoueurMax = 0;
 var whispersChannels = []
 var interfaces = []
@@ -15,31 +14,38 @@ let votelist = []
 
 //const game
 //                                             id serv officiel        id serv test
-let mort = "829832421825708064"             //824726156141658132    829832421825708064
-let jour = "829254726495240214"             //825029496305614927    829254726495240214
-let nuit = "829254687630557185"             //824749359118811187    829254687630557185
-let vivant = "829205364444364800"           //824725851198849075    829205364444364800
-let spec = "829250418244321280"             //824726635902271518    829250418244321280
+let mort = "824726156141658132"             //824726156141658132    829832421825708064
+let jour = "825029496305614927"             //825029496305614927    829254726495240214
+let nuit = "824749359118811187"             //824749359118811187    829254687630557185
+let vivant = "824725851198849075"           //824725851198849075    829205364444364800
+let spec = "824726635902271518"             //824726635902271518    829250418244321280
 let devid = "830253971637665832"            //830253971637665832
-let quiVeutJouer = "829873265194303498"     //824725623346954271    829873265194303498
-let jailed = "830240201111896135"           //824761075387727912    830240201111896135
-let jail = "830240173727547424"             //824728100645896314    830240173727547424
-let mafiaChat = "830240221584687104"        //824731087863021588    830240221584687104
-let spyHideout = "830240252248850433"       //824762348396216401    830240252248850433
-let turtleId = "830121244208267334"         //830113799763525642    830121244208267334
-let eyesId = "830121185885945880"           //830114000448258058    830121185885945880
-let godId = "829228486660063262"            //824725152692174879    829228486660063262
-let graveyard = "825868136782757918"        //825868136782757918
-let parentwhisp = "829239671925637150"      //824726713605947403    829239671925637150
-let parentInterface = "829239671925637150"  //832301102236958770    829239671925637150
-let adminchat = "833229701190385676"        //                      833229701190385676
+let quiVeutJouer = "824725623346954271"     //824725623346954271    829873265194303498
+let jailed = "824761075387727912"           //824761075387727912    830240201111896135
+let jail = "824728100645896314"             //824728100645896314    830240173727547424
+let mafiaChat = "824731087863021588"        //824731087863021588    830240221584687104
+let panchanid = "824727128758943795"        //824727128758943795    829269425290215463
+let dmchanid = "824726760808513606"         //824726760808513606    829216633205424128
+let spyHideout = "824762348396216401"       //824762348396216401    830240252248850433
+let turtleId = "830113799763525642"         //830113799763525642    830121244208267334
+let eyesId = "830114000448258058"           //830114000448258058    830121185885945880
+let godId = "824725152692174879"            //824725152692174879    829228486660063262
+let graveyard = "825868136782757918"        //825868136782757918    835014782594711593    
+let parentwhisp = "824726713605947403"      //824726713605947403    829239671925637150
+let parentInterface = "832301102236958770"  //832301102236958770    829239671925637150
+let adminchat = "829870229470838814"        //829870229470838814    833229701190385676
+let listeroleid = "824731870628413480"      //824731870628413480    833229701190385676
 let numJour = 0
 let numNuit = 0
+var nbWhispJour = 1
 
 let color = "#f0b71a";
 let prefix = "!";
 var tagged = null
 var author = null  
+let messageJouer = new Discord.MessageEmbed()
+.setDescription("Hey! Nouvelle game! Réagissez avec une tortue 🐢 si vous voulez jouer et avec des yeux 👀 si vous voulez spectate.")
+.setColor(color)
 const partie = new Partie()
 
 let alive = function (){
@@ -65,7 +71,11 @@ bot.on("message", (message) => {
   let mafiaChan = message.guild.channels.cache.get(mafiaChat);
   let graveyardChan = message.guild.channels.cache.get(graveyard);
   let adminchannel = message.guild.channels.cache.get(adminchat)
-
+  let dev = message.member.roles.cache.has(devid);
+  let god = message.member.roles.cache.has(godId);
+  let dmChan = message.guild.channels.cache.get(dmchanid);
+  let pendChan = message.guild.channels.cache.get(panchanid);
+  
   if (message.channel == mafiaChan){
     spyChan.send(message.content)
   }
@@ -99,10 +109,7 @@ bot.on("message", (message) => {
   })
   var taggedUser = message.mentions.members.first();
  
-  let dev = message.member.roles.cache.has(devid);
-  let god = message.member.roles.cache.has(godId);
-  let dmChan = message.guild.channels.cache.get("824726760808513606");
-  let pendChan = message.guild.channels.cache.get("824727128758943795");
+
  
   let pasGod = new Discord.MessageEmbed()
     .setDescription("Tu n'est pas " + `<@&${godId}>` )
@@ -246,15 +253,16 @@ bot.on("message", (message) => {
 
     let pasLW = new Discord.MessageEmbed()
     .setDescription(tagged.name + " n'a pas de lastwill")
+    .addField("Son rôle était: " , tagged.role.name)
     .setColor(color)
 
     if(!god && !dev) return message.channel.send(pasGod)
     if(!args[0]) return message.channel.send(qui)
-    if(tagged.lastwill == null) return message.channel.send(pasLW)
+    if(tagged.lastwill == null) return graveyardChan.send(pasLW)
     tagged.serverRoles = [mort]
     taggedUser.roles.add(mort)
     taggedUser.roles.remove(vivant)
-    message.channel.send(graveyardmot)
+    graveyardChan.send(graveyardmot)
   }
 
   else if(cmd == "mvp") {
@@ -360,10 +368,14 @@ bot.on("message", (message) => {
 
   else if(cmd == "jour") {
     if(!god && !dev) return message.channel.send(pasGod);
-    numJour + 1
+    numJour = numJour + 1
 
     adminchannel.send(new Discord.MessageEmbed()
     .setDescription("Jour " + numJour)
+    .setColor(color))
+
+    pendChan.send(new Discord.MessageEmbed()
+    .setDescription(Math.floor((alive().length / 2) + 1) + " votes sont nécéssaire pour pendre aujourd'hui.")
     .setColor(color))
 
     alive().forEach(player => {
@@ -375,8 +387,6 @@ bot.on("message", (message) => {
       jailedChan.updateOverwrite(
       player.id,
       {"VIEW_CHANNEL": false})
-
-      pendChan.send(Math.floor((alive().length / 2) + 1) + " votes sont nécéssaire pour pendre.")
 
       if(player.role == "Mafia") {
         mafiaChan.updateOverwrite(
@@ -394,7 +404,7 @@ bot.on("message", (message) => {
 
   else if(cmd == "nuit") {
     if(!god && !dev) return message.channel.send(pasGod)
-    numNuit + 1
+    numNuit = numNuit + 1
     
     adminchannel.send(new Discord.MessageEmbed()
     .setDescription("Nuit " + numNuit)
@@ -452,7 +462,7 @@ bot.on("message", (message) => {
 
     message.guild.channels.create(channelName,{type:"text",})
     .then((channel) => {
-    channel.setParent("824726713605947403")
+    channel.setParent(parentwhisp)
     channel.overwritePermissions([
     {
       id: channel.guild.id,
@@ -521,7 +531,25 @@ bot.on("message", (message) => {
       .addField("Gagnez avec", player.role.winwith)
       .addField("Plus d'info sur ton wiki", player.role.wikiLink)
       .setColor(color))
+
       joueurroles.push(player.name + ", " + player.role.name)
+
+      if(player.role.name == "Jailor") {
+        jailChan.updateOverwrite(
+          player.id,
+          {VIEW_CHANNEL: true}
+        )
+      }else if(player.role.name == "Agent infiltré") {
+        spyChan.updateOverwrite(
+          player.id,
+          {VIEW_CHANNEL: true}
+        )
+      }else if(player.role.alignement == "Mafia Killing" || "Mafia Support" || "Mafia Deception") {
+        mafiaChan.updateOverwrite(
+          player.id,
+          {VIEW_CHANNEL: true}
+        )
+      }
     });
       adminchannel.send(new Discord.MessageEmbed()
       .setTitle("Liste des joueurs avec leurs roles")
@@ -625,10 +653,10 @@ bot.on("message", (message) => {
     5. Town killing
     6. Town Support
     7. Random town
-    8. Random town
-    9. Neutral Killing
-    10. Godfather
-    11. Mafioso
+    8. Neutral Killing
+    9. Godfather
+    10. Mafioso
+    11. Random mafia
     12. Random mafia
     13. Neutral Evil
     14. Any
@@ -740,6 +768,7 @@ bot.on('message', async (message) => {
   var color = "#f0b71a";
   let qvjChan = message.guild.channels.cache.get(quiVeutJouer);
   let adminchannel = message.guild.channels.cache.get(adminchat)
+  let listerolechan = message.guild.channels.cache.get(listeroleid)
   if(message.author.bot) return;
   if(!message.content.startsWith(prefix)) return;
   let MessageArray = message.content.split(" ");
@@ -758,29 +787,93 @@ bot.on('message', async (message) => {
     .setDescription("Combien de joueurs?")
     .setColor(color);
 
-    let messageJouer = new Discord.MessageEmbed()
-    .setDescription("Hey! Nouvelle game! Réagissez avec une tortue 🐢 si vous voulez jouer et avec des yeux 👀 si vous voulez spectate.")
-    .setColor(color)
-
     nbrJoueurMax = args[0];
     let messagestart = ""
     if(!god && !dev) return message.channel.send(pasGod)
     if(!args[0]) return message.channel.send(combien)
-    if(args.length != 2) {
+
+    if(partie.gamemode == "Classique 20 joueurs") {
+      listerolechan.send(new Discord.MessageEmbed()
+      .setTitle("Partie en cour: Clasique 20 joueurs")
+      .setDescription(
+      `1. Jailor
+      2. Doctor
+      3. Investigator
+      4. Town investigative
+      5. Town investigative
+      6. Town Support
+      7. Town killing
+      8. Random town
+      9. Random town
+      10. Random town
+      11. Vampire Hunter
+      12. Godfather
+      13. Mafioso
+      14. Random Mafia
+      15. Random mafia
+      16. Vampire
+      17. Neutral Evil
+      18. Neutral Killing
+      19. Any
+      20. Any`)
+      .setColor(color))
+    }else if(partie.gamemode == "Classique 15 joueurs") {
+      listerolechan.send(new Discord.MessageEmbed()
+      .setTitle("Partie en cour: Classique 15 joueurs")
+      .setDescription(
+      `1. Jailor
+      2. Town investigative
+      3. Town investigative
+      4. Town protective
+      5. Town killing
+      6. Town Support
+      7. Random town
+      8. Neutral Killing
+      9. Godfather
+      10. Mafioso
+      11. Random mafia
+      12. Random mafia
+      13. Neutral Evil
+      14. Any
+      15. Any`)
+      .setColor(color))
+    }else if(partie.gamemode == "All Any balanced") {
+      listerolechan.send(new Discord.MessageEmbed()
+      .setTitle("Partie en cour: All any 15 joueurs")
+      .setDescription(
+      `1. Random town
+      2. Random town
+      3. Random town
+      4. Any
+      5. Any
+      6. Any
+      7. Any
+      8. Any
+      9. Any
+      10. Any
+      11. Any
+      12. Any
+      13. Any
+      14. Any
+      15. Any`)
+      .setColor(color))
+    }
+
+    if(args.length == 1) {
       const reactionMessage = await qvjChan.send(messageJouer)
       await reactionMessage.react(turtleId)
       await reactionMessage.react(eyesId)
+
     }else if(args.length >= 2) {
-      args.forEach(mots => {
-        messagestart + mots + " "
+        args.slice(1).forEach(mots => {
+        messagestart += mots + " "
       });
 
-      const reactionMessage = await qvjChan.send(messagestart + " Réagissez avec une tortue 🐢 si vous voulez jouer et avec des yeux 👀 si vous voulez spectate.")
+      const reactionMessage = await qvjChan.send(messagestart)
       await reactionMessage.react(turtleId)
       await reactionMessage.react(eyesId)
     }
-    adminchannel.send(partie.gamemode)
-    }
+  }
 
   else if(cmd == "clear") {
     if (!god && !dev) return message.channel.send(pasGod);
