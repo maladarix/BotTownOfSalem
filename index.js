@@ -12,6 +12,9 @@ let listeroles = []
 let joueurroles = []
 let votelist = []
 
+//test ODMxMDI2Nzg2MTAzNDU5ODUy.YHPQAQ.2LpCyBCzxHiVcHdmWlXECmo72I4
+//offi ODI5MjAxOTU4MTQ4NzY3Nzc0.YG0sgA.-Z66p9uiZ2q2nKXhHlGRe1fZaoE
+
 //const game
 //                                             id serv officiel        id serv test
 let mort = "824726156141658132"             //824726156141658132    829832421825708064
@@ -516,7 +519,6 @@ bot.on("message", (message) => {
 
   else if(cmd == "roles") {
     (partie.listeroles).forEach(role => {
-      console.log(role.name)
       listeroles.push(role.name)
     });
     alive().forEach(player => {
