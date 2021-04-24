@@ -655,13 +655,13 @@ bot.on("message", (message) => {
     5. Town killing
     6. Town Support
     7. Random town
-    8. Neutral Killing
-    9. Godfather
-    10. Mafioso
-    11. Random mafia
+    8. Random town
+    9. Neutral Killing
+    10. Godfather
+    11. Mafioso
     12. Random mafia
-    13. Neutral Evil
-    14. Any
+    13. Random mafia
+    14. Neutral Evil
     15. Any`)
     .setColor(color)
 
@@ -830,13 +830,13 @@ bot.on('message', async (message) => {
       5. Town killing
       6. Town Support
       7. Random town
-      8. Neutral Killing
-      9. Godfather
-      10. Mafioso
-      11. Random mafia
+      8. Random town
+      9. Neutral Killing
+      10. Godfather
+      11. Mafioso
       12. Random mafia
-      13. Neutral Evil
-      14. Any
+      13. Random mafia
+      14. Neutral Evil
       15. Any`)
       .setColor(color))
     }else if(partie.gamemode == "All Any balanced") {
