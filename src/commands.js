@@ -130,25 +130,13 @@ class commands{
     }
 
     getTownKilling(){
-        let jai = false
         let good = false
-        let element = null
         let randomtownkill = null
-
-        for (let index = 0; index < gameroles.length; index++) {
-            element = gameroles[index].name;
-            if(element == "Jailor") {
-                jai =true
-            }
-        }
         do{
             randomtownkill = townkilling[Math.floor(Math.random() * townkilling.length)]
-            if(randomtownkill.name === "Jailor") {
-                if(!jai) {
-                    good = true
-                }
-            }else
+            if(randomtownkill.isUnique && gameroles.includes(randomtownkill)) {
                 good = true
+            }
         }while (!good) {
         gameroles.push(randomtownkill)
         }
@@ -159,91 +147,27 @@ class commands{
     }
 
     getRandomTown(){
-        let vet = false
-        let mai = false
-        let ret = false
-        let jai = false
-        let age = false
         let good = false
-        let element = null
         let randomtownroletown = null
-
-        for (let index = 0; index < gameroles.length; index++) {
-            element = gameroles[index].name;
-            if(element == "Jailor") {
-                jai = true
-            }if(element == "Vétéran") {
-                vet = true
-            }if(element == "Maire") {
-                mai = true
-            }if(element == "Retributioniste") {
-                ret = true
-            }if(element == "Agent Infiltré") {
-                age = true
-            }
-        }
         do{
             randomtownroletown = randomtown[Math.floor(Math.random() * randomtown.length)]
-            if(randomtownroletown.name === "Jailor") {
-                if(!jai) {
-                    good = true
-                }
-            }else if(randomtownroletown.name === "Maire") {
-                if(!mai) {
-                    good = true
-                }
-            }else if(randomtownroletown.name === "Retributioniste") {
-                if(!ret) {
-                    good = true
-                }
-            }else if(randomtownroletown.name === "Vétéran") {
-                if(!vet) {
-                    good = true
-                }
-            }else if(randomtownroletown.name === "Agent Infiltré") {
-                if(!age) {
-                    good = true
-                }
-            }else
+
+            if(!(randomtownroletown.isUnique && gameroles.includes(randomtownroletown)))
+            {
                 good = true
+            }
         }while (!good)
         gameroles.push(randomtownroletown)
     }
 
     getRandomMafia(){
-        let god = false
-        let maf = false
-        let amb = false
         let good = false
-        let element = null
         let randomtownrolemafia = null
-
-        for (let index = 0; index < gameroles.length; index++) {
-            element = gameroles[index].name;
-            if(element == "Godfather") {
-                god = true
-            }if(element == "Mafioso") {
-                maf = true
-            }if(element == "Ambusher") {
-                amb = true
-            } 
-        }
         do{
             randomtownrolemafia = randommafia[Math.floor(Math.random() * randommafia.length)]
-            if(randomtownrolemafia.name === "Godfather") {
-                if(!god) {
-                    good = true
-                }
-            }else if(randomtownrolemafia.name === "Mafioso") {
-                if(!maf) {
-                    good = true
-                }
-            }else if(randomtownrolemafia.name === "Ambusher") {
-                if(!amb) {
-                    good = true
-                }
-            }else
+            if(!(randomtownrolemafia.isUnique && gameroles.includes(randomtownrolemafia))) {
                 good = true
+            }
         }while (!good)
         gameroles.push(randomtownrolemafia)
     }
@@ -289,74 +213,13 @@ class commands{
     }
 
     getAny(){
-        let vet = false
-        let mai = false
-        let ret = false
-        let agi = false
-        let jai = false
-        let god = false
-        let maf = false
-        let amb = false
         let good = false
-        let element = null
         let any = null
-
-        for (let index = 0; index < gameroles.length; index++) {
-            element = gameroles[index].name;
-            if(element == "Godfather") {
-                god = true
-            }if(element == "Mafioso") {
-                maf = true
-            }if(element == "Ambusher") {
-                amb = true
-            }if(element == "Jailor") {
-                jai = true
-            }if(element == "Vétéran") {
-                vet = true
-            }if(element == "Maire") {
-                mai = true
-            }if(element == "Retributioniste") {
-                ret = true
-            }if(element == "Agent infiltré") {
-                agi = true
-            }
-        }
         do{
             any = anyrole[Math.floor(Math.random() * anyrole.length)]
-            if(any.name === "Godfather") {
-                if(!god) {
-                    good = true
-                }
-            }else if(any.name === "Mafioso") {
-                if(!maf) {
-                    good = true
-                }
-            }else if(any.name === "Ambusher") {
-                if(!amb) {
-                    good = true
-                }
-            }else if(any.name === "Jailor") {
-                if(!jai) {
-                    good = true
-                }
-            }else if(any.name === "Maire") {
-                if(!mai) {
-                    good = true
-                }
-            }else if(any.name === "Retributioniste") {
-                if(!ret) {
-                    good = true
-                }
-            }else if(any.name === "Vétéran") {
-                if(!vet) {
-                    good = true
-                }
-            }else if(any.name === "Agnet infiltré") {
-                if(!agi) {
-                    good = true
-                }
-            }else
-                good = true
+            if(!(any.isUnique && gameroles.includes(any))) {
+               good = true
+            }
         }while (!good)
         gameroles.push(any)
     }

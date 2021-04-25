@@ -1,7 +1,8 @@
 const Discord = require('discord.js');
 const Commands = require('./src/commands.js');
 const Player = require('./src/player.js');
-const Partie = require('./src/game.js')
+const Partie = require('./src/game.js');
+const commands = require('./src/commands.js');
 require("dotenv").config()
 const bot = new Discord.Client();
 var nbrJoueurMax = 0;
@@ -12,32 +13,30 @@ let listeroles = []
 let joueurroles = []
 let votelist = []
 
-//test ODMxMDI2Nzg2MTAzNDU5ODUy.YHPQAQ.2LpCyBCzxHiVcHdmWlXECmo72I4
-//offi ODI5MjAxOTU4MTQ4NzY3Nzc0.YG0sgA.-Z66p9uiZ2q2nKXhHlGRe1fZaoE
 
 //const game
-//                                             id serv officiel        id serv test
-let mort = "824726156141658132"             //824726156141658132    829832421825708064
-let jour = "825029496305614927"             //825029496305614927    829254726495240214
-let nuit = "824749359118811187"             //824749359118811187    829254687630557185
-let vivant = "824725851198849075"           //824725851198849075    829205364444364800
-let spec = "824726635902271518"             //824726635902271518    829250418244321280
-let devid = "830253971637665832"            //830253971637665832
-let quiVeutJouer = "824725623346954271"     //824725623346954271    829873265194303498
-let jailed = "824761075387727912"           //824761075387727912    830240201111896135
-let jail = "824728100645896314"             //824728100645896314    830240173727547424
-let mafiaChat = "824731087863021588"        //824731087863021588    830240221584687104
-let panchanid = "824727128758943795"        //824727128758943795    829269425290215463
-let dmchanid = "824726760808513606"         //824726760808513606    829216633205424128
-let spyHideout = "824762348396216401"       //824762348396216401    830240252248850433
-let turtleId = "830113799763525642"         //830113799763525642    830121244208267334
-let eyesId = "830114000448258058"           //830114000448258058    830121185885945880
-let godId = "824725152692174879"            //824725152692174879    829228486660063262
-let graveyard = "825868136782757918"        //825868136782757918    835014782594711593    
-let parentwhisp = "824726713605947403"      //824726713605947403    829239671925637150
-let parentInterface = "832301102236958770"  //832301102236958770    829239671925637150
-let adminchat = "829870229470838814"        //829870229470838814    833229701190385676
-let listeroleid = "824731870628413480"      //824731870628413480    833229701190385676
+//           id serv officiel                id serv test
+let mort = "824726156141658132"         //"829832421825708064"
+let jour = "825029496305614927"         //"829254726495240214"
+let nuit = "824749359118811187"         //"829254687630557185"
+let vivant = "824725851198849075"       //"829205364444364800"
+let spec = "824726635902271518"         //"829250418244321280"
+let devid = "830253971637665832"
+let quiVeutJouer = "824725623346954271" //"829873265194303498"
+let jailed = "824761075387727912"       //"830240201111896135"
+let jail = "824728100645896314"         //"830240173727547424"
+let mafiaChat = "824731087863021588"    //"830240221584687104"
+let panchanid = "824727128758943795"    //"829269425290215463"
+let dmchanid = "824726760808513606"     //"829216633205424128"
+let spyHideout = "824762348396216401"   //"830240252248850433"
+let turtleId = "830113799763525642"     //"830121244208267334"
+let eyesId = "830114000448258058"       //"830121185885945880"
+let godId = "824725152692174879"        //"829228486660063262"
+let graveyard = "825868136782757918"    //"835014782594711593"    
+let parentwhisp = "824726713605947403"  //"829239671925637150"
+let parentInterface="832301102236958770"//"829239671925637150"
+let adminchat = "829870229470838814"    //"833229701190385676"
+let listeroleid = "824731870628413480"  //"833229701190385676"
 let numJour = 0
 let numNuit = 0
 var nbWhispJour = 1
@@ -610,59 +609,23 @@ bot.on("message", (message) => {
   }
 
   else if(cmd == "gamemode") {
-
+    class20 = ""
+    class15 = ""
+    any15 = ""
+    for (let i = 1; i <= commands.prototype.classique20.length; i++){
+      class20 += i + ". " + commands.prototype.classique20[i-1] + "\n"
+    }
+    for (let i = 1; i <= commands.prototype.classique15.length; i++){
+      class15 += i + ". " + commands.prototype.classique15[i-1] + "\n"
+    }
+    for (let i = 1; i <= commands.prototype.Allanyballenced15.length; i++){
+      any15 += i + ". " + commands.prototype.Allanyballenced15[i-1] + "\n"
+    }
     let mdjsvp = new Discord.MessageEmbed()
     .setTitle("Quel mode de jeux?")
-    .addField("Partie classique à 20 joueurs (class20)", `1. Jailor
-    2. Doctor
-    3. Investigator
-    4. Town investigative
-    5. Town investigative
-    6. Town Support
-    7. Town killing
-    8. Random town
-    9. Random town
-    10. Random town
-    11. Vampire Hunter
-    12. Godfather
-    13. Mafioso
-    14. Random Mafia
-    15. Random mafia
-    16. Vampire
-    17. Neutral Evil
-    18. Neutral Killing
-    19. Any
-    20. Any`)
-    .addField("All Any balanced à 15 joueurs (any15)", `1. Random town
-    2. Random town
-    3. Random town
-    4. Any
-    5. Any
-    6. Any
-    7. Any
-    8. Any
-    9. Any
-    10. Any
-    11. Any
-    12. Any
-    13. Any
-    14. Any
-    15. Any`)
-    .addField("Partie classique à 15 joueurs (class15)", `1. Jailor
-    2. Town investigative
-    3. Town investigative
-    4. Town protective
-    5. Town killing
-    6. Town Support
-    7. Random town
-    8. Random town
-    9. Neutral Killing
-    10. Godfather
-    11. Mafioso
-    12. Random mafia
-    13. Random mafia
-    14. Neutral Evil
-    15. Any`)
+    .addField("Partie classique à 20 joueurs (class20)", class20)
+    .addField("All Any balanced à 15 joueurs (any15)", any15)
+    .addField("Partie classique à 15 joueurs (class15)", class15)
     .setColor(color)
 
     if(!god && !dev) return message.channel.send(pasGod)
