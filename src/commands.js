@@ -90,6 +90,18 @@ class commands{
                 this.getTownProtect()
             }else if(role == "Random town") {
                 this.getRandomTown()
+            }else if(role == "Mafia deception") {
+                this.getMafiaDeception()
+            }else if(role == "Mafia support") {
+                this.getMafiaSupport()
+            }else if(role == "Mafia killing") {
+                this.getMafiaKilling()
+            }else if(role == "Neutral benin") {
+                this.getNeutralBenin()
+            }else if(role == "Neutral chaos") {
+                this.getNeutralChaos()
+            }else if(role == "Random neutral") {
+                this.getRandomNeutral()
             }else if(role == "Vampire-hunter") {
                 this.getVampireHunter()
             }else if(role == "Godfather") {
@@ -106,6 +118,64 @@ class commands{
                 this.getNeutralEvil()
             }else if(role == "Any") {
                 this.getAny()
+            }else if(role == "Lookout") {
+                this.getLoukout()
+            }else if(role == "Sherrif") {
+                this.getSheriff()
+            }else if(role == "Agent") {
+                this.getAgent()
+            }else if(role == "Spy") {
+                this.getSpy()
+            }else if(role == "Bodyguard") {
+                this.getBodyguard()
+            }else if(role == "Escort") {
+                this.getEscort()
+            }else if(role == "Maire") {
+                this.getMaire()
+            }else if(role == "Medium") {
+                this.getMedium()
+            }else if(role == "Retributionist") {
+                this.getRetri()
+            }else if(role == "Transporteur") {
+                this.getTrans()
+            }else if(role == "Vigilante") {
+                this.getVig()
+            }else if(role == "Veteran") {
+                this.getVet()
+            }else if(role == "Loup-garou") {
+                this.getLoup()
+            }else if(role == "Disguiser") {
+                this.getDisg()
+            }else if(role == "Forger") {
+                this.getForger()
+            }else if(role == "Framer") {
+                this.getFramer()
+            }else if(role == "Consierge") {
+                this.getConsierg()
+            }else if(role == "Hypnotiseur") {
+                this.getHypno()
+            }else if(role == "Blackmailer") {
+                this.getBlackmailer()
+            }else if(role == "conseiller") {
+                this.getConseiller()
+            }else if(role == "Consort") {
+                this.getConsort()
+            }else if(role == "Ambusher") {
+                this.getAmbusher()
+            }else if(role == "Amnesiac") {
+                this.getAmnesiac()
+            }else if(role == "Survivant") {
+                this.getSurvivant()
+            }else if(role == "Arsonist") {
+                this.getArsonist()
+            }else if(role == "Serial-killer") {
+                this.getSerialkiller()
+            }else if(role == "Bourreau") {
+                this.getbourreau()
+            }else if(role == "Jester") {
+                this.getJester()
+            }else if(role == "Sorcière") {
+                this.getWitch()
             }else return
         })
 
@@ -134,7 +204,15 @@ class commands{
     }
 
     getTownInvest(){
-        gameroles.push(towninvest[Math.floor(Math.random() * towninvest.length)])
+        let good = false
+        let randomtowninvest = null
+        do{
+            randomtowninvest = towninvest[Math.floor(Math.random() * towninvest.length)]
+            if(!(randomtowninvest.isUnique && gameroles.includes(randomtowninvest))) {
+                good = true
+            }
+        }while (!good)
+        gameroles.push(randomtowninvest)
     }
 
     getTownProtect(){
@@ -154,33 +232,61 @@ class commands{
     }
 
     getTownSupport(){
-        gameroles.push(townsupport[Math.floor(Math.random() * townsupport.length)])
+        let good = false
+        let randomtownsupport = null
+        do{
+            randomtownsupport = townsupport[Math.floor(Math.random() * townsupport.length)]
+            if(!(randomtownsupport.isUnique && gameroles.includes(randomtownsupport))) {
+                good = true
+            }
+        }while (!good)
+        gameroles.push(randomtownsupport)
     }
 
     getRandomTown(){
         let good = false
-        let randomtownroletown = null
+        let randomtownrole = null
         do{
-            randomtownroletown = randomtown[Math.floor(Math.random() * randomtown.length)]
+            randomtownrole = randomtown[Math.floor(Math.random() * randomtown.length)]
 
-            if(!(randomtownroletown.isUnique && gameroles.includes(randomtownroletown)))
+            if(!(randomtownrole.isUnique && gameroles.includes(randomtownrole)))
             {
                 good = true
             }
         }while (!good)
-        gameroles.push(randomtownroletown)
+        gameroles.push(randomtownrole)
+    }
+
+    getMafiaDeception(){
+        gameroles.push(mafiadeception[Math.floor(Math.random() * mafiadeception.length)])
+    }
+
+    getMafiaSupport(){
+        gameroles.push(mafiasupport[Math.floor(Math.random() * mafiasupport.length)])
+    }
+
+    getMafiaKilling(){
+        let good = false
+        let randommafiakill = null
+        do{
+            randommafiakill = mafiakilling[Math.floor(Math.random() * mafiakilling.length)]
+            if(!(randommafiakill.isUnique && gameroles.includes(randommafiakill))) {
+                good = true
+            }
+        }while (!good)
+        gameroles.push(randommafiakill)
     }
 
     getRandomMafia(){
         let good = false
-        let randomtownrolemafia = null
+        let randommafiarole = null
         do{
-            randomtownrolemafia = randommafia[Math.floor(Math.random() * randommafia.length)]
-            if(!(randomtownrolemafia.isUnique && gameroles.includes(randomtownrolemafia))) {
+            randommafiarole = randommafia[Math.floor(Math.random() * randommafia.length)]
+            if(!(randommafiarole.isUnique && gameroles.includes(randommafiarole))) {
                 good = true
             }
         }while (!good)
-        gameroles.push(randomtownrolemafia)
+        gameroles.push(randommafiarole)
     }
 
     getNeutralEvil(){
@@ -188,23 +294,79 @@ class commands{
     }
 
     getNeutralKilling(){
-        gameroles.push(neutralkilling[Math.floor(Math.random() * neutralkilling.length)])
+        let good = false
+        let randomneutralkill = null
+        do{
+            randomneutralkill = neutralkilling[Math.floor(Math.random() * neutralkilling.length)]
+            if(!(randomneutralkill.isUnique && gameroles.includes(randomneutralkill))) {
+                good = true
+            }
+        }while (!good)
+        gameroles.push(randomneutralkill)
     }
 
     getNeutralChaos(){
+        let good = false
+        let randomneutralchaos = null
+        do{
+            randomneutralchaos = neutralchaos[Math.floor(Math.random() * neutralchaos.length)]
+            if(!(randomneutralchaos.isUnique && gameroles.includes(randomneutralchaos))) {
+                good = true
+            }
+        }while (!good)
+        gameroles.push(randomneutralchaos)
+    }
 
+    getNeutralBenin(){
+        gameroles.push(neutralbening[Math.floor(Math.random() * neutralbening.length)])
+    }
+
+    getRandomNeutral(){
+        let good = false
+        let neutral = null
+        do{
+            neutral = randomneutral[Math.floor(Math.random() * randomneutral.length)]
+            if(!(neutral.isUnique && gameroles.includes(neutral))) {
+                good = true
+            }
+        }while (!good)
+        gameroles.push(neutral)
+    }
+
+    getAny(){
+        let good = false
+        let any = null
+        do{
+            any = anyrole[Math.floor(Math.random() * anyrole.length)]
+            if(!(any.isUnique && gameroles.includes(any))) {
+               good = true
+            }
+        }while (!good)
+        gameroles.push(any)
     }
 
     getJailor(){
-        gameroles.push(roles.prototype.getJailor())
+        if(gameroles.includes(roles.prototype.getJailor())) {
+            this.getRandomTown()
+        }else{
+            gameroles.push(roles.prototype.getJailor())
+        }
     }
 
     getGodfather(){
-        gameroles.push(roles.prototype.getGodfather())
+        if(gameroles.includes(roles.prototype.getGodfather())) {
+            this.getRandomMafia()
+        }else{
+            gameroles.push(roles.prototype.getGodfather())
+        }
     }
 
     getMafioso(){
-        gameroles.push(roles.prototype.getMafioso())
+        if(gameroles.includes(roles.prototype.getMafioso())) {
+            this.getRandomMafia()
+        }else {
+            gameroles.push(roles.prototype.getMafioso())   
+        }
     }
 
     getDoctor(){
@@ -223,16 +385,144 @@ class commands{
         gameroles.push(roles.prototype.getVamp())
     }
 
-    getAny(){
-        let good = false
-        let any = null
-        do{
-            any = anyrole[Math.floor(Math.random() * anyrole.length)]
-            if(!(any.isUnique && gameroles.includes(any))) {
-               good = true
-            }
-        }while (!good)
-        gameroles.push(any)
+    getLoukout(){
+        gameroles.push(roles.prototype.getLoukout)
+    }
+
+    getSheriff(){
+        gameroles.push(roles.prototype.getSheriff())
+    }
+
+    getAgent(){
+        if(gameroles.includes(roles.prototype.getAgent())) {
+            this.getRandomTown()
+        }else{
+            gameroles.push(roles.prototype.getAgent())
+        }
+    }
+
+    getSpy(){
+        gameroles.push(roles.prototype.getSpy())
+    }
+
+    getBodyguard(){
+        gameroles.push(roles.prototype.getBg())
+    }
+
+    getEscort(){
+        gameroles.push(roles.prototype.getEscort())
+    }
+
+    getMaire(){
+        if(gameroles.includes(roles.prototype.getMaire())) {
+            this.getRandomTown()
+        }else{
+            gameroles.push(roles.prototype.getMaire())
+        }
+    }
+
+    getMedium(){
+        gameroles.push(roles.prototype.getMedium())
+    }
+
+    getRetri(){
+        if(gameroles.includes(roles.prototype.getRetri())) {
+            this.getRandomTown()
+        }else{
+            gameroles.push(roles.prototype.getRetri())
+        }
+    }
+
+    getTrans(){
+        gameroles.push(roles.prototype.getTrans())
+    }
+
+    getVig(){
+        gameroles.push(roles.prototype.getVig())
+    }
+
+    getVet(){
+        if(gameroles.includes(roles.prototype.getVet())) {
+            this.getRandomTown()
+        }else{
+            gameroles.push(roles.prototype.getVet())
+        }
+    }
+
+    getLoup(){
+        if(gameroles.includes(roles.prototype.getWerewolf())) {
+            this.getRandomNeutral()
+        }else{
+            gameroles.push(roles.prototype.getWerewolf())
+        }
+    }
+
+    getDisg(){
+        gameroles.push(roles.prototype.getDisg())
+    }
+
+    getForger(){
+        gameroles.push(roles.prototype.getForger())
+    }
+
+    getFramer(){
+        gameroles.push(roles.prototype.getFramer())
+    }
+
+    getConsierg(){
+        gameroles.push(roles.prototype.getJani())
+    }
+
+    getHypno(){
+        gameroles.push(roles.prototype.getHypno())
+    }
+
+    getBlackmailer(){
+        gameroles.push(roles.prototype.getBlackmail())
+    }
+
+    getConseiller(){
+        gameroles.push(roles.prototype.getConsig())
+    }
+
+    getConsort(){
+        gameroles.push(roles.prototype.getConsort())
+    }
+
+    getAmbusher(){
+        if(gameroles.includes(roles.prototype.getAmb())) {
+            this.getRandomMafia()
+        }else{
+            gameroles.push(roles.prototype.getAmb())
+        }
+    }
+
+    getAmnesiac(){
+        gameroles.push(roles.prototype.getAmne())
+    }
+
+    getSurvivant(){
+        gameroles.push(roles.prototype.getSurv())
+    }
+
+    getArsonist(){
+        gameroles.push(roles.prototype.getArso())
+    }
+
+    getSerialkiller(){
+        gameroles.push(roles.prototype.getSerialk())
+    }
+
+    getbourreau(){
+        gameroles.push(roles.prototype.getExec())
+    }
+
+    getJester(){
+        gameroles.push(roles.prototype.getJester())
+    }
+
+    getWitch(){
+        gameroles.push(roles.prototype.getWitch())
     }
 }
 

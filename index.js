@@ -45,11 +45,11 @@ var nbWhispJour = 1
 
 let rolesEtAlig = ["Investigateur", "Lookout", "Sherif", "Spy", "Agent", "Jailor", "Vampire-hunter", "Veteran", "Vigilante", "Bodyguard", "Doctor", "Escorte"
 , "Maire", "Medium", "Retributionist", "Transporter", "Disguiser", "Forger", "Framer", "Hypnotiseur", "Consierge", "Ambusher", "Godfather", "Mafioso", "Blackmailer"
-, "Conseiller", "Consort", "Amnesiac", "Surviant", "Vampire", "Bourreau", "Jester", "Sorcière", "Arsonist", "Serial-killer", "Loup-garou", "ti" ,"tp", "ts", "tk", "md", "ms", "mk"
+, "Conseiller", "Consort", "Amnesiac", "Survivant", "Vampire", "Bourreau", "Jester", "Sorcière", "Arsonist", "Serial-killer", "Loup-garou", "ti" ,"tp", "ts", "tk", "md", "ms", "mk"
 , "nb", "nk", "ne", "nc", "rt", "rm", "rn"]
 let roles = ["investigateur", "lookout", "sherif", "spy", "agent", "jailor", "vampirehunter", "veteran", "vigilante", "bodyguard", "doctor", "escorte"
 , "maire", "medium", "retributionist", "transporter", "disguiser", "forger", "framer", "hypnotiseur", "consierge", "ambusher", "godfather", "mafioso", "blackmailer"
-, "conseiller", "consort", "amnesiac", "surviant", "vampire", "bourreau", "jester", "sorcière", "arsonist", "serialkiller", "loupgarou"]
+, "conseiller", "consort", "amnesiac", "survivant", "vampire", "bourreau", "jester", "sorcière", "arsonist", "serialkiller", "loupgarou"]
 
 let color = "#f0b71a";
 let prefix = "!";
@@ -821,7 +821,7 @@ bot.on("message", (message) => {
     if(!god && !dev) return message.channel.send(pasGod)
     message.channel.send(new Discord.MessageEmbed()
     .setTitle("Aide pour créé un gamemode")
-    .addField("Voici tout ce que tu peut écrire", rolesEtAlig)
+    .addField("**SVP** Écrire les rôles spécifique en **premier!** Sinon, c'est remplacé par un random town/mafia/neutral. Voici tout ce que tu peut écrire", rolesEtAlig)
     .setDescription(`ti: Town investigator
     tp: Town protective
     ts: Town support
