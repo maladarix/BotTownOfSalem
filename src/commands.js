@@ -42,7 +42,9 @@ let classique15 = ["Jailor", "Town investigative", "Town investigative", "Town p
 let Allanyballenced15 = ["Random town", "Random town", "Random town", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any"]
 
 let classique20 = ["Jailor", "Doctor", "Investigateur", "Town investigative", "Town investigative", "Town support", "Town killing", "Random town", "Random town", "Random town",
-"Vampire hunter", "Godfather", "Mafioso", "Random mafia", "Random mafia", "Vampire", "Neutral killing", "Neutral evil", "Any", "Any"]
+"Vampire-hunter", "Godfather", "Mafioso", "Random mafia", "Random mafia", "Vampire", "Neutral killing", "Neutral evil", "Any", "Any"]
+
+let customgm = ""//////mettre la variable "nomgamemode" ici
 
 let currentgamemode = []
 let gameroles = []
@@ -71,7 +73,6 @@ class commands{
         }else if(partie.gamemode == "All Any balanced") {
             currentgamemode = Allanyballenced15
         }else return
-        
         currentgamemode.forEach(role => {
             if(role == "Jailor") {
                 this.getJailor()
@@ -89,7 +90,7 @@ class commands{
                 this.getTownProtect()
             }else if(role == "Random town") {
                 this.getRandomTown()
-            }else if(role == "Vampire hunter") {
+            }else if(role == "Vampire-hunter") {
                 this.getVampireHunter()
             }else if(role == "Godfather") {
                 this.getGodfather()
@@ -133,7 +134,7 @@ class commands{
     }
 
     getTownInvest(){
-        gameroles.push(towninvest[Math.floor(Math.random() * towninvest.length)]) 
+        gameroles.push(towninvest[Math.floor(Math.random() * towninvest.length)])
     }
 
     getTownProtect(){
@@ -145,12 +146,11 @@ class commands{
         let randomtownkill = null
         do{
             randomtownkill = townkilling[Math.floor(Math.random() * townkilling.length)]
-            if(randomtownkill.isUnique && gameroles.includes(randomtownkill)) {
+            if(!(randomtownkill.isUnique && gameroles.includes(randomtownkill))) {
                 good = true
             }
-        }while (!good) {
+        }while (!good)
         gameroles.push(randomtownkill)
-        }
     }
 
     getTownSupport(){

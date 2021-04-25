@@ -5,7 +5,9 @@ const Partie = require('./src/game.js');
 const commands = require('./src/commands.js');
 require("dotenv").config()
 const bot = new Discord.Client();
-var nbrJoueurMax = 0;
+var nbrJoueurMax = 0
+var nomgamemode = null
+let nouvgmoffi = []
 var whispersChannels = []
 var interfaces = []
 var listejoueur = []
@@ -16,30 +18,38 @@ let votelist = []
 
 //const game
 //           id serv officiel                id serv test
-let mort = "824726156141658132"         //"829832421825708064"
-let jour = "825029496305614927"         //"829254726495240214"
-let nuit = "824749359118811187"         //"829254687630557185"
-let vivant = "824725851198849075"       //"829205364444364800"
-let spec = "824726635902271518"         //"829250418244321280"
+let mort = /*"824726156141658132"       */"829832421825708064"
+let jour = /*"825029496305614927"         */"829254726495240214"
+let nuit = /*"824749359118811187"         */"829254687630557185"
+let vivant = /*"824725851198849075"       */"829205364444364800"
+let spec = /*"824726635902271518"         */"829250418244321280"
 let devid = "830253971637665832"
-let quiVeutJouer = "824725623346954271" //"829873265194303498"
-let jailed = "824761075387727912"       //"830240201111896135"
-let jail = "824728100645896314"         //"830240173727547424"
-let mafiaChat = "824731087863021588"    //"830240221584687104"
-let panchanid = "824727128758943795"    //"829269425290215463"
-let dmchanid = "824726760808513606"     //"829216633205424128"
-let spyHideout = "824762348396216401"   //"830240252248850433"
-let turtleId = "830113799763525642"     //"830121244208267334"
-let eyesId = "830114000448258058"       //"830121185885945880"
-let godId = "824725152692174879"        //"829228486660063262"
-let graveyard = "825868136782757918"    //"835014782594711593"    
-let parentwhisp = "824726713605947403"  //"829239671925637150"
-let parentInterface="832301102236958770"//"829239671925637150"
-let adminchat = "829870229470838814"    //"833229701190385676"
-let listeroleid = "824731870628413480"  //"833229701190385676"
+let quiVeutJouer = /*"824725623346954271" */"829873265194303498"
+let jailed = /*"824761075387727912"       */"830240201111896135"
+let jail = /*"824728100645896314"         */"830240173727547424"
+let mafiaChat = /*"824731087863021588"    */"830240221584687104"
+let panchanid = /*"824727128758943795"    */"829269425290215463"
+let dmchanid = /*"824726760808513606"     */"829216633205424128"
+let spyHideout = /*"824762348396216401"   */"830240252248850433"
+let turtleId = /*"830113799763525642"     */"830121244208267334"
+let eyesId = /*"830114000448258058"       */"830121185885945880"
+let godId = /*"824725152692174879"        */"829228486660063262"
+let graveyard = /*"825868136782757918"    */"835014782594711593"    
+let parentwhisp = /*"824726713605947403"  */"829239671925637150"
+let parentInterface=/*"832301102236958770"*/"829239671925637150"
+let adminchat = /*"829870229470838814"    */"833229701190385676"
+let listeroleid = /*"824731870628413480"  */"833229701190385676"
 let numJour = 0
 let numNuit = 0
 var nbWhispJour = 1
+
+let rolesEtAlig = ["Investigateur", "Lookout", "Sherif", "Spy", "Agent", "Jailor", "Vampire-hunter", "Veteran", "Vigilante", "Bodyguard", "Doctor", "Escorte"
+, "Maire", "Medium", "Retributionist", "Transporter", "Disguiser", "Forger", "Framer", "Hypnotiseur", "Consierge", "Ambusher", "Godfather", "Mafioso", "Blackmailer"
+, "Conseiller", "Consort", "Amnesiac", "Surviant", "Vampire", "Bourreau", "Jester", "Sorcière", "Arsonist", "Serial-killer", "Loup-garou", "ti" ,"tp", "ts", "tk", "md", "ms", "mk"
+, "nb", "nk", "ne", "nc", "rt", "rm", "rn"]
+let roles = ["investigateur", "lookout", "sherif", "spy", "agent", "jailor", "vampirehunter", "veteran", "vigilante", "bodyguard", "doctor", "escorte"
+, "maire", "medium", "retributionist", "transporter", "disguiser", "forger", "framer", "hypnotiseur", "consierge", "ambusher", "godfather", "mafioso", "blackmailer"
+, "conseiller", "consort", "amnesiac", "surviant", "vampire", "bourreau", "jester", "sorcière", "arsonist", "serialkiller", "loupgarou"]
 
 let color = "#f0b71a";
 let prefix = "!";
@@ -121,8 +131,21 @@ bot.on("message", (message) => {
     .setDescription("Qui?")
     .setColor(color);
 
+  let pascomme = new Discord.MessageEmbed()
+  .setDescription("La partie n'est pas encore commencée!")
+  .setColor(color)
+
+  let trouvePas = new Discord.MessageEmbed()
+  .setDescription("Je ne trouve pas ce joueur")
+  .setColor(color);
+
+  let pastoi = new Discord.MessageEmbed()
+  .setDescription("Tu ne peut pas te whispe toi même")
+  .setColor(color);
+
   if(cmd == "end") {
     if(!god && !dev) return message.channel.send(pasGod)
+    if(partie.isStarted == false) return message.channel.send(pascomme)
     for(let i = 0; i < listejoueur.length; i++)
     {
       listejoueur[i].user.roles.remove(vivant)
@@ -130,10 +153,8 @@ bot.on("message", (message) => {
       listejoueur[i].user.roles.remove(spec)
       listejoueur[i].user.roles.remove(jour)
       listejoueur[i].user.roles.remove(nuit)
-      listejoueur[i] = new Player(listejoueur[i].user)
-      numJour = 0
-      numNuit = 0
       listejoueur[i].scroll = null
+      listejoueur[i] = new Player(listejoueur[i].user)
       if (!listejoueur[i].serverRoles.includes(godId)){
         listejoueur[i].serverRoles = []
       }
@@ -207,11 +228,17 @@ bot.on("message", (message) => {
     .setDescription("La partie est terminée!")
     .setColor(color)
 
+    numJour = 0
+    numNuit = 0
+    nbrJoueurMax = 0
+    partie.isStarted = false
+    partie.gamemode = null
     message.channel.send(gameend)
 
   }
 
-  else if(cmd == "lastwill") { 
+  else if(cmd == "lastwill") {
+    if(partie.isStarted == false) return message.channel.send(pascomme)
     var messageLW = "" 
     if(args.length >= 1 && taggedUser == null) {
       args.forEach(mot => {
@@ -259,6 +286,7 @@ bot.on("message", (message) => {
     .setColor(color)
 
     if(!god && !dev) return message.channel.send(pasGod)
+    if(partie.isStarted == false) return message.channel.send(pascomme)
     if(!args[0]) return message.channel.send(qui)
     if(tagged.lastwill == null) return graveyardChan.send(pasLW)
     tagged.serverRoles = [mort]
@@ -288,10 +316,7 @@ bot.on("message", (message) => {
     .setDescription("Quel rôle que tu voudrais jouer?")
     .setColor(color))
 
-    if(args[0] != "investigateur" || "lookout" || "sherif" || "spy" || "agent" || "jailor" || "vampirehunter" || "veteran" ||
-      "vigilante" || "bodyguard" || "doctor" || "escorte" || "maire" || "medium" || "retributionist" || "transporter" || "disguiser" || 
-      "forger" || "framer" || "hypnotiseur" || "consierge" || "ambusher" || "godfather" || "mafioso" || "blackmailer" ||
-      "conseiller" || "consort" || "amnesiac" || "surviant" || "vampire" || "bourreau" || "jester" || "sorcière" || "arsonist" || "serialkiller" || "loupgarou")
+    if(roles.includes(args[0]))
       message.channel.send(new Discord.MessageEmbed()
       .setDescription("Je ne trouve pas ce rôle")
       .setColor(color))
@@ -314,21 +339,38 @@ bot.on("message", (message) => {
   }
   
   else if(cmd == "jail") {
-    if(!god && !dev) return message.channel.send(pasGod)
+    if(partie.isStarted == false) return message.channel.send(pascomme)
     if(!args[0]) return message.channel.send(qui)
-      jailedChan.updateOverwrite(
-      tagged.id,
-      {"VIEW_CHANNEL": true})
+    if(!taggedUser) return message.channel.send(trouvePas);
+    if(message.mentions.members.first().id == message.author.id) return message.channel.send(pastoi);
 
-      mafiaChan.updateOverwrite(
-      tagged.id,
-      {"VIEW_CHANNEL": false})
-
-      spyChan.updateOverwrite(
-      tagged.id,
-      {"VIEW_CHANNEL": false})
-
-      jailedChan.send("Vous êtes en prison, défendez vous pour éviter que le jailor vous exécute! ⛓️")
+    if(author.interface == message.channel.id) {
+      if(author.role.name == "Jailor" || god || dev) {
+        let interfachan = message.guild.channels.cache.get(author.interface)
+        jailedChan.updateOverwrite(
+        tagged.id,
+        {"VIEW_CHANNEL": true})
+  
+        mafiaChan.updateOverwrite(
+        tagged.id,
+        {"VIEW_CHANNEL": false})
+  
+        spyChan.updateOverwrite(
+        tagged.id,
+        {"VIEW_CHANNEL": false})
+        
+        interfachan.send("Vous avez emprisonner avec succès " + tagged.name)
+        jailedChan.send("Vous êtes en prison, défendez vous pour éviter que le jailor vous exécute! ⛓️")
+      }else{
+        message.channel.send(new Discord.MessageEmbed()
+        .setDescription("Tu n'est pas le jailor!")
+        .setColor(color))
+      }
+    }else{
+      message.channel.send(new Discord.MessageEmbed()
+      .setDescription("Tu ne peut pas faire cette commande ici")
+      .setColor(color))
+    }
   }
 
   else if(cmd == "info") {
@@ -431,16 +473,8 @@ bot.on("message", (message) => {
       .setDescription("#demande-de-whisper svp")
       .setColor(color);
 
-    let trouvePas = new Discord.MessageEmbed()
-      .setDescription("Je ne trouve pas ce joueur")
-      .setColor(color);
-
     let pasVivant = new Discord.MessageEmbed()
       .setDescription("Ce joueur n'est pas vivant")
-      .setColor(color);
-
-    let pastoi = new Discord.MessageEmbed()
-      .setDescription("Tu ne peut pas te whispe toi même")
       .setColor(color);
 
     let maxwhisp = new Discord.MessageEmbed()
@@ -451,15 +485,16 @@ bot.on("message", (message) => {
       .setDescription("C'est la nuit! Regarde l'heure!")
       .setColor(color);
     
+    if(partie.isStarted == false) return message.channel.send(pascomme)
     if(message.channel.name != dmChan.name) return message.channel.send(demWhisp);
     if(author.whispRemaining == null) return message.channel.send(nuitwhisp)
     if(!args[0]) return message.channel.send(qui);
     if(!taggedUser) return message.channel.send(trouvePas);
     if(message.mentions.members.first().id == message.author.id) return message.channel.send(pastoi);
     if(!taggedUser.roles.cache.has(vivant)) return message.channel.send(pasVivant);
-    let channelName = taggedUser.displayName + " et " + message.author.username;
     if(author.whispRemaining == 0) return message.channel.send(maxwhisp)
 
+    let channelName = taggedUser.displayName + " et " + message.author.username;
     author.whispRemaining--;
 
     message.guild.channels.create(channelName,{type:"text",})
@@ -497,26 +532,36 @@ bot.on("message", (message) => {
       .setDescription("#vote-pour-pendre SVP")
       .setColor(color);
 
-      if(message.channel.name != pendChan.name) return message.channel.send(pendrChan);
-      if(tagged == null) return message.channel.send(qui);
-      if(!author.hasVoted) {
-        tagged.votesFor ++
-        author.hasVoted = true
-        author.registeredVote = tagged
-        votelist.push(author.name)
+    let pasVivant = new Discord.MessageEmbed()
+    .setDescription("Ce joueur n'est pas vivant")
+    .setColor(color)
+    if(partie.isStarted == false) return message.channel.send(pascomme)
+    if(message.channel.name != pendChan.name) return message.channel.send(pendrChan);
+    if(tagged == null) return message.channel.send(qui);
+    if(!taggedUser.roles.cache.has(vivant)) return message.channel.send(pasVivant);
+    if(!taggedUser) return message.channel.send(trouvePas);
+    if(!author.hasVoted) {
+      tagged.votesFor ++
+      author.hasVoted = true
+      author.registeredVote = tagged
+      votelist.push(author.name)
 
-        message.channel.send(new Discord.MessageEmbed()
-        .setDescription(votelist.length)
-        .setColor(color))
-      }
-      else {
-        author.registeredVote.votesFor --
-        tagged.votesFor ++
-      }
-      message.react("👍")
+      message.channel.send(new Discord.MessageEmbed()
+      .setDescription(votelist.length)
+      .setColor(color))
+    }
+    else {
+      author.registeredVote.votesFor --
+      tagged.votesFor ++
+    }
+    message.react("👍")
   }
 
   else if(cmd == "roles") {
+    if(!god && !dev) return message.channel.send(pasGod)
+    if(alive().length != nbrJoueurMax) return message.channel.send(new Discord.MessageEmbed()
+    .setDescription("Il n'y a pas encore assser de joueur inscrit!")
+    .setColor(color))
     (partie.listeroles).forEach(role => {
       listeroles.push(role.name)
     });
@@ -609,9 +654,11 @@ bot.on("message", (message) => {
   }
 
   else if(cmd == "gamemode") {
+    if(!god && !dev) return message.channel.send(pasGod)
     let class20 = ""
     let class15 = ""
     let any15 = ""
+
     for (let i = 1; i <= commands.prototype.getclassique20().length; i++){
       class20 += i + ". " + commands.prototype.getclassique20()[i-1] + "\n"
     }
@@ -628,7 +675,9 @@ bot.on("message", (message) => {
     .addField("Partie classique à 15 joueurs (class15)", class15)
     .setColor(color)
 
-    if(!god && !dev) return message.channel.send(pasGod)
+    if (nomgamemode != null) {
+      mdjsvp.addField(nomgamemode, nouvgmoffi)
+    }
     if(!args[0]) return message.channel.send(mdjsvp)
 
     if(args[0] == "class20") {
@@ -638,6 +687,7 @@ bot.on("message", (message) => {
       .setColor(color)
       message.channel.send(class20em)
       partie.gamemode = "Classique 20 joueurs"
+      nbrJoueurMax = 20
 
     }else if(args[0] == "class15") {
 
@@ -646,6 +696,7 @@ bot.on("message", (message) => {
       .setColor(color)
       message.channel.send(class15em)
       partie.gamemode = "Classique 15 joueurs"
+      nbrJoueurMax = 15
 
     }else if(args[0] == "any15") {
 
@@ -654,17 +705,163 @@ bot.on("message", (message) => {
       .setColor(color)
       message.channel.send(any15em)
       partie.gamemode = "All Any balanced"
+      nbrJoueurMax = 15
+
+    }else if(args[0] == nomgamemode) {
+      let persogm = new Discord.MessageEmbed()
+      .setDescription("Partie personnalisée à " + nouvgmoffi.length + " joueurs!")
+      .setColor(color)
+      message.channel.send(persogm)
+      partie.gamemode = nomgamemode
+      nbrJoueurMax = nouvgmoffi.length
+    }else{
+      message.channel.send(new Discord.MessageEmbed()
+      .setDescription("Je ne trouve pas ce gamemode!")
+      .setColor(color))
     }
   }
 
+  else if(cmd == "nouvgm") {
+    if(!god && !dev) return message.channel.send(pasGod)
+    let good = true
+    let nouvgmliste = []
+    args.slice(1).forEach(arguments => {
+      if(rolesEtAlig.includes(arguments)) {
+        if(good = true) {
+          if(arguments == "ti") {
+            nouvgmliste.push("Town investigative")
+          }else if(arguments == "tp") {
+            nouvgmliste.push("Town protective")
+          }else if(arguments == "ts") {
+            nouvgmliste.push("Town support")
+          }else if(arguments == "tk") {
+            nouvgmliste.push("Town killing")
+          }else if(arguments == "md") {
+            nouvgmliste.push("Mafia deception")
+          }else if(arguments == "ms") {
+            nouvgmliste.push("Mafia support")
+          }else if(arguments == "mk") {
+            nouvgmliste.push("Mafia killing")
+          }else if(arguments == "nb") {
+            nouvgmliste.push("Neutral benin")
+          }else if(arguments == "nk") {
+            nouvgmliste.push("Neutral killing")
+          }else if(arguments == "ne") {
+            nouvgmliste.push("Neutral evil")
+          }else if(arguments == "nc") {
+            nouvgmliste.push("Neutral chaos")
+          }else if(arguments == "rt") {
+            nouvgmliste.push("Random town")
+          }else if(arguments == "rm") {
+            nouvgmliste.push("Random mafia")
+          }else if(arguments == "rn") {
+            nouvgmliste.push("Random neutral")
+          }else{
+            nouvgmliste.push(arguments)
+          }
+        }
+      }else{
+        good = false
+      }
+    });
+    if(nouvgmliste.length == args.length - 1) {
+      nouvgmoffi = nouvgmliste
+      message.channel.send(new Discord.MessageEmbed()
+      .setTitle("Gamemode: " + args[0])
+      .setDescription(nouvgmoffi)
+      .setColor(color))
+      nomgamemode = args[0]
+    }else{
+      message.channel.send(new Discord.MessageEmbed()
+      .setDescription("Il y a un/des role(s) que je ne connais pas! !helpgm pour de l'aide")
+      .setColor(color))
+    }
+  }
+
+  else if(cmd == "delgm") {
+    if(!god && !dev) return message.channel.send(pasGod)
+    if(!args[0]) return message.channel.send(new Discord.MessageEmbed()
+    .setDescription("Quel gamemode?")
+    .setColor(color))
+
+    if(args[0] == nomgamemode) {
+      message.channel.send(new Discord.MessageEmbed()
+      .setDescription("Le mode de jeux " + nomgamemode + " à été supprimé!")
+      .setColor(color))
+      nomgamemode = null
+      nouvgmoffi = []
+    }else{
+      message.channel.send(new Discord.MessageEmbed()
+      .setDescription("Je ne trouve pas ce gamemode! Voici ce que tu peut supprimé: " + nomgamemode)
+      .setColor(color))
+    }
+  }
+
+  else if(cmd == "helpstart") {
+    if(!god && !dev) return message.channel.send(pasGod)
+    message.channel.send(new Discord.MessageEmbed()
+    .setTitle("**Comment démarer une partie**")
+    .setDescription(`Voici les commandes dans **l'ordre**:
+    !gamemode [gamemode]
+    !swhisp [nb de whisp]
+    !start (nb de joueur) (message)
+    !roles
+    Si vous avez des questions, venez parler a Pageau ou Felix`)
+    .addField("**Explications des commandes**", "=================================")
+    .addField("!gamemode", `Cette commande est utile pour sélectionner un gamemode avant de débuter la partie. Si tu fait juste la commande, tu verras tous les gamemodes disponibles (en parenthèse).
+    Tu as juste à faire ex: !gamemode class20`)
+    .addField("!swhisp", "C'est tout simplement pour mettre une limite de whisp par jour. De base, la valeur est **1**.")
+    .addField("!start", `La commande !start permet de démarer la partie. (Le mode de jeux doit être choisi avant) Le nombre de joueurs maximum se détermine avec le nombre de rôle qu'il y a dans le mode de jeux. (Même les modes perso)
+    Par contre, ont peut l'overwrite en tappant un nombre comme premier "mot". Aussi, il est possible de personnalisé le message du début en inscrivant au moins 2 mots. Ex: !start J'aime Felix`)
+    .addField("!roles", `**IMPORTANT!** Il ne faut pas faire cette commande avant que vous ayez reçu un mot dans le channel admin car sinon les rôles ne seront pas distribués. Les rôles sont automatiquement choisis à l'instant que le nombre de joueurs maximum est attein mais sont donnés seulement losque vous faites la commande !roles`)
+    .setColor(color))
+  }
+
+  else if(cmd == "helpgm") {
+    if(!god && !dev) return message.channel.send(pasGod)
+    message.channel.send(new Discord.MessageEmbed()
+    .setTitle("Aide pour créé un gamemode")
+    .addField("Voici tout ce que tu peut écrire", rolesEtAlig)
+    .setDescription(`ti: Town investigator
+    tp: Town protective
+    ts: Town support
+    tk: Town killing
+    md: Mafia deception
+    ms: Mafia support
+    mk: Mafia killing
+    nb: Neutral benin
+    nk: Neutral killing
+    ne: Neutral evil
+    nc: Neutral chaos
+    rt: Random town
+    rm: Random mafia
+    rn: Random neutral`)
+    .setColor(color))
+  }
+
   else if(cmd == "help") {
-    let help = new Discord.MessageEmbed()
+    let helpgod = new Discord.MessageEmbed()
       .setTitle("Commandes Help")
+      .addField("!helpstart", "Tout savoir comment start la game")
       .addField("!helpgame", "Pour avoir de l'aide sur le jeux")
+      .addField("!helpgm", "Pour avoir de l'aide sur la création d'un gamemode")
       .addField("!helpcommands", "Pour avoir de l'aide sur les commandes")
       .setColor(color);
-        
-      message.channel.send(help);
+
+    let help = new Discord.MessageEmbed()
+    .setTitle("Commandes Help")
+    .addField("!helpgame", "Pour avoir de l'aide sur le jeux")
+    .addField("!helpcommands", "Pour avoir de l'aide sur les commandes")
+    .setColor(color);
+    
+    if(god || dev) {
+      message.channel.send(helpgod);
+    }else{
+      message.channel.send(help)
+    }
+
+
+
   }
 
   else if(cmd == "helpgame") {
@@ -692,10 +889,12 @@ bot.on("message", (message) => {
       .addField("!info @[User]", "Pour avoir de l'info sur le joueur")
       .addField("!alive @[User]", "Pour mettre quelqu'un en vie")
       .addField("!result", "Pour avoir le résultat du vote")
-      .addField("!start [Nb Joueurs]", "Pour commencer la game")
-      .addField("!start [Nb Joueurs] [message]", "Tu peut aussi faire un message personnalisé!")
+      .addField("!start (Nb Joueurs)", "Pour commencer la game")
+      .addField("!start (Nb Joueurs) (message)", "Tu peut aussi faire un message personnalisé!")
       .addField("!end", "Pour finir la game")
       .addField("!jail @[User]", "Pour mettre quelqu'un en prison")
+      .addField("!nouvgm [Nom] [liste roles]", "Permet de créé un gamemode personnalisé")
+      .addField("!delgm [gamemode]", "Pour supprimé un gamemode")
       .addField("!kill @[User]", "Pour tuer quelqu'un")
       .addField("!lastwill", "Écrit ton last will ici. Tu peux aussi voir ton last will comme ça: !lastwill")
       .addField("!lastwill [User]", "Pour voir le lastwill d'un joueur")
@@ -710,6 +909,7 @@ bot.on("message", (message) => {
       .addField("!w @[User]", "Whisper quelqu'un")
       .addField("!p @[User]", "Pendre quelqu'un")
       .addField("!lastwill", "Écrit ton last will ici. Tu peut aussi voir ton last will comme ça: !lastwill")
+      .addField("!jail @[User]", "Seulement le jailor peut faire cette commande")
       .addField("!help", "Pour avoir de l'aide")
       .addField("@Bilou", "Pour summon un être tout puissant qui viendra vous aider")
       .setImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmUWvLwPHHKnsJvCvA2WUg5A5adoYpBQx9Pg&usqp=CAU")
@@ -742,95 +942,58 @@ bot.on('message', async (message) => {
 
 
   if(cmd == "start"){
+    let class20 = ""
+    let class15 = ""
+    let any15 = ""
+    let slineNum = 0
+
+    for (let i = 1; i <= commands.prototype.getclassique20().length; i++){
+      class20 += i + ". " + commands.prototype.getclassique20()[i-1] + "\n"
+    }
+    for (let i = 1; i <= commands.prototype.getclassique15().length; i++){
+      class15 += i + ". " + commands.prototype.getclassique15()[i-1] + "\n"
+    }
+    for (let i = 1; i <= commands.prototype.getany15().length; i++){
+      any15 += i + ". " + commands.prototype.getany15()[i-1] + "\n"
+    }
 
     let quelgm = new Discord.MessageEmbed()
     .setDescription("Quel gamemode? !gamemode")
     .setColor(color)
     if(partie.gamemode == null) return message.channel.send(quelgm)
 
-    let combien = new Discord.MessageEmbed()
-    .setDescription("Combien de joueurs?")
-    .setColor(color);
-
-    nbrJoueurMax = args[0];
     let messagestart = ""
     if(!god && !dev) return message.channel.send(pasGod)
-    if(!args[0]) return message.channel.send(combien)
-
+    
+    if(!(isNaN(args[0]))) {
+      nbrJoueurMax = args[0]
+      slineNum = 1
+    }
+    console.log(nbrJoueurMax)
     if(partie.gamemode == "Classique 20 joueurs") {
       listerolechan.send(new Discord.MessageEmbed()
       .setTitle("Partie en cour: Clasique 20 joueurs")
-      .setDescription(
-      `1. Jailor
-      2. Doctor
-      3. Investigator
-      4. Town investigative
-      5. Town investigative
-      6. Town Support
-      7. Town killing
-      8. Random town
-      9. Random town
-      10. Random town
-      11. Vampire Hunter
-      12. Godfather
-      13. Mafioso
-      14. Random Mafia
-      15. Random mafia
-      16. Vampire
-      17. Neutral Evil
-      18. Neutral Killing
-      19. Any
-      20. Any`)
+      .setDescription(class20)
       .setColor(color))
     }else if(partie.gamemode == "Classique 15 joueurs") {
       listerolechan.send(new Discord.MessageEmbed()
       .setTitle("Partie en cour: Classique 15 joueurs")
-      .setDescription(
-      `1. Jailor
-      2. Town investigative
-      3. Town investigative
-      4. Town protective
-      5. Town killing
-      6. Town Support
-      7. Random town
-      8. Random town
-      9. Neutral Killing
-      10. Godfather
-      11. Mafioso
-      12. Random mafia
-      13. Random mafia
-      14. Neutral Evil
-      15. Any`)
+      .setDescription(class15)
       .setColor(color))
     }else if(partie.gamemode == "All Any balanced") {
       listerolechan.send(new Discord.MessageEmbed()
       .setTitle("Partie en cour: All any 15 joueurs")
-      .setDescription(
-      `1. Random town
-      2. Random town
-      3. Random town
-      4. Any
-      5. Any
-      6. Any
-      7. Any
-      8. Any
-      9. Any
-      10. Any
-      11. Any
-      12. Any
-      13. Any
-      14. Any
-      15. Any`)
+      .setDescription(any15)
       .setColor(color))
     }
 
-    if(args.length == 1) {
+    if(args.length <= 1) {
       const reactionMessage = await qvjChan.send(messageJouer)
       await reactionMessage.react(turtleId)
       await reactionMessage.react(eyesId)
 
     }else if(args.length >= 2) {
-        args.slice(1).forEach(mots => {
+        args.slice(slineNum).forEach(mots => {
         messagestart += mots + " "
       });
 
@@ -877,7 +1040,6 @@ bot.on("messageReactionAdd", (reaction, user) => {
       reactor = player
     }
   })
-  
   if(reaction.message.channel == quiVeutJouer) {
     if (reactor == null){
       reaction.message.channel.send(new Discord.MessageEmbed()
@@ -888,7 +1050,8 @@ bot.on("messageReactionAdd", (reaction, user) => {
     try{
       if(reaction.emoji.id == turtleId){
         if(!reactor.serverRoles.includes(vivant)) {
-          if (alive().length != nbrJoueurMax) {
+          if(alive().length < nbrJoueurMax) {
+            
             reactor.user.roles.add(vivant)
             reactor.serverRoles.push(vivant)
             reactor.user.roles.remove(spec)
@@ -928,8 +1091,9 @@ bot.on("messageReactionAdd", (reaction, user) => {
               interfaces.push(channel.id)
               })
 
-            if (alive().length == nbrJoueurMax){
+            if(alive().length == nbrJoueurMax){
               Commands.prototype.start(partie, alive())
+              partie.isStarted = true
             } 
           }
           else{

@@ -7,7 +7,7 @@ class Partie{
 
         this.gamemode = null
         this.jour = 0
-        this.isStarted = null
+        this.isStarted = false
         this.listeroles = []
         
     }
