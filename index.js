@@ -609,9 +609,9 @@ bot.on("message", (message) => {
   }
 
   else if(cmd == "gamemode") {
-    class20 = ""
-    class15 = ""
-    any15 = ""
+    let class20 = ""
+    let class15 = ""
+    let any15 = ""
     for (let i = 1; i <= commands.prototype.classique20.length; i++){
       class20 += i + ". " + commands.prototype.classique20[i-1] + "\n"
     }
