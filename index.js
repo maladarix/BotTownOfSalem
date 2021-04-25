@@ -660,6 +660,7 @@ bot.on("message", (message) => {
     let class20 = ""
     let class15 = ""
     let any15 = ""
+    let found = false
 
     for (let i = 1; i <= commands.prototype.getclassique20().length; i++){
       class20 += i + ". " + commands.prototype.getclassique20()[i-1] + "\n"
@@ -682,41 +683,18 @@ bot.on("message", (message) => {
     }
     if(!args[0]) return message.channel.send(mdjsvp)
 
-    if(args[0] == "class20") {
-
-      let class20em = new Discord.MessageEmbed()
-      .setDescription("Mode de jeu classique 20 joueurs choisi!")
-      .setColor(color)
-      message.channel.send(class20em)
-      partie.gamemode = "Classique 20 joueurs"
-      nbrJoueurMax = 20
-
-    }else if(args[0] == "class15") {
-
-      let class15em = new Discord.MessageEmbed()
-      .setDescription("Mode de jeu classique 15 joueurs choisi!")
-      .setColor(color)
-      message.channel.send(class15em)
-      partie.gamemode = "Classique 15 joueurs"
-      nbrJoueurMax = 15
-
-    }else if(args[0] == "any15") {
-
-      let any15em = new Discord.MessageEmbed()
-      .setDescription("Mode de jeu All Any balanced choisi!")
-      .setColor(color)
-      message.channel.send(any15em)
-      partie.gamemode = "All Any balanced"
-      nbrJoueurMax = 15
-
-    }else if(args[0] == nomgamemode) {
-      let persogm = new Discord.MessageEmbed()
-      .setDescription("Partie personnalisée à " + nouvgmoffi.length + " joueurs!")
-      .setColor(color)
-      message.channel.send(persogm)
-      partie.gamemode = nomgamemode
-      nbrJoueurMax = nouvgmoffi.length
-    }else{
+    commands.prototype.getgm.forEach(gm => {
+      if(args[0] == gm.name)
+      {
+        message.channel.send(new Discord.MessageEmbed()
+        .setDescription("Mode de jeu" + gm.name + "choisi!")
+        .setColor(color))
+        partie.gamemode = gm.name
+        nbrJoueurMax = gm.list.length
+        found = true
+      }
+    });
+if(!found){
       message.channel.send(new Discord.MessageEmbed()
       .setDescription("Je ne trouve pas ce gamemode!")
       .setColor(color))
@@ -778,6 +756,7 @@ bot.on("message", (message) => {
       .addField("Nombre de joueurs", args.length - 1)
       .setColor(color))
       nomgamemode = args[0]
+      commands.prototype.addgm(nomgamemode, nouvgmoffi)
     }else{
       message.channel.send(new Discord.MessageEmbed()
       .setDescription("Il y a un/des role(s) que je ne connais pas! !helpgm pour de l'aide")

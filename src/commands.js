@@ -36,6 +36,7 @@ let anyrole = [roles.prototype.getInvest(), roles.prototype.getLoukout(), roles.
     roles.prototype.getConsort(), roles.prototype.getGodfather(), roles.prototype.getMafioso(), roles.prototype.getAmb(), roles.prototype.getAmne(), roles.prototype.getSurv(), 
     roles.prototype.getArso(), roles.prototype.getSerialk(), roles.prototype.getExec(), roles.prototype.getJester(), roles.prototype.getWitch(), roles.prototype.getVamp()]
 
+let listeGm = [{name : "classique15", list : classique15}, {name : "allanyballanced15", list : Allanyballenced15}, {name : "classique21", list : classique20}]
 let classique15 = ["Jailor", "Town investigative", "Town investigative", "Town protective", "Town killing", "Town support", "Random town", "Random town", "Godfather", "Mafioso", 
 "Random mafia", "Random mafia", "Neutral evil", "Neutral killing", "Any"]
 
@@ -44,6 +45,9 @@ let Allanyballenced15 = ["Random town", "Random town", "Random town", "Any", "An
 let classique20 = ["Jailor", "Doctor", "Investigateur", "Town investigative", "Town investigative", "Town support", "Town killing", "Random town", "Random town", "Random town",
 "Vampire-hunter", "Godfather", "Mafioso", "Random mafia", "Random mafia", "Vampire", "Neutral killing", "Neutral evil", "Any", "Any"]
 
+let listeGm = [{name : "classique15", list : classique15}, {name : "allanyballanced15", list : Allanyballenced15}, {name : "classique21", list : classique20}]
+
+let customgm = ""//////mettre la variable "nomgamemode" ici
 
 let currentgamemode = []
 let gameroles = []
@@ -52,6 +56,14 @@ let customgm = []
 let listerandom = []
 
 class commands{
+    addgm(nom, liste)
+    {
+        listeGm.push({name : nom, list : liste})
+    }
+    getgm()
+    {
+        return listeGm
+    }
     getclassique15()
     {
         return classique15
@@ -67,15 +79,12 @@ class commands{
     start(partie, players) {
         customgm = partie.persoGm
         gameroles = []
-        if(partie.gamemode == "Classique 20 joueurs") {
-            currentgamemode = classique20
-        }else if(partie.gamemode == "Classique 15 joueurs") {
-            currentgamemode = classique15
-        }else if(partie.gamemode == "All Any balanced") {
-            currentgamemode = Allanyballenced15
-        }else if(partie.gamemode == partie.personom) {
-            currentgamemode = customgm
-        }else return
+        listegm.forEach(gm => {
+            if (gm.name = partie.gamemode)
+            {
+                currentgamemode = gm.list
+            }
+        });
         currentgamemode.forEach(role => {
             if(role == "Jailor") {
                 this.getJailor()
