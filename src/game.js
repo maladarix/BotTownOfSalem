@@ -9,6 +9,8 @@ class Partie{
         this.jour = 0
         this.isStarted = false
         this.listeroles = []
+        this.personom = ""
+        this.persoGm = []
         
     }
 }

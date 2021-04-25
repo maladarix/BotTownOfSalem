@@ -44,10 +44,10 @@ let Allanyballenced15 = ["Random town", "Random town", "Random town", "Any", "An
 let classique20 = ["Jailor", "Doctor", "Investigateur", "Town investigative", "Town investigative", "Town support", "Town killing", "Random town", "Random town", "Random town",
 "Vampire-hunter", "Godfather", "Mafioso", "Random mafia", "Random mafia", "Vampire", "Neutral killing", "Neutral evil", "Any", "Any"]
 
-let customgm = ""//////mettre la variable "nomgamemode" ici
 
 let currentgamemode = []
 let gameroles = []
+let customgm = []
 
 let listerandom = []
 
@@ -65,6 +65,7 @@ class commands{
         return Allanyballenced15
     }
     start(partie, players) {
+        customgm = partie.persoGm
         gameroles = []
         if(partie.gamemode == "Classique 20 joueurs") {
             currentgamemode = classique20
@@ -72,6 +73,8 @@ class commands{
             currentgamemode = classique15
         }else if(partie.gamemode == "All Any balanced") {
             currentgamemode = Allanyballenced15
+        }else if(partie.gamemode == partie.personom) {
+            currentgamemode = customgm
         }else return
         currentgamemode.forEach(role => {
             if(role == "Jailor") {

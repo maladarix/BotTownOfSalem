@@ -46,7 +46,7 @@ var nbWhispJour = 1
 let rolesEtAlig = ["Investigateur", "Lookout", "Sherif", "Spy", "Agent", "Jailor", "Vampire-hunter", "Veteran", "Vigilante", "Bodyguard", "Doctor", "Escorte"
 , "Maire", "Medium", "Retributionist", "Transporter", "Disguiser", "Forger", "Framer", "Hypnotiseur", "Consierge", "Ambusher", "Godfather", "Mafioso", "Blackmailer"
 , "Conseiller", "Consort", "Amnesiac", "Survivant", "Vampire", "Bourreau", "Jester", "Sorcière", "Arsonist", "Serial-killer", "Loup-garou", "ti" ,"tp", "ts", "tk", "md", "ms", "mk"
-, "nb", "nk", "ne", "nc", "rt", "rm", "rn"]
+, "nb", "nk", "ne", "nc", "rt", "rm", "rn", "any"]
 let roles = ["investigateur", "lookout", "sherif", "spy", "agent", "jailor", "vampirehunter", "veteran", "vigilante", "bodyguard", "doctor", "escorte"
 , "maire", "medium", "retributionist", "transporter", "disguiser", "forger", "framer", "hypnotiseur", "consierge", "ambusher", "godfather", "mafioso", "blackmailer"
 , "conseiller", "consort", "amnesiac", "survivant", "vampire", "bourreau", "jester", "sorcière", "arsonist", "serialkiller", "loupgarou"]
@@ -145,7 +145,6 @@ bot.on("message", (message) => {
 
   if(cmd == "end") {
     if(!god && !dev) return message.channel.send(pasGod)
-    if(partie.isStarted == false) return message.channel.send(pascomme)
     for(let i = 0; i < listejoueur.length; i++)
     {
       listejoueur[i].user.roles.remove(vivant)
@@ -233,6 +232,7 @@ bot.on("message", (message) => {
     nbrJoueurMax = 0
     partie.isStarted = false
     partie.gamemode = null
+    partie.listeroles = []
     message.channel.send(gameend)
 
   }
@@ -562,9 +562,11 @@ bot.on("message", (message) => {
     if(alive().length != nbrJoueurMax) return message.channel.send(new Discord.MessageEmbed()
     .setDescription("Il n'y a pas encore assser de joueur inscrit!")
     .setColor(color))
-    (partie.listeroles).forEach(role => {
+    let roles = partie.listeroles
+    roles.forEach(role => {
       listeroles.push(role.name)
     });
+    console.log(partie.listeroles)
     alive().forEach(player => {
       let interfacechan =  message.guild.channels.cache.get(player.interface)
       interfacechan.send(new Discord.MessageEmbed()
@@ -577,7 +579,7 @@ bot.on("message", (message) => {
       .addField("Gagnez avec", player.role.winwith)
       .addField("Plus d'info sur ton wiki", player.role.wikiLink)
       .setColor(color))
-
+      
       joueurroles.push(player.name + ", " + player.role.name)
 
       if(player.role.name == "Jailor") {
@@ -756,6 +758,8 @@ bot.on("message", (message) => {
             nouvgmliste.push("Random mafia")
           }else if(arguments == "rn") {
             nouvgmliste.push("Random neutral")
+          }else if(arguments == "any") {
+            nouvgmliste.push("Any")
           }else{
             nouvgmliste.push(arguments)
           }
@@ -766,9 +770,12 @@ bot.on("message", (message) => {
     });
     if(nouvgmliste.length == args.length - 1) {
       nouvgmoffi = nouvgmliste
+      partie.persoGm = nouvgmoffi
+      partie.personom = args[0]
       message.channel.send(new Discord.MessageEmbed()
       .setTitle("Gamemode: " + args[0])
       .setDescription(nouvgmoffi)
+      .addField("Nombre de joueurs", args.length - 1)
       .setColor(color))
       nomgamemode = args[0]
     }else{
@@ -969,7 +976,6 @@ bot.on('message', async (message) => {
       nbrJoueurMax = args[0]
       slineNum = 1
     }
-    console.log(nbrJoueurMax)
     if(partie.gamemode == "Classique 20 joueurs") {
       listerolechan.send(new Discord.MessageEmbed()
       .setTitle("Partie en cour: Clasique 20 joueurs")
