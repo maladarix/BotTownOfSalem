@@ -50,7 +50,18 @@ let gameroles = []
 let listerandom = []
 
 class commands{
-    
+    getclassique15()
+    {
+        return classique15
+    }
+    getclassique20()
+    {
+        return classique20
+    }
+    getany15()
+    {
+        return Allanyballenced15
+    }
     start(partie, players) {
         gameroles = []
         if(partie.gamemode == "Classique 20 joueurs") {

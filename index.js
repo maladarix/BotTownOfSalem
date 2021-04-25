@@ -612,14 +612,14 @@ bot.on("message", (message) => {
     let class20 = ""
     let class15 = ""
     let any15 = ""
-    for (let i = 1; i <= commands.prototype.classique20.length; i++){
-      class20 += i + ". " + commands.prototype.classique20[i-1] + "\n"
+    for (let i = 1; i <= commands.prototype.getclassique20().length; i++){
+      class20 += i + ". " + commands.prototype.getclassique20()[i-1] + "\n"
     }
-    for (let i = 1; i <= commands.prototype.classique15.length; i++){
-      class15 += i + ". " + commands.prototype.classique15[i-1] + "\n"
+    for (let i = 1; i <= commands.prototype.getclassique15().length; i++){
+      class15 += i + ". " + commands.prototype.getclassique15()[i-1] + "\n"
     }
-    for (let i = 1; i <= commands.prototype.Allanyballenced15.length; i++){
-      any15 += i + ". " + commands.prototype.Allanyballenced15[i-1] + "\n"
+    for (let i = 1; i <= commands.prototype.getany15().length; i++){
+      any15 += i + ". " + commands.prototype.getany15()[i-1] + "\n"
     }
     let mdjsvp = new Discord.MessageEmbed()
     .setTitle("Quel mode de jeux?")
