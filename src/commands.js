@@ -21,7 +21,7 @@ let randommafia = [roles.prototype.getDisg(), roles.prototype.getForger(), roles
 
 
 let neutralbening = [roles.prototype.getAmne(), roles.prototype.getSurv()]
-let neutralkilling = [roles.prototype.getArso(), roles.prototype.getSerialk(), roles.prototype.getWerewolf(),]
+let neutralkilling = [roles.prototype.getArso(), roles.prototype.getSerialk(), roles.prototype.getWerewolf()]
 let neutralevil = [roles.prototype.getExec(), roles.prototype.getJester(), roles.prototype.getWitch()]
 let neutralchaos = [roles.prototype.getVamp()]
 

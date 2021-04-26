@@ -115,8 +115,6 @@ bot.on("message", (message) => {
   let cmd = MessageArray[0].slice(prefix.length);
   let args = MessageArray.slice(1);
 
-
-
   try{
     listejoueur.forEach(player => {
       if (message.mentions.members.first().user.username == player.name){
