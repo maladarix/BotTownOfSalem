@@ -199,7 +199,7 @@ class commands{
         let randomtownkill = null
         do{
             randomtownkill = townkilling[Math.floor(Math.random() * townkilling.length)]
-            if(!(randomtownkill.isUnique && gameroles.includes(randomtownkill))) {
+            if(!(randomtownkill.isUnique && gameroles.includes(randomtownkill))) { // there is a problem. yé 3h du matin so jme casse pas la tete. Dans le fond j'ai eu 2 jailor avec le classique15
                 good = true
             }
         }while (!good)
@@ -223,7 +223,6 @@ class commands{
         let randomtownrole = null
         do{
             randomtownrole = randomtown[Math.floor(Math.random() * randomtown.length)]
-
             if(!(randomtownrole.isUnique && gameroles.includes(randomtownrole)))
             {
                 good = true

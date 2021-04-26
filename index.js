@@ -942,7 +942,6 @@ bot.on('message', async (message) => {
   .setColor(color);
   var color = "#f0b71a";
   let qvjChan = message.guild.channels.cache.get(quiVeutJouer);
-  let adminchannel = message.guild.channels.cache.get(adminchat)
   let listerolechan = message.guild.channels.cache.get(listeroleid)
   if(message.author.bot) return;
   if(!message.content.startsWith(prefix)) return;
@@ -1042,6 +1041,7 @@ bot.on('message', async (message) => {
 });
 
 bot.on("messageReactionAdd", (reaction, user) => {
+  let adminchannel = reaction.message.guild.channels.cache.get(adminchat)
   if(user.bot) return;
   var reactor = null
   listejoueur.forEach(player => {
@@ -1103,6 +1103,9 @@ bot.on("messageReactionAdd", (reaction, user) => {
             if(alive().length == nbrJoueurMax){
               Commands.prototype.start(partie, alive())
               partie.isStarted = true
+              adminchannel.send(new Discord.MessageEmbed()
+              .setDescription("Vous pouvez m'aintenant distribuer les rôles!")
+              .setColor(color))
             } 
           }
           else{
