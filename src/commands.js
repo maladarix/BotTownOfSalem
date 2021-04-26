@@ -36,7 +36,6 @@ let anyrole = [roles.prototype.getInvest(), roles.prototype.getLoukout(), roles.
     roles.prototype.getConsort(), roles.prototype.getGodfather(), roles.prototype.getMafioso(), roles.prototype.getAmb(), roles.prototype.getAmne(), roles.prototype.getSurv(), 
     roles.prototype.getArso(), roles.prototype.getSerialk(), roles.prototype.getExec(), roles.prototype.getJester(), roles.prototype.getWitch(), roles.prototype.getVamp()]
 
-let listeGm = [{name : "classique15", list : classique15}, {name : "allanyballanced15", list : Allanyballenced15}, {name : "classique21", list : classique20}]
 let classique15 = ["Jailor", "Town investigative", "Town investigative", "Town protective", "Town killing", "Town support", "Random town", "Random town", "Godfather", "Mafioso", 
 "Random mafia", "Random mafia", "Neutral evil", "Neutral killing", "Any"]
 
@@ -46,9 +45,6 @@ let classique20 = ["Jailor", "Doctor", "Investigateur", "Town investigative", "T
 "Vampire-hunter", "Godfather", "Mafioso", "Random mafia", "Random mafia", "Vampire", "Neutral killing", "Neutral evil", "Any", "Any"]
 
 let listeGm = [{name : "classique15", list : classique15}, {name : "allanyballanced15", list : Allanyballenced15}, {name : "classique21", list : classique20}]
-
-let customgm = ""//////mettre la variable "nomgamemode" ici
-
 let currentgamemode = []
 let gameroles = []
 let customgm = []

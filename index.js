@@ -662,7 +662,7 @@ bot.on("message", (message) => {
     let mdjsvp = new Discord.MessageEmbed()
     .setTitle("Quel mode de jeux?")
 
-    commands.prototype.getgm.forEach(gm => {
+    commands.prototype.getgm().forEach(gm => {
       let text = ""
       for (let i = 1; i <= gm.list.length; i++){
         text += i + ". " + gm.list[i-1] + "\n"
@@ -688,7 +688,7 @@ bot.on("message", (message) => {
         found = true
       }
     });
-if(!found){
+    if(!found){
       message.channel.send(new Discord.MessageEmbed()
       .setDescription("Je ne trouve pas ce gamemode!")
       .setColor(color))
