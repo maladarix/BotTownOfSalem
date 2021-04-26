@@ -657,26 +657,20 @@ bot.on("message", (message) => {
 
   else if(cmd == "gamemode") {
     if(!god && !dev) return message.channel.send(pasGod)
-    let class20 = ""
-    let class15 = ""
-    let any15 = ""
     let found = false
 
-    for (let i = 1; i <= commands.prototype.getclassique20().length; i++){
-      class20 += i + ". " + commands.prototype.getclassique20()[i-1] + "\n"
-    }
-    for (let i = 1; i <= commands.prototype.getclassique15().length; i++){
-      class15 += i + ". " + commands.prototype.getclassique15()[i-1] + "\n"
-    }
-    for (let i = 1; i <= commands.prototype.getany15().length; i++){
-      any15 += i + ". " + commands.prototype.getany15()[i-1] + "\n"
-    }
     let mdjsvp = new Discord.MessageEmbed()
     .setTitle("Quel mode de jeux?")
-    .addField("Partie classique à 20 joueurs (class20)", class20)
-    .addField("All Any balanced à 15 joueurs (any15)", any15)
-    .addField("Partie classique à 15 joueurs (class15)", class15)
-    .setColor(color)
+
+    commands.prototype.getgm.forEach(gm => {
+      let text = ""
+      for (let i = 1; i <= gm.list.length; i++){
+        text += i + ". " + gm.list[i-1] + "\n"
+      }
+      mdjsvp.addField(gm.name, text)
+    });
+
+    mdjsvp.setColor(color)
 
     if (nomgamemode != null) {
       mdjsvp.addField(nomgamemode, nouvgmoffi)
