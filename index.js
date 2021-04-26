@@ -566,6 +566,7 @@ bot.on("message", (message) => {
 
   else if(cmd == "roles") {
     if(!god && !dev) return message.channel.send(pasGod)
+    if(partie.isStarted == false) return message.channel.send(pascomme)
     if(alive().length != nbrJoueurMax) return message.channel.send(new Discord.MessageEmbed()
     .setDescription("Il n'y a pas encore assser de joueur inscrit!")
     .setColor(color))
@@ -573,7 +574,6 @@ bot.on("message", (message) => {
     roles.forEach(role => {
       listeroles.push(role.name)
     });
-    console.log(partie.listeroles)
     alive().forEach(player => {
       let interfacechan =  message.guild.channels.cache.get(player.interface)
       interfacechan.send(new Discord.MessageEmbed()
@@ -760,6 +760,7 @@ bot.on("message", (message) => {
       .setColor(color))
       nomgamemode = args[0]
       listeGm.push({name : nomgamemode, list : nouvgmoffi})
+      nomgamemode = null
     }else{
       message.channel.send(new Discord.MessageEmbed()
       .setDescription("Il y a un/des role(s) que je ne connais pas! !helpgm pour de l'aide")
@@ -767,24 +768,44 @@ bot.on("message", (message) => {
     }
   }
 
-  /*else if(cmd == "delgm") {
+  else if(cmd == "delgm") {
     if(!god && !dev) return message.channel.send(pasGod)
-    if(!args[0]) return message.channel.send(new Discord.MessageEmbed()
-    .setDescription("Quel gamemode?")
+    if(partie.isStarted == true) return message.channel.send(new Discord.MessageEmbed()
+    .setDescription("La partie est déja commencée!")
     .setColor(color))
 
-    if(args[0] == nomgamemode) {
+    let nomliste = []
+
+    listeGm.slice(3).forEach(liste => {
+      nomliste.push(liste.name)
+    });
+
+    if(nomliste.includes(args[0])) {
       message.channel.send(new Discord.MessageEmbed()
-      .setDescription("Le mode de jeux " + nomgamemode + " à été supprimé!")
+      .setDescription("Le mode de jeux " + args[0] + " à été supprimé!")
       .setColor(color))
+
+      for( var i = 0; i < listeGm.length; i++){                          
+        if(listeGm[i].name === args[0]) { 
+            listeGm.splice(i, 1); 
+            i--; 
+        }
+      }
       nomgamemode = null
       nouvgmoffi = []
-    }else{
+    }else if(nomliste == "") {
       message.channel.send(new Discord.MessageEmbed()
-      .setDescription("Je ne trouve pas ce gamemode! Voici ce que tu peut supprimé: " + listeGm)
+      .setDescription("Il n'y a aucun gamemode perso!")
+      .setColor(color))
+    }else if(!args[0]) return message.channel.send(new Discord.MessageEmbed()
+    .addField("Quel gamemode?", nomliste)
+    .setColor(color))
+    else{
+      message.channel.send(new Discord.MessageEmbed()
+      .addField("Je ne trouve pas ce gamemode! Voici ce que tu peut supprimé: ", nomliste)
       .setColor(color))
     }
-  }*/
+  }
 
   else if(cmd == "helpstart") {
     if(!god && !dev) return message.channel.send(pasGod)
