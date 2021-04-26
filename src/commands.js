@@ -44,7 +44,6 @@ let customgm = []
 let listerandom = []
 
 class commands{
-
     start(partie, players) {
         customgm = partie.persoGm
         gameroles = []

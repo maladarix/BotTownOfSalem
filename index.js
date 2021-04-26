@@ -61,7 +61,6 @@ let classique20 = ["Jailor", "Doctor", "Investigateur", "Town investigative", "T
 
 let listeGm = [{name : "classique15", list : classique15}, {name : "allanyballanced15", list : Allanyballenced15}, {name : "classique20", list : classique20}]
 
-
 let color = "#f0b71a";
 let prefix = "!";
 var tagged = null
@@ -130,8 +129,6 @@ bot.on("message", (message) => {
     }
   })
   var taggedUser = message.mentions.members.first();
- 
-
  
   let pasGod = new Discord.MessageEmbed()
     .setDescription("Tu n'est pas " + `<@&${godId}>` )
