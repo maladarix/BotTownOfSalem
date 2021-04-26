@@ -94,6 +94,7 @@ bot.on("message", (message) => {
   let mafiaChan = message.guild.channels.cache.get(mafiaChat);
   let graveyardChan = message.guild.channels.cache.get(graveyard);
   let adminchannel = message.guild.channels.cache.get(adminchat)
+  let listerolechan = message.guild.channels.cache.get(listeroleid)
   let dev = message.member.roles.cache.has(devid);
   let god = message.member.roles.cache.has(godId);
   let dmChan = message.guild.channels.cache.get(dmchanid);
@@ -616,8 +617,13 @@ bot.on("message", (message) => {
       .setColor(color))
 
       adminchannel.send(new Discord.MessageEmbed()
-      .setTitle("Liste de rôle " + "(" + partie.gamemode + ")")
+      .setTitle("Liste de rôle " + "(" + partie.gamemode.name + ")")
       .setDescription(listeroles)
+      .setColor(color))
+
+      listerolechan.send(new Discord.MessageEmbed()
+      .setTitle("Partie en cour: " + partie.gamemode.name)
+      .setDescription(partie.gamemode.list)
       .setColor(color))
   }
 
@@ -766,7 +772,7 @@ bot.on("message", (message) => {
     }
   }
 
-  else if(cmd == "delgm") {
+  /*else if(cmd == "delgm") {
     if(!god && !dev) return message.channel.send(pasGod)
     if(!args[0]) return message.channel.send(new Discord.MessageEmbed()
     .setDescription("Quel gamemode?")
@@ -780,10 +786,10 @@ bot.on("message", (message) => {
       nouvgmoffi = []
     }else{
       message.channel.send(new Discord.MessageEmbed()
-      .setDescription("Je ne trouve pas ce gamemode! Voici ce que tu peut supprimé: " + nomgamemode)
+      .setDescription("Je ne trouve pas ce gamemode! Voici ce que tu peut supprimé: " + listeGm)
       .setColor(color))
     }
-  }
+  }*/
 
   else if(cmd == "helpstart") {
     if(!god && !dev) return message.channel.send(pasGod)
