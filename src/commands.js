@@ -36,15 +36,7 @@ let anyrole = [roles.prototype.getInvest(), roles.prototype.getLoukout(), roles.
     roles.prototype.getConsort(), roles.prototype.getGodfather(), roles.prototype.getMafioso(), roles.prototype.getAmb(), roles.prototype.getAmne(), roles.prototype.getSurv(), 
     roles.prototype.getArso(), roles.prototype.getSerialk(), roles.prototype.getExec(), roles.prototype.getJester(), roles.prototype.getWitch(), roles.prototype.getVamp()]
 
-let classique15 = ["Jailor", "Town investigative", "Town investigative", "Town protective", "Town killing", "Town support", "Random town", "Random town", "Godfather", "Mafioso", 
-"Random mafia", "Random mafia", "Neutral evil", "Neutral killing", "Any"]
 
-let Allanyballenced15 = ["Random town", "Random town", "Random town", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any"]
-
-let classique20 = ["Jailor", "Doctor", "Investigateur", "Town investigative", "Town investigative", "Town support", "Town killing", "Random town", "Random town", "Random town",
-"Vampire-hunter", "Godfather", "Mafioso", "Random mafia", "Random mafia", "Vampire", "Neutral killing", "Neutral evil", "Any", "Any"]
-
-let listeGm = [{name : "classique15", list : classique15}, {name : "allanyballanced15", list : Allanyballenced15}, {name : "classique21", list : classique20}]
 let currentgamemode = []
 let gameroles = []
 let customgm = []
@@ -52,26 +44,7 @@ let customgm = []
 let listerandom = []
 
 class commands{
-    addgm(nom, liste)
-    {
-        listeGm.push({name : nom, list : liste})
-    }
-    getgm()
-    {
-        return listeGm
-    }
-    getclassique15()
-    {
-        return classique15
-    }
-    getclassique20()
-    {
-        return classique20
-    }
-    getany15()
-    {
-        return Allanyballenced15
-    }
+
     start(partie, players) {
         customgm = partie.persoGm
         gameroles = []

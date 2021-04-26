@@ -51,6 +51,17 @@ let roles = ["investigateur", "lookout", "sherif", "spy", "agent", "jailor", "va
 , "maire", "medium", "retributionist", "transporter", "disguiser", "forger", "framer", "hypnotiseur", "consierge", "ambusher", "godfather", "mafioso", "blackmailer"
 , "conseiller", "consort", "amnesiac", "survivant", "vampire", "bourreau", "jester", "sorcière", "arsonist", "serialkiller", "loupgarou"]
 
+let classique15 = ["Jailor", "Town investigative", "Town investigative", "Town protective", "Town killing", "Town support", "Random town", "Random town", "Godfather", "Mafioso", 
+"Random mafia", "Random mafia", "Neutral evil", "Neutral killing", "Any"]
+
+let Allanyballenced15 = ["Random town", "Random town", "Random town", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any"]
+
+let classique20 = ["Jailor", "Doctor", "Investigateur", "Town investigative", "Town investigative", "Town support", "Town killing", "Random town", "Random town", "Random town",
+"Vampire-hunter", "Godfather", "Mafioso", "Random mafia", "Random mafia", "Vampire", "Neutral killing", "Neutral evil", "Any", "Any"]
+
+let listeGm = [{name : "classique15", list : classique15}, {name : "allanyballanced15", list : Allanyballenced15}, {name : "classique21", list : classique20}]
+
+
 let color = "#f0b71a";
 let prefix = "!";
 var tagged = null
@@ -662,7 +673,7 @@ bot.on("message", (message) => {
     let mdjsvp = new Discord.MessageEmbed()
     .setTitle("Quel mode de jeux?")
 
-    commands.prototype.getgm().forEach(gm => {
+    listeGm.forEach(gm => {
       let text = ""
       for (let i = 1; i <= gm.list.length; i++){
         text += i + ". " + gm.list[i-1] + "\n"
@@ -677,7 +688,7 @@ bot.on("message", (message) => {
     }
     if(!args[0]) return message.channel.send(mdjsvp)
 
-    commands.prototype.getgm.forEach(gm => {
+    listeGm.forEach(gm => {
       if(args[0] == gm.name)
       {
         message.channel.send(new Discord.MessageEmbed()
@@ -750,7 +761,7 @@ bot.on("message", (message) => {
       .addField("Nombre de joueurs", args.length - 1)
       .setColor(color))
       nomgamemode = args[0]
-      commands.prototype.addgm(nomgamemode, nouvgmoffi)
+      listeGm.push({name : nomgamemode, list : nouvgmoffi})
     }else{
       message.channel.send(new Discord.MessageEmbed()
       .setDescription("Il y a un/des role(s) que je ne connais pas! !helpgm pour de l'aide")
@@ -927,14 +938,14 @@ bot.on('message', async (message) => {
     let any15 = ""
     let slineNum = 0
 
-    for (let i = 1; i <= commands.prototype.getclassique20().length; i++){
-      class20 += i + ". " + commands.prototype.getclassique20()[i-1] + "\n"
+    for (let i = 1; i <= classique20.length; i++){
+      class20 += i + ". " + classique20[i-1] + "\n"
     }
-    for (let i = 1; i <= commands.prototype.getclassique15().length; i++){
-      class15 += i + ". " + commands.prototype.getclassique15()[i-1] + "\n"
+    for (let i = 1; i <= classique15.length; i++){
+      class15 += i + ". " + classique15[i-1] + "\n"
     }
-    for (let i = 1; i <= commands.prototype.getany15().length; i++){
-      any15 += i + ". " + commands.prototype.getany15()[i-1] + "\n"
+    for (let i = 1; i <= Allanyballenced15.length; i++){
+      any15 += i + ". " + Allanyballenced15[i-1] + "\n"
     }
 
     let quelgm = new Discord.MessageEmbed()
