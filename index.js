@@ -691,7 +691,7 @@ bot.on("message", (message) => {
         message.channel.send(new Discord.MessageEmbed()
         .setDescription("Mode de jeu " + gm.name + " choisi!")
         .setColor(color))
-        partie.gamemode = gm.name
+        partie.gamemode = gm
         nbrJoueurMax = gm.list.length
         found = true
       }

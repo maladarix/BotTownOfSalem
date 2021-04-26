@@ -48,11 +48,7 @@ class commands{
     start(partie, players) {
         customgm = partie.persoGm
         gameroles = []
-        listeGm.forEach(gm => {
-            if (gm.name = partie.gamemode) {
-                currentgamemode = gm.list
-            }
-        });
+        currentgamemode = partie.gamemode.list
         currentgamemode.forEach(role => {
             if(role == "Jailor") {
                 this.getJailor()
