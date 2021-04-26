@@ -59,7 +59,7 @@ let Allanyballenced15 = ["Random town", "Random town", "Random town", "Any", "An
 let classique20 = ["Jailor", "Doctor", "Investigateur", "Town investigative", "Town investigative", "Town support", "Town killing", "Random town", "Random town", "Random town",
 "Vampire-hunter", "Godfather", "Mafioso", "Random mafia", "Random mafia", "Vampire", "Neutral killing", "Neutral evil", "Any", "Any"]
 
-let listeGm = [{name : "classique15", list : classique15}, {name : "allanyballanced15", list : Allanyballenced15}, {name : "classique21", list : classique20}]
+let listeGm = [{name : "classique15", list : classique15}, {name : "allanyballanced15", list : Allanyballenced15}, {name : "classique20", list : classique20}]
 
 
 let color = "#f0b71a";
@@ -683,16 +683,13 @@ bot.on("message", (message) => {
 
     mdjsvp.setColor(color)
 
-    if (nomgamemode != null) {
-      mdjsvp.addField(nomgamemode, nouvgmoffi)
-    }
     if(!args[0]) return message.channel.send(mdjsvp)
 
     listeGm.forEach(gm => {
       if(args[0] == gm.name)
       {
         message.channel.send(new Discord.MessageEmbed()
-        .setDescription("Mode de jeu" + gm.name + "choisi!")
+        .setDescription("Mode de jeu " + gm.name + " choisi!")
         .setColor(color))
         partie.gamemode = gm.name
         nbrJoueurMax = gm.list.length
