@@ -9,6 +9,7 @@ class agent {
         this.wikiLink = ""
         this.winwith = "Town, Survivants"
         this.hab = "Voir le chat de la mafia sans voir leurs noms."
+        this.wikiLink = "Lien à venir. Demandez aux god"
     }
 
     action(author, target){

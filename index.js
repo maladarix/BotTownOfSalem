@@ -18,27 +18,27 @@ let votelist = []
 
 //const game
 //           id serv officiel                id serv test
-let mort = /*"824726156141658132"       */"829832421825708064"
-let jour = /*"825029496305614927"         */"829254726495240214"
-let nuit = /*"824749359118811187"         */"829254687630557185"
-let vivant = /*"824725851198849075"       */"829205364444364800"
-let spec = /*"824726635902271518"         */"829250418244321280"
+let mort = "824726156141658132"         //"829832421825708064"
+let jour = "825029496305614927"         //"829254726495240214"
+let nuit = "824749359118811187"         //"829254687630557185"
+let vivant = "824725851198849075"       //"829205364444364800"
+let spec = "824726635902271518"         //"829250418244321280"
 let devid = "830253971637665832"
-let quiVeutJouer = /*"824725623346954271" */"829873265194303498"
-let jailed = /*"824761075387727912"       */"830240201111896135"
-let jail = /*"824728100645896314"         */"830240173727547424"
-let mafiaChat = /*"824731087863021588"    */"830240221584687104"
-let panchanid = /*"824727128758943795"    */"829269425290215463"
-let dmchanid = /*"824726760808513606"     */"829216633205424128"
-let spyHideout = /*"824762348396216401"   */"830240252248850433"
-let turtleId = /*"830113799763525642"     */"830121244208267334"
-let eyesId = /*"830114000448258058"       */"830121185885945880"
-let godId = /*"824725152692174879"        */"829228486660063262"
-let graveyard = /*"825868136782757918"    */"835014782594711593"    
-let parentwhisp = /*"824726713605947403"  */"829239671925637150"
-let parentInterface=/*"832301102236958770"*/"829239671925637150"
-let adminchat = /*"829870229470838814"    */"833229701190385676"
-let listeroleid = /*"824731870628413480"  */"833229701190385676"
+let quiVeutJouer = "824725623346954271" //"829873265194303498"
+let jailed = "824761075387727912"       //"830240201111896135"
+let jail = "824728100645896314"         //"830240173727547424"
+let mafiaChat = "824731087863021588"    //"830240221584687104"
+let panchanid = "824727128758943795"    //"829269425290215463"
+let dmchanid = "824726760808513606"     //"829216633205424128"
+let spyHideout = "824762348396216401"   //"830240252248850433"
+let turtleId = "830113799763525642"     //"830121244208267334"
+let eyesId = "830114000448258058"       //"830121185885945880"
+let godId = "824725152692174879"        //"829228486660063262"
+let graveyard = "825868136782757918"    //"835014782594711593"    
+let parentwhisp = "824726713605947403"  //"829239671925637150"
+let parentInterface="832301102236958770"//"829239671925637150"
+let adminchat = "829870229470838814"    //"833229701190385676"
+let listeroleid = "824731870628413480"  //"833229701190385676"
 let numJour = 0
 let numNuit = 0
 var nbWhispJour = 1
@@ -50,6 +50,8 @@ let rolesEtAlig = ["Investigateur", "Lookout", "Sherif", "Spy", "Agent", "Jailor
 let roles = ["investigateur", "lookout", "sherif", "spy", "agent", "jailor", "vampirehunter", "veteran", "vigilante", "bodyguard", "doctor", "escorte"
 , "maire", "medium", "retributionist", "transporter", "disguiser", "forger", "framer", "hypnotiseur", "consierge", "ambusher", "godfather", "mafioso", "blackmailer"
 , "conseiller", "consort", "amnesiac", "survivant", "vampire", "bourreau", "jester", "sorcière", "arsonist", "serialkiller", "loupgarou"]
+
+let rolesunique = ["Jailor", "Maire", "Retributionist", "Veteran", "Godfather", "Mafioso", "Ambusher" ,"Loup-garou"]
 
 let classique15 = ["Jailor", "Town investigative", "Town investigative", "Town protective", "Town killing", "Town support", "Random town", "Random town", "Godfather", "Mafioso", 
 "Random mafia", "Random mafia", "Neutral evil", "Neutral killing", "Any"]
@@ -159,7 +161,11 @@ bot.on("message", (message) => {
       listejoueur[i].user.roles.remove(spec)
       listejoueur[i].user.roles.remove(jour)
       listejoueur[i].user.roles.remove(nuit)
+      listejoueur[i].hasVoted = false
+      listejoueur[i].role = null
+      listejoueur[i].lastwill = null
       listejoueur[i].scroll = null
+      listejoueur[i].registeredVote = null
       listejoueur[i] = new Player(listejoueur[i].user)
       if (!listejoueur[i].serverRoles.includes(godId)){
         listejoueur[i].serverRoles = []
@@ -234,6 +240,8 @@ bot.on("message", (message) => {
     .setDescription("La partie est terminée!")
     .setColor(color)
 
+    listeroles = []
+    joueurroles = []
     numJour = 0
     numNuit = 0
     nbrJoueurMax = 0
@@ -565,11 +573,8 @@ bot.on("message", (message) => {
   }
 
   else if(cmd == "roles") {
-    if(!god && !dev) return message.channel.send(pasGod)
-    if(partie.isStarted == false) return message.channel.send(pascomme)
-    if(alive().length != nbrJoueurMax) return message.channel.send(new Discord.MessageEmbed()
-    .setDescription("Il n'y a pas encore assser de joueur inscrit!")
-    .setColor(color))
+    if(!god && !dev) return message.channel.send("pasGod")
+    if(partie.isStarted == false) return message.channel.send("pascomme")
     let roles = partie.listeroles
     roles.forEach(role => {
       listeroles.push(role.name)
@@ -586,7 +591,6 @@ bot.on("message", (message) => {
       .addField("Gagnez avec", player.role.winwith)
       .addField("Plus d'info sur ton wiki", player.role.wikiLink)
       .setColor(color))
-      
       joueurroles.push(player.name + ", " + player.role.name)
 
       if(player.role.name == "Jailor") {
@@ -599,7 +603,7 @@ bot.on("message", (message) => {
           player.id,
           {VIEW_CHANNEL: true}
         )
-      }else if(player.role.alignement == "Mafia Killing" || "Mafia Support" || "Mafia Deception") {
+      }else if(player.role.alignement == ("Mafia Killing" || "Mafia Support" || "Mafia Deception")) {
         mafiaChan.updateOverwrite(
           player.id,
           {VIEW_CHANNEL: true}
@@ -708,9 +712,11 @@ bot.on("message", (message) => {
     if(!god && !dev) return message.channel.send(pasGod)
     let good = true
     let nouvgmliste = []
+    let multiunique = false
     args.slice(1).forEach(arguments => {
       if(rolesEtAlig.includes(arguments)) {
         if(good = true) {
+
           if(arguments == "ti") {
             nouvgmliste.push("Town investigative")
           }else if(arguments == "tp") {
@@ -749,21 +755,28 @@ bot.on("message", (message) => {
         good = false
       }
     });
-    if(nouvgmliste.length == args.length - 1) {
-      nouvgmoffi = nouvgmliste
-      partie.persoGm = nouvgmoffi
-      partie.personom = args[0]
-      message.channel.send(new Discord.MessageEmbed()
-      .setTitle("Gamemode: " + args[0])
-      .setDescription(nouvgmoffi)
-      .addField("Nombre de joueurs", args.length - 1)
-      .setColor(color))
-      nomgamemode = args[0]
-      listeGm.push({name : nomgamemode, list : nouvgmoffi})
-      nomgamemode = null
+
+    if(multiunique == false) {
+      if(nouvgmliste.length == args.length - 1) {
+        nouvgmoffi = nouvgmliste
+        partie.persoGm = nouvgmoffi
+        partie.personom = args[0]
+        message.channel.send(new Discord.MessageEmbed()
+        .setTitle("Gamemode: " + args[0])
+        .setDescription(nouvgmoffi)
+        .addField("Nombre de joueurs", args.length - 1)
+        .setColor(color))
+        nomgamemode = args[0]
+        listeGm.push({name : nomgamemode, list : nouvgmoffi})
+        nomgamemode = null
+      }else{
+        message.channel.send(new Discord.MessageEmbed()
+        .setDescription("Il y a un/des role(s) que je ne connais pas! !helpgm pour de l'aide")
+        .setColor(color))
+      }
     }else{
       message.channel.send(new Discord.MessageEmbed()
-      .setDescription("Il y a un/des role(s) que je ne connais pas! !helpgm pour de l'aide")
+      .setDescription("Tu ne peut pas mettre un même rôle unique plus d'une fois!")
       .setColor(color))
     }
   }
@@ -805,6 +818,13 @@ bot.on("message", (message) => {
       .addField("Je ne trouve pas ce gamemode! Voici ce que tu peut supprimé: ", nomliste)
       .setColor(color))
     }
+  }
+
+  else if(cmd == "god") {
+    if(!god && !dev) return message.channel.send(pasGod)
+    if(!args[0]) return message.channel.send(qui)
+
+    taggedUser.roles.add(godId)
   }
 
   else if(cmd == "helpstart") {
@@ -1104,7 +1124,7 @@ bot.on("messageReactionAdd", (reaction, user) => {
               Commands.prototype.start(partie, alive())
               partie.isStarted = true
               adminchannel.send(new Discord.MessageEmbed()
-              .setDescription("Vous pouvez m'aintenant distribuer les rôles!")
+              .setDescription("Vous pouvez maintenant distribuer les rôles!")
               .setColor(color))
             } 
           }

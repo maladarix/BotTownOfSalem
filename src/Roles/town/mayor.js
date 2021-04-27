@@ -2,7 +2,7 @@ const Action = require('../../action')
 
 class Mayor {
     constructor(){
-        this.name = "Mayor"
+        this.name = "Maire"
         this.description = "Vous êtes une personne d’influence."
         this.isUnique = true
         this.needsTwoTargets = false
