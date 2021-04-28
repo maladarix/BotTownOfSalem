@@ -6,7 +6,7 @@ class Escort {
         this.description = "Une belle femme qui utilise sa beauté pour distraire les autres."
         this.isUnique = false
         this.needsTwoTargets = false
-        this.alignement = "Town protective"
+        this.alignement = "Town support"
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Escort"
         this.winwith = "Town, Survivants."
         this.hab = "Distraire une personne pour l’empêcher d’effectuer son rôle."

@@ -827,6 +827,13 @@ bot.on("message", (message) => {
     taggedUser.roles.add(godId)
   }
 
+  else if(cmd == "ungod") {
+    if(!god && !dev) return message.channel.send(pasGod)
+    if(!args[0]) return message.channel.send(qui)
+
+    taggedUser.roles.remove(godId)
+  }
+
   else if(cmd == "helpstart") {
     if(!god && !dev) return message.channel.send(pasGod)
     message.channel.send(new Discord.MessageEmbed()

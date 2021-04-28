@@ -5,7 +5,7 @@ const roles = require('./Roles/roles')
 let towninvest = [roles.prototype.getInvest(), roles.prototype.getLoukout(), roles.prototype.getSheriff(), roles.prototype.getAgent(), roles.prototype.getSpy()]
 let townprotec = [roles.prototype.getBg(), roles.prototype.getDoc()]
 let townsupport = [roles.prototype.getEscort(), roles.prototype.getMaire(), roles.prototype.getMedium(), roles.prototype.getRetri(), roles.prototype.getTrans()]
-let townkilling = [roles.prototype.getVig(), roles.prototype.getVampHunter(), roles.prototype.getVet(), roles.prototype.getJailor()]
+let townkilling = [roles.prototype.getVig(), roles.prototype.getVet(), roles.prototype.getJailor()]
 
 let randomtown = [roles.prototype.getInvest(), roles.prototype.getLoukout(), roles.prototype.getSheriff(), roles.prototype.getAgent(), roles.prototype.getSpy(),
     roles.prototype.getBg(), roles.prototype.getDoc(), roles.prototype.getEscort(), roles.prototype.getMaire(), roles.prototype.getMedium(), roles.prototype.getRetri(),
@@ -23,10 +23,10 @@ let randommafia = [roles.prototype.getDisg(), roles.prototype.getForger(), roles
 let neutralbening = [roles.prototype.getAmne(), roles.prototype.getSurv()]
 let neutralkilling = [roles.prototype.getArso(), roles.prototype.getSerialk(), roles.prototype.getWerewolf()]
 let neutralevil = [roles.prototype.getExec(), roles.prototype.getJester(), roles.prototype.getWitch()]
-let neutralchaos = [roles.prototype.getVamp()]
+let neutralchaos = []
 
 let randomneutral = [roles.prototype.getAmne(), roles.prototype.getSurv(), roles.prototype.getArso(), roles.prototype.getSerialk(), roles.prototype.getExec(), roles.prototype.getJester(), 
-    roles.prototype.getWitch(), roles.prototype.getVamp(), roles.prototype.getWerewolf()]
+    roles.prototype.getWitch(), roles.prototype.getWerewolf()]
 
 
 let anyrole = [roles.prototype.getInvest(),roles.prototype.getLoukout(), roles.prototype.getSheriff(), roles.prototype.getAgent(), roles.prototype.getSpy(), roles.prototype.getBg(), 
