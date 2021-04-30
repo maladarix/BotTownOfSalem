@@ -3,6 +3,7 @@ const Commands = require('./src/commands.js');
 const Player = require('./src/player.js');
 const Partie = require('./src/game.js');
 const commands = require('./src/commands.js');
+const dis = require('./src/Roles/mafia/dis.js');
 require("dotenv").config()
 const bot = new Discord.Client();
 var nbrJoueurMax = 0
@@ -16,6 +17,9 @@ let listeroles = []
 let joueurroles = []
 let votelist = []
 let killlist = []
+let username = []
+let jailedkill = ""
+let rolesblocked = []
 
 
 //const game
@@ -113,6 +117,10 @@ let pastoi = new Discord.MessageEmbed()
 .setDescription("Tu ne peut pas te whispe toi même")
 .setColor(color)
 
+let pasVivant = new Discord.MessageEmbed()
+.setDescription("Ce joueur n'est pas vivant")
+.setColor(color);
+
 bot.on("message", (message) => {
   if(message.author.bot) return
   let jailChan = message.guild.channels.cache.get(jail)
@@ -158,6 +166,30 @@ bot.on("message", (message) => {
     }
   })
   var taggedUser = message.mentions.members.first()
+
+  let kill = function(died) {
+    let graveyardmot = new Discord.MessageEmbed()
+    .setDescription(`Le lastwill de **${died.name}** était: **${died.lastwill}**`)
+    .addField("Son rôle était: ", died.role.name)
+    .setColor(color)
+
+    let pasLW = new Discord.MessageEmbed()
+    .setDescription(`**${died.name}** n'a pas de lastwill`)
+    .addField("Son rôle était: ", died.role.name)
+    .setColor(color)
+
+    if(died.lastwill == null) {
+      died.serverRoles = [mort]
+      graveyardChan.send(pasLW)   
+    }else{
+      graveyardChan.send(graveyardmot)      
+    }
+
+    died.user.roles.add(mort)
+    died.user.roles.remove(vivant)
+    died.user.roles.remove(nuit)
+    died.user.roles.remove(jour)
+  }
 
   if(cmd == "end") {
     if(!god && !dev) return message.channel.send(pasGod)
@@ -296,33 +328,10 @@ bot.on("message", (message) => {
   }
 
   else if(cmd == "kill") {
-
-    let graveyardmot = new Discord.MessageEmbed()
-    .setDescription(`Le lastwill de **${tagged.name}** était: **${tagged.lastwill}**`)
-    .addField("Son rôle était: ", tagged.role.name)
-    .setColor(color)
-
-    let pasLW = new Discord.MessageEmbed()
-    .setDescription(`**${tagged.name}** n'a pas de lastwill`)
-    .addField("Son rôle était: ", tagged.role.name)
-    .setColor(color)
-
     if(!god && !dev) return message.channel.send(pasGod)
     if(partie.isStarted == false) return message.channel.send(pascomme)
     if(!args[0]) return message.channel.send(qui)
-    if(tagged.lastwill == null) {
-      tagged.serverRoles = [mort]
-      graveyardChan.send(pasLW)   
-    }else{
-      graveyardChan.send(graveyardmot)      
-    }
-    tagged.serverRoles = [mort]
-    taggedUser.roles.add(mort)
-    taggedUser.roles.remove(vivant)
-    taggedUser.roles.remove(nuit)
-    taggedUser.roles.remove(jour)
-
-
+    kill(tagged)
   }
 
   else if(cmd == "mvp") {
@@ -418,6 +427,11 @@ bot.on("message", (message) => {
       });
       gameannoncchan.send(messagejour)
     }
+    if(jailedkill != "") {
+      kill(jailedkill)
+      jailed  = ""
+    }
+
     partie.time = "jour"
     numJour = numJour + 1
 
@@ -486,29 +500,27 @@ bot.on("message", (message) => {
     });
     whispersChannels = []
 
-    jailedChan.updateOverwrite(
-      tagged.id,
+    if(jailed != "") {
+      jailedChan.updateOverwrite(
+      jailed.id,
       {"VIEW_CHANNEL": true})
 
     mafiaChan.updateOverwrite(
-      tagged.id,
+      jailed.id,
       {"VIEW_CHANNEL": false})
 
     spyChan.updateOverwrite(
-      tagged.id,
+      jailed.id,
       {"VIEW_CHANNEL": false})
       
     jailedChan.send("Vous êtes en prison, défendez vous pour éviter que le jailor vous exécute! ⛓️")
+    }
   }
 
   else if(cmd == "w") {
 
     let demWhisp = new Discord.MessageEmbed()
       .setDescription("#demande-de-whisper svp")
-      .setColor(color);
-
-    let pasVivant = new Discord.MessageEmbed()
-      .setDescription("Ce joueur n'est pas vivant")
       .setColor(color);
 
     let maxwhisp = new Discord.MessageEmbed()
@@ -520,16 +532,16 @@ bot.on("message", (message) => {
       .setColor(color);
     
     if(partie.isStarted == false) return message.channel.send(pascomme)
-    if(message.channel.name != dmChan.name) return message.channel.send(demWhisp);
+    if(message.channel.name != dmChan.name) return message.channel.send(demWhisp)
     if(partie.time == "nuit") return message.channel.send(nuitwhisp)
-    if(!args[0]) return message.channel.send(qui);
-    if(!taggedUser) return message.channel.send(trouvePas);
-    if(message.mentions.members.first().id == message.author.id) return message.channel.send(pastoi);
-    if(!taggedUser.roles.cache.has(vivant)) return message.channel.send(pasVivant);
+    if(!args[0]) return message.channel.send(qui)
+    if(!taggedUser) return message.channel.send(trouvePas)
+    if(message.mentions.members.first().id == message.author.id) return message.channel.send(pastoi)
+    if(!taggedUser.roles.cache.has(vivant)) return message.channel.send(pasVivant)
     if(author.whispRemaining == 0) return message.channel.send(maxwhisp)
 
-    let channelName = taggedUser.displayName + " et " + message.author.username;
-    author.whispRemaining--;
+    let channelName = taggedUser.displayName + " et " + message.author.username
+    author.whispRemaining--
 
     message.guild.channels.create(channelName,{type:"text",})
     .then((channel) => {
@@ -1053,6 +1065,39 @@ bot.on('message', async (message) => {
   let cmd = MessageArray[0].slice(prefix.length);
   let args = MessageArray.slice(1);
 
+  let kill = function(died) {
+    let graveyardmot = new Discord.MessageEmbed()
+    .setDescription(`Le lastwill de **${died.name}** était: **${died.lastwill}**`)
+    .addField("Son rôle était: ", died.role.name)
+    .setColor(color)
+
+    let pasLW = new Discord.MessageEmbed()
+    .setDescription(`**${died.name}** n'a pas de lastwill`)
+    .addField("Son rôle était: ", died.role.name)
+    .setColor(color)
+
+    if(died.lastwill == null) {
+      died.serverRoles = [mort]
+      graveyardChan.send(pasLW)   
+    }else{
+      graveyardChan.send(graveyardmot)      
+    }
+
+    died.user.roles.add(mort)
+    died.user.roles.remove(vivant)
+    died.user.roles.remove(nuit)
+    died.user.roles.remove(jour)
+  }
+
+  try{
+    listejoueur.forEach(player => {
+      if (message.mentions.members.first().user.username == player.name){
+        tagged = player
+      }
+    })
+  }
+
+  catch(err){tagged = null}
 
   if(cmd == "start"){
     let class20 = ""
@@ -1151,14 +1196,33 @@ bot.on('message', async (message) => {
     if(partie.isStarted == false) return message.channel.send(pascomme)
     if(!args[0]) return message.channel.send(qui)
     if(!taggedUser) return message.channel.send(trouvePas);
-    if(message.mentions.members.first().id == message.author.id) return message.channel.send(pastoi);
+    /*if(message.mentions.members.first().id == message.author.id) return message.channel.send(new Discord.MessageEmbed()
+    .setDescription("Tu ne peut pas te jailed toi même!")
+    .setColor(color))*/
 
     if(author.interface == message.channel.id) {
       if(author.role.name == ("Jailor" || god || dev)) {
-        let interfachan = message.guild.channels.cache.get(author.interface)
-        interfachan.send(`Vous avez emprisonner avec succès **${tagged.name}** ce soir.`)
-        jailed = tagged
+        if(partie.time == "jour") {
+          let interfachan = message.guild.channels.cache.get(author.interface)
 
+          username = []
+          if(tagged.user.nickname == null) {
+            username.push(tagged.user.username) 
+        }else{
+          username.push(tagged.user.nickname) 
+        }
+        interfachan.send(`Vous avez emprisonner avec succès **${username[0]}** ce soir.`)
+        jailed = tagged
+        }else{
+          message.delete()
+          message.channel.send(new Discord.MessageEmbed()
+          .setDescription("Ce n'est pas encole le **jour**!")
+          .setColor(color)).then((sent) => {
+            setTimeout(function () {
+              sent.delete();
+            }, 2000);
+          });
+        }
       }else{
         message.delete()
         message.channel.send(new Discord.MessageEmbed()
@@ -1183,50 +1247,106 @@ bot.on('message', async (message) => {
 
   else if(partie.isStarted == false) return
   else if(cmd == author.role.action().type) {
-    let username = ""
-
-    if(author.role.needsTwoTargets) {
+    taggedUser = []
+    username = []
+    if(author.role.needsTwoTargets == true) {
       if((taggedUser[0] || taggedUser[1]) == null) return message.channel.send(new Discord.MessageEmbed()
         .setDescription("Il me faut 2 targets!")
         .setColor(color))
        
-    }else{
-      if(taggedUser[0] == null) return message.channel.send(new Discord.MessageEmbed()
-        .setDescription("Qui?")
-        .setColor(color))  
+    }else if(author.role.needsTwoTargets == false) {
+      if(taggedUser[0] == false) return message.channel.send(new Discord.MessageEmbed()
+        .setDescription("Qui?")//ceux qui ont pas de cible ex: maire
+        .setColor(color))
     }
+
     taggedUser.forEach(user => {
       if(user.nickname == null) {
-        username = user.user.username
+        username.push(user.user.username) 
       }else{
-        username = user.nickname
+        username.push(user.nickname) 
       }
     });
 
     if(author.interface == message.channel.id) {
-      if(author.role.name == "Jailor") {
-        killlist.push(taggedUser[0])
+      let usernameauth = ""
+    
+      if(message.member.nickname == null) {
+        usernameauth = message.member.user.username
+      }else{
+        usernameauth = message.member.nickname
+      }
 
-        message.channel.send(new Discord.MessageEmbed()
-        .setDescription(`Tu as décidé d'exécuter **${username}**`)
-        .setColor(color))
-        console.log(killlist[0].user.username)
+      if(author.role.name == "Jailor") {
+        if(partie.time == "nuit") {
+          if(numNuit != 1) {
+            if(!jailed.user._roles.includes(vivant)) return message.channel.send(pasVivant)
+            jailedkill = jailed//pas de priorités
+
+            if(jailed.user.nickname == null) {
+            username.push(jailed.user.username) 
+          }else{
+            username.push(jailed.user.nickname) 
+          }
+
+          message.channel.send(new Discord.MessageEmbed()
+          .setDescription(`Tu as décidé d'exécuter **${username[0]}**`)
+          .setColor(color))
+          
+          jailedChan.send("Le Jailor à décider de vous éxécuter ce soir")
+          }else{
+            message.channel.send(new Discord.MessageEmbed()
+            .setDescription("Tu ne peut pas exécuter la nuit 1")
+            .setColor(color))
+          }
+        }else{
+          message.channel.send(new Discord.MessageEmbed()
+          .setDescription("Ce n'est pas encore la **nuit**!")
+          .setColor(color))
+        }
+
       }else if(author.role.name == "Bodyguard") {
+        if(!taggedUser[0].roles.cache.has(vivant)) return message.channel.send(pasVivant)
+
 
       }else if(author.role.name == "Maire") {
         message.channel.send(new Discord.MessageEmbed()
         .setDescription("Tu as dévoiler ton rôle aux village")
         .setColor(color)) 
-        let username = ""
-    
-        if(message.member.nickname == null) {
-          username = message.member.user.username
+
+        villagechan.send(`<@&${vivant}>, ${usernameauth} se révèle être le Maire!`)
+        message.member.setNickname(`Maire ${usernameauth}`)
+
+      }else if(author.role.name == "Jester") {
+        if(author.user._roles.includes(mort)) {
+          console.log(taggedUser[0].user.username)
+          if(author.user.user.username == taggedUser[0].user.username) return message.channel.send(new Discord.MessageEmbed()
+          .setDescription("Tu ne peut pas faire ton action sur toi même!")
+          .setColor(color))
+
+          if(!taggedUser[0].roles.cache.has(vivant)) return message.channel.send(pasVivant)
+          kill(tagged)//ne prend pas en compte les votes
+          villagechan.send(`<@&${vivant}>, **${usernameauth}** à décidé d'exécuter **${username[0]}**!`)
         }else{
-          username = message.member.nickname
+          message.channel.send(new Discord.MessageEmbed()
+          .setDescription("Tu ne peut pas encore faire cette action! Tu n'est pas mort.")
+          .setColor(color))
         }
-        villagechan.send(`<@&${vivant}> ${username} se révèle être le Maire!`)
-        message.member.setNickname(`Maire ${username}`)    
+      }else if(author.role.name == "Escorte") {
+        if(partie.time == "nuit") {
+          if(author.user.user.username == taggedUser[0].user.username) return message.channel.send(new Discord.MessageEmbed()
+          .setDescription("Tu ne peut pas faire ton action sur toi même!")
+          .setColor(color))
+          rolesblocked.push(taggedUser[0])//ne sais pas si c'est un roles avec roleblockImmunity
+          message.channel.send(new Discord.MessageEmbed()
+          .setDescription(`Tu as décidé de roleblock ${username}`))
+        }else{
+          message.channel.send(new Discord.MessageEmbed()
+          .setDescription("Ce n'est pas encore la **nuit**!")
+          .setColor(color))
+        }
       }
+
     }else{
       message.delete()
       message.channel.send(new Discord.MessageEmbed()

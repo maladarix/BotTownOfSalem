@@ -5,7 +5,7 @@ class Jailor {
         this.name = "Jailor"
         this.description = "Vous êtes un gardien de prison qui emprisonne secrètement des suspects."
         this.isUnique = true
-        this.needsTwoTargets = false
+        this.needsTwoTargets = null
         this.alignement = "Town Killing"
         this.command = "execute, jail"
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Jailor"
