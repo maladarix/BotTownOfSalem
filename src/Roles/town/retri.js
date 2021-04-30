@@ -6,13 +6,14 @@ class Retri {
         this.isUnique = true
         this.needsTwoTargets = true
         this.alignement = "Town Support"
+        this.command = "retribute"
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Retributionist"
         this.winwith = "Town, Survivants."
         this.hab = "Chaque nuit, vous pouvez utiliser le corps d’un mort et effectuer son action à sa place. Vous ne pouvez utiliser chaque corps qu’une seule fois."
     }
 
     action(author, target1, target2){
-        return new Action("Retribute", author, target1, target2)
+        return new Action("retribute", author, target1, target2)
     }
 }
 

@@ -6,6 +6,7 @@ class Transporteur {
         this.isUnique = false
         this.needsTwoTargets = true
         this.alignement = "Town Support"
+        this.command = "transport"
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Transporter"
         this.winwith = "Town, Survivants."
         this.hab = "Inverser deux personnes afin d’inverser les attaques sur eux"

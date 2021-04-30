@@ -1,6 +1,6 @@
 class action {
 
-    constructor(type, author, target1, target2 = null) {
+    constructor(type, author, target1, target2) {
     this.type = type
     this.author = author
     this.target1 = target1

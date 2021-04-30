@@ -6,15 +6,12 @@ class agent {
         this.isUnique = true
         this.needsTwoTargets = false
         this.alignement = "Town Investigative"
-        this.wikiLink = ""
+        this.command = null
         this.winwith = "Town, Survivants"
         this.hab = "Voir le chat de la mafia sans voir leurs noms."
         this.wikiLink = "Lien à venir. Demandez aux god"
     }
-
-    action(author, target){
-        return new Action("VigKill", author, target)
-    }
+    
 }
 
 module.exports = agent
