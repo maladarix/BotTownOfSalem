@@ -8,6 +8,7 @@ class Escort {
         this.needsTwoTargets = false
         this.alignement = "Town support"
         this.command = "roleblock"
+        this.priority = 2
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Escort"
         this.winwith = "Town, Survivants."
         this.hab = "Distraire une personne pour l’empêcher d’effectuer son rôle."

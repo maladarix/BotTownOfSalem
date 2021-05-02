@@ -6,12 +6,12 @@ class Partie{
     constructor() {
 
         this.gamemode = null
-        this.jour = 0
         this.isStarted = false
         this.listeroles = []
         this.personom = ""
         this.persoGm = []
         this.time = "jour"
+        this.fullmoon = false
         
     }
 }

@@ -7,6 +7,7 @@ class vet {
         this.needsTwoTargets = false
         this.alignement = "Town Killing"
         this.command = "onalert"
+        this.priority = 1
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Veteran"
         this.winwith = "Town, Survivants."
         this.hab = "Décidez si vous êtes en alerte ou non. Lorsque vous tuerez quiconque vous visitera. Vous pouvez être en alerte 3 fois dans la partie."

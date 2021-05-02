@@ -7,14 +7,13 @@ class exec {
         this.isUnique = false
         this.needsTwoTargets = false
         this.alignement = "Neutral Evil"
+        this.command = "---"
+        this.priority = 0
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Executioner"
         this.winwith = "Tout le monde sauf votre cible"
         this.hab = "Aucune"
     }
 
-    action(author, target){
-        return new Action("Guard", author, target)
-    }
 }
 
 module.exports = exec

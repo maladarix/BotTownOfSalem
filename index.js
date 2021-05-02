@@ -20,6 +20,7 @@ let killlist = []
 let username = []
 let jailedkill = ""
 let rolesblocked = []
+let actions = []
 
 
 //const game
@@ -31,7 +32,7 @@ let vivant = /*"824725851198849075"       */"829205364444364800"
 let spec = /*"824726635902271518"         */"829250418244321280"
 let devid = "830253971637665832"
 let quiVeutJouer = /*"824725623346954271" */"829873265194303498"
-let jailedid = /*"824761075387727912"   */"830240201111896135"
+let jailedid = /*"824761075387727912"     */"830240201111896135"
 let jail = /*"824728100645896314"         */"830240173727547424"
 let mafiaChat = /*"824731087863021588"    */"830240221584687104"
 let panchanid = /*"824727128758943795"    */"829269425290215463"
@@ -279,14 +280,30 @@ bot.on("message", (message) => {
     .setDescription("La partie est terminée!")
     .setColor(color)
 
-    listeroles = []
-    joueurroles = []
+    nomgamemode = null
+    jailed = ""
+    nouvgmoffi = []
+    whispersChannels = []
+    interfaces = []
+    votelist = []
+    killlist = []
+    username = []
+    jailedkill = ""
+    rolesblocked = []
+    actions = []
     numJour = 0
     numNuit = 0
+    nbWhispJour = 1
+    listeroles = []
+    joueurroles = []
     nbrJoueurMax = 0
-    partie.isStarted = false
-    partie.gamemode = null
-    partie.listeroles = []
+    this.gamemode = null
+    this.isStarted = false
+    this.listeroles = []
+    this.personom = ""
+    this.persoGm = []
+    this.time = "jour"
+    this.fullmoon = false
     message.channel.send(gameend)
 
   }
@@ -483,6 +500,11 @@ bot.on("message", (message) => {
     }
     partie.time = "nuit"
     numNuit = numNuit + 1
+    if(numNuit == (1 || 3)) {
+      partie.fullmoon = true
+    }else{
+      partie.fullmoon = false
+    }
     
     adminchannel.send(new Discord.MessageEmbed()
     .setDescription(`Nuit **${numNuit}**`)
@@ -1246,18 +1268,19 @@ bot.on('message', async (message) => {
   }
 
   else if(partie.isStarted == false) return
-  else if(cmd == author.role.action().type) {
-    taggedUser = []
+  else if(cmd == author.role.command) {
     username = []
     if(author.role.needsTwoTargets == true) {
       if((taggedUser[0] || taggedUser[1]) == null) return message.channel.send(new Discord.MessageEmbed()
         .setDescription("Il me faut 2 targets!")
         .setColor(color))
+        actions.push(author.role.action(author, taggedUser[0], taggedUser[1]))
        
     }else if(author.role.needsTwoTargets == false) {
       if(taggedUser[0] == false) return message.channel.send(new Discord.MessageEmbed()
         .setDescription("Qui?")//ceux qui ont pas de cible ex: maire
         .setColor(color))
+        actions.push(author.role.action(author, tagged))
     }
 
     taggedUser.forEach(user => {
@@ -1358,9 +1381,6 @@ bot.on('message', async (message) => {
       });
     }
   }
-
-
-    
 });
 
 bot.on("messageReactionAdd", (reaction, user) => {

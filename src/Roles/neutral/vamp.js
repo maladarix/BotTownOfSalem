@@ -7,13 +7,15 @@ class vamp {
         this.isUnique = false
         this.needsTwoTargets = false
         this.alignement = "Neutral Chaos"
+        this.command = "convert"
+        this.priority = 5
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Vampire"
         this.winwith = "Vampires, Sorcières, Survivants."
         this.hab = "Vous votez pour mordre quelqu’un."
     }
 
     action(author, target){
-        return new Action("Guard", author, target)
+        return new Action("convert", author, target)
     }
 }
 

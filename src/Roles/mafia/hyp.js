@@ -7,13 +7,15 @@ class hyp {
         this.isUnique = false
         this.needsTwoTargets = false
         this.alignement = "Mafia Deception"
+        this.command = "visist"
+        this.priority = 3
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Hypnotist"
         this.winwith = "Mafias, Sorcières, Survivants."
         this.hab = "Chaque nuit, choisissez une cible qui recevra un faux message."
     }
 
     action(author, target){
-        return new Action("Guard", author, target)
+        return new Action("visit", author, target)
     }
 }
 

@@ -7,13 +7,15 @@ class Blackmailer {
         this.isUnique = false
         this.needsTwoTargets = false
         this.alignement = "Mafia Support"
+        this.command = "blackmail"
+        this.priority = 3
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Blackmailer"
         this.winwith = "Mafias, Sorcières, Survivants."
         this.hab = "Choisissez une cible par nuit qui ne pourra pas discuter durant la journée."
     }
 
     action(author, target){
-        return new Action("Guard", author, target)
+        return new Action("balckmail", author, target)
     }
 }
 

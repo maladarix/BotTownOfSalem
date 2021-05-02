@@ -6,7 +6,8 @@ class agent {
         this.isUnique = true
         this.needsTwoTargets = null
         this.alignement = "Town Investigative"
-        this.command = null
+        this.command = "---"
+        this.priority = 0
         this.winwith = "Town, Survivants"
         this.hab = "Voir le chat de la mafia sans voir leurs noms."
         this.wikiLink = "Lien à venir. Demandez aux god"

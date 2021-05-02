@@ -7,13 +7,15 @@ class Gf {
         this.isUnique = true
         this.needsTwoTargets = false
         this.alignement = "Mafia Killing"
+        this.command = "attack"
+        this.priority = 5
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Godfather"
         this.winwith = "Mafias, Sorcières, Survivants."
         this.hab = "Ordonnez au mafioso de tuer une cible"
     }
 
     action(author, target){
-        return new Action("Guard", author, target)
+        return new Action("attack", author, target)
     }
 }
 

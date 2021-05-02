@@ -7,6 +7,8 @@ class Maf {
         this.isUnique = true
         this.needsTwoTargets = false
         this.alignement = "Mafia Killing"
+        this.command = "attack"
+        this.priority = 5
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Mafioso"
         this.winwith = "Mafias, Sorcières, Survivants."
         this.hab = `Vous pouvez tuer la personne que le godfather vous ordonne de tuer. Vous pouvez discuter avec la mafia dans #mafia-chat
@@ -14,7 +16,7 @@ class Maf {
     }
 
     action(author, target){
-        return new Action("Guard", author, target)
+        return new Action("attack", author, target)
     }
 }
 

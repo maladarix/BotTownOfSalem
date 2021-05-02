@@ -7,6 +7,7 @@ class jester {
         this.isUnique = false
         this.needsTwoTargets = false
         this.alignement = "Neutral Evil"
+        this.priority = 1
         this.command = "attack"
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Jester"
         this.winwith = "Tout le monde"
