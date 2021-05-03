@@ -145,8 +145,8 @@ class commands{
                 this.getArsonist()
             }else if(role == "Serial-killer") {
                 this.getSerialkiller()
-            }else if(role == "Bourreau") {
-                this.getbourreau()
+            }else if(role == "Executionner") {
+                this.getExecutionner()
             }else if(role == "Jester") {
                 this.getJester()
             }else if(role == "Sorcière") {
@@ -487,7 +487,7 @@ class commands{
         gameroles.push(roles.prototype.getSerialk())
     }
 
-    getbourreau(){
+    getExecutionner(){
         gameroles.push(roles.prototype.getExec())
     }
 
