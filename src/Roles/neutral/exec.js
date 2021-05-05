@@ -12,6 +12,8 @@ class exec {
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Executioner"
         this.winwith = "Tout le monde sauf votre cible"
         this.hab = "Aucune"
+        this.defense = 1
+        this.attack = 0
     }
 
 }

@@ -12,6 +12,8 @@ class werewolf {
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Werewolf"
         this.winwith = "Survivants, Sorcières."
         this.hab = "Vous ravagez une maison par nuit. Ce qui tuera votre cible et tous ses visiteurs (attaque puissante)"
+        this.defense = 1
+        this.attack = 3
     }
 
     action(author, target){

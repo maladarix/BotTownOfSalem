@@ -8,14 +8,16 @@ class jester {
         this.needsTwoTargets = false
         this.alignement = "Neutral Evil"
         this.priority = 1
-        this.command = "attack"
+        this.command = "execute"
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Jester"
         this.winwith = "Tout le monde"
         this.hab = "Si vous accomplissez votre rêve de vous faire pendre, vous pourrez tuer quelqu’un qui vous a accusé la nuit dernière, juste parce que c’est drôle de tuer des gens."
+        this.defense = 0
+        this.attack = 4
     }
 
     action(author, target){
-        return new Action("attack", author, target)
+        return new Action("execute", author, target)
     }
 }
 

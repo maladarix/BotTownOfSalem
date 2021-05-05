@@ -12,6 +12,8 @@ class consig {
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Consigliere"
         this.winwith = "Mafias, Sorcières, Survivants."
         this.hab = "Vous choisissez chaque nuit une cible et vous saurez leur rôle à la fin de celle-ci."
+        this.defense = 0
+        this.attack = 0
     }
 
     action(author, target){

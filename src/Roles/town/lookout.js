@@ -12,6 +12,8 @@ class Lookout {
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/lookout"
         this.winwith = "Town, Survivants."
         this.hab = "Surveiller une personne chaque nuit afin de voir qui la visite"
+        this.defense = 0
+        this.attack = 0
     }
 
     action(author, target){

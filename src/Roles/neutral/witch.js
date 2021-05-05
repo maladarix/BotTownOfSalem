@@ -12,6 +12,8 @@ class witch {
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Witch"
         this.winwith = "Mafias, Vampires, Sorcières, Survivants, Pyromanes, Serial killers, Loup-garou"
         this.hab = "Vous contrôlez une personne au choix chaque nuit."
+        this.defense = 1
+        this.attack = 0
     }
 
     action(author, target){

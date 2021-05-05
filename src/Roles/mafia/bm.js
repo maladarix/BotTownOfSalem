@@ -12,6 +12,8 @@ class Blackmailer {
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Blackmailer"
         this.winwith = "Mafias, Sorcières, Survivants."
         this.hab = "Choisissez une cible par nuit qui ne pourra pas discuter durant la journée."
+        this.defense = 0
+        this.attack = 0
     }
 
     action(author, target){

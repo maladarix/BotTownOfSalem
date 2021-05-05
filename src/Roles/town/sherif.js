@@ -11,6 +11,8 @@ class Sherif {
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Sheriff"
         this.winwith = "Town, Survivants."
         this.hab = "Enquêter sur une personne chaque nuit, à la recherche d’activité suspicieuse"
+        this.defense = 0
+        this.attack = 0
     }
 
     action(author, target){

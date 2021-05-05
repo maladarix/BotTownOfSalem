@@ -12,6 +12,8 @@ class Bg {
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Bodyguard"
         this.winwith = "Town, Survivants."
         this.hab = "Protéger quelqu’un chaque nuit. Si cette personne est attaquée, vous tuerez l’assaillant, mais vous mourrez dans le combat vous aussi."
+        this.defense = 0
+        this.attack = 3
     }
 
     action(author, target){

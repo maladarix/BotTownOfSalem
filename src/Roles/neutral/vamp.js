@@ -12,6 +12,8 @@ class vamp {
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Vampire"
         this.winwith = "Vampires, Sorcières, Survivants."
         this.hab = "Vous votez pour mordre quelqu’un."
+        this.defense = 0
+        this.attack = 1
     }
 
     action(author, target){

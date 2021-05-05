@@ -11,6 +11,8 @@ class agent {
         this.winwith = "Town, Survivants"
         this.hab = "Voir le chat de la mafia sans voir leurs noms."
         this.wikiLink = "Lien à venir. Demandez aux god"
+        this.defense = 0
+        this.attack = 0
     }
     
 }

@@ -12,6 +12,8 @@ class Jan {
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Janitor"
         this.winwith = "Mafias, Sorcières, Survivants."
         this.hab = "Choisissez qui vous nettoierai (limite de 3)."
+        this.defense = 0
+        this.attack = 0
     }
 
     action(author, target){

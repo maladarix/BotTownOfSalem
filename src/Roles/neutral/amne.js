@@ -12,6 +12,8 @@ class amne {
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Amnesiac"
         this.winwith = "Équipe choisie."
         this.hab = `Une fois par partie, vous pouvez choisir un rôle parmi les personnes qui sont mortes. Rappelez-vous, une fois qu’un rôle sera choisi, le message “Un amnésique s’est rappelé qu’il est un [Rôle]".`
+        this.defense = 0
+        this.attack = 0
     }
 
     action(author, target){

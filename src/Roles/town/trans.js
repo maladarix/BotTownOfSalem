@@ -11,6 +11,8 @@ class Transporteur {
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Transporter"
         this.winwith = "Town, Survivants."
         this.hab = "Inverser deux personnes afin d’inverser les attaques sur eux"
+        this.defense = 0
+        this.attack = 0
     }
 
     action(author, target1, target2){

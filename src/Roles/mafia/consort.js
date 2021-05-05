@@ -12,6 +12,8 @@ class consort {
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Consort"
         this.winwith = "Mafias, Sorcières, Survivants."
         this.hab = "Distraire une personne pour l’empêcher d’effectuer son rôle."
+        this.defense = 0
+        this.attack = 0
     }
 
     action(author, target){

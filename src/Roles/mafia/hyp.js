@@ -12,6 +12,8 @@ class hyp {
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Hypnotist"
         this.winwith = "Mafias, Sorcières, Survivants."
         this.hab = "Chaque nuit, choisissez une cible qui recevra un faux message."
+        this.defense = 0
+        this.attack = 0
     }
 
     action(author, target){

@@ -12,6 +12,8 @@ class amb {
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Ambusher"
         this.winwith = "Mafias, Sorcières, Survivants."
         this.hab = "Vous pouvez attendre à la porte de quelqu'un toutes les nuits. Vous allez attaquer une seule des personnes qui visitera votre cible, par contre, tous les visiteurs sauront votre nom."
+        this.defense = 0
+        this.attack = 1
     }
 
     action(author, target){

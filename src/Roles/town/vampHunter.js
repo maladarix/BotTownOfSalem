@@ -1,7 +1,7 @@
 const Action = require('../../action')
 class vampHunter {
     constructor(){
-        this.name = "Vampire Hunter"
+        this.name = "Vampire-Hunter"
         this.description = "Vous cherchez à tout prix à tuer ces vilains vampires."
         this.isUnique = false
         this.needsTwoTargets = false

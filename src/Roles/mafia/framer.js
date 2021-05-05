@@ -12,6 +12,8 @@ class framer {
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Framer"
         this.winwith = "Mafias, Sorcières, Survivants."
         this.hab = "Set-up quelqu’un pour le rendre suspicieux aux yeux des enquêteurs."
+        this.defense = 0
+        this.attack = 0
     }
 
     action(author, target){

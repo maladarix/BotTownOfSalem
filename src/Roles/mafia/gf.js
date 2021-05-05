@@ -12,6 +12,8 @@ class Gf {
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Godfather"
         this.winwith = "Mafias, Sorcières, Survivants."
         this.hab = "Ordonnez au mafioso de tuer une cible"
+        this.defense = 1
+        this.attack = 1
     }
 
     action(author, target){
