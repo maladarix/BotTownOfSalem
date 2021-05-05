@@ -13,7 +13,7 @@ class werewolf {
         this.winwith = "Survivants, Sorcières."
         this.hab = "Vous ravagez une maison par nuit. Ce qui tuera votre cible et tous ses visiteurs (attaque puissante)"
         this.defense = 1
-        this.attack = 3
+        this.attack = 2
     }
 
     action(author, target){

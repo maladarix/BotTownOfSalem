@@ -13,7 +13,7 @@ class jester {
         this.winwith = "Tout le monde"
         this.hab = "Si vous accomplissez votre rêve de vous faire pendre, vous pourrez tuer quelqu’un qui vous a accusé la nuit dernière, juste parce que c’est drôle de tuer des gens."
         this.defense = 0
-        this.attack = 4
+        this.attack = 3
     }
 
     action(author, target){

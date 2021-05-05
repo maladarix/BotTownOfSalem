@@ -12,7 +12,7 @@ class arso {
         this.priority = 3
         this.hab = "Chaque nuit, vous pouvez mettre de l’essence sur quelqu’un. Lorsque vous le voulez, vous pouvez décider de mettre le feu et toutes les personnes avec de l’essence mourront. Vous pouvez aussi vous nettoyer si vous le voulez."
         this.defense = 1
-        this.attack = 4
+        this.attack = 3
     }
 
     action(author, target){
