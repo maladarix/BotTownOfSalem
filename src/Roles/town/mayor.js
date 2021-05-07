@@ -5,7 +5,7 @@ class Mayor {
         this.name = "Maire"
         this.description = "Vous êtes une personne d’influence."
         this.isUnique = true
-        this.needsTwoTargets = false
+        this.needsTwoTargets = null
         this.alignement = "Town Support"
         this.command = "reveal"
         this.priority = 0

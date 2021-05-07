@@ -11,6 +11,7 @@ var nomgamemode = null
 let jailed = ""
 let nouvgmoffi = []
 var whispersChannels = []
+let whispmaire = []
 var interfaces = []
 var listejoueur = []
 let listeroles = []
@@ -578,7 +579,7 @@ bot.on("message", (message) => {
     });
 
     whispersChannels.forEach(whisper => {
-      message.guild.channels.cache.get(whisper).delete();
+      message.guild.channels.cache.get(whisper).delete()
     });
     whispersChannels = []
 
@@ -618,7 +619,7 @@ bot.on("message", (message) => {
     if(partie.time == "nuit") return message.channel.send(nuitwhisp)
     if(!args[0]) return message.channel.send(qui)
     if(!taggedUser) return message.channel.send(trouvePas)
-    if(message.mentions.members.first().id == message.author.id) return message.channel.send(pastoi)
+    //if(message.mentions.members.first().id == message.author.id) return message.channel.send(pastoi)
     if(!taggedUser.roles.cache.has(vivant)) return message.channel.send(pasVivant)
     if(author.whispRemaining == 0) return message.channel.send(maxwhisp)
 
@@ -656,7 +657,8 @@ bot.on("message", (message) => {
       deny: ['VIEW_CHANNEL'],
     }
     ])
-    whispersChannels.push(channel.id)                 
+    whispersChannels.push(channel.id)
+    whispmaire.push(channel.id)
     }) 
   }
 
@@ -703,7 +705,7 @@ bot.on("message", (message) => {
         do{
           cible = alive()[Math.floor(Math.random() * alive().length)]
           if(!cible.name == player.name) {
-            if(!(cible.role.name == "Jailor") || (cible.role.name == "Maire")) {
+            if(!(cible.role.name == "Jailor") || (cible.role.name == "Maire") || (cible.role.alignement == "Town Investigative") || (cible.role.alignement == "Town protective") || (cible.role.alignement == "Town Support") || (cible.role.alignement == "Town Killing")) {
               good = true
             }
           }
@@ -1424,7 +1426,6 @@ bot.on('message', async (message) => {
     }else if(author.role.needsTwoTargets == null) {
       joueurvisé1 = ""
     }
-    console.log(joueurvisé1.user)
       if(args[0]) {
         if(joueurvisé1.user.nickname == null) {
           username.push(joueurvisé1.user.user.username)
@@ -1485,15 +1486,29 @@ bot.on('message', async (message) => {
       }*/
       
       if(author.role.name == "Maire") {
-        message.channel.send(new Discord.MessageEmbed()
-        .setDescription("Tu as dévoiler ton rôle au village")
-        .setColor(color))
+        if(author.role.isreveal == false) {
+          message.channel.send(new Discord.MessageEmbed()
+          .setDescription("Tu as dévoiler ton rôle au village")
+          .setColor(color))
+          whispmaire.forEach(whisp => {
+            message.guild.channels.cache.get(whisp).delete()
 
-
-        author.role.isreveal = true
-        villagechan.send(`<@&${vivant}>, ${usernameauth} se révèle être le Maire!`)
-        message.member.setNickname(`Maire ${usernameauth}`)
-
+          for( var i = 0; i < whispersChannels.length; i++){ 
+                                    
+            if ( whispersChannels[i] === whisp) { 
+                whispersChannels.splice(i, 1); 
+                i--; 
+            }
+          }  
+          });
+          author.role.isreveal = true
+          villagechan.send(`<@&${vivant}>, ${usernameauth} se révèle être le Maire!`)
+          message.member.setNickname(`Maire ${usernameauth}`)
+        }else{
+          message.channel.send(new Discord.MessageEmbed()
+          .setDescription("Tu t'es déjà reveal!")
+          .setColor(color))
+        }
       }
       
       else if(author.role.name == "Jester") {
