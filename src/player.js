@@ -22,6 +22,7 @@ class Player {
         this.mvp = 0
         this.inac = 0
         this.scroll = null
+        this.number = null
     }
 }
 
