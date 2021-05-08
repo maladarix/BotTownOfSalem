@@ -6,7 +6,7 @@ class Doc {
         this.description = "Vous êtes un chirurgien qui prend soin des personnes en secret."
         this.isUnique = false
         this.needsTwoTargets = false
-        this.alignement = "Town protective"
+        this.alignement = "Town Protective"
         this.command = "heal"
         this.priority = 3
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Doctor"

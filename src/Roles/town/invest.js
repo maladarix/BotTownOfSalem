@@ -6,7 +6,7 @@ class Invest {
         this.description = "Vous êtes un enquêteur privé qui collecte de l’information en secret."
         this.isUnique = false
         this.needsTwoTargets = false
-        this.alignement = "Town investigative"
+        this.alignement = "Town Investigative"
         this.command = "invest"
         this.priority = 4
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Investigator"

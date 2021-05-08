@@ -11,7 +11,7 @@ class Player {
         this.serverRoles = joueur._roles
         this.role = null
         this.roleappear = null
-        this.lastwillappear = ""
+        this.lastwillappear = null
         this.whispRemaining = 0
         this.hasVoted = false
         this.votesFor = 0

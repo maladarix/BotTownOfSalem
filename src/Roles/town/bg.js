@@ -6,7 +6,7 @@ class Bg {
         this.description = "Vous êtes un ancien soldat qui gagne sa vie en secret en protégeant les gens."
         this.isUnique = false
         this.needsTwoTargets = false
-        this.alignement = "Town protective"
+        this.alignement = "Town Protective"
         this.command = "guard"
         this.priority = 3
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Bodyguard"
