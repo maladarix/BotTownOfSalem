@@ -17,7 +17,7 @@ class jester {
     }
 
     action(author, target){
-        return new Action("execute", author, target)
+        return new Action("jestExecute", author, target)
     }
 }
 

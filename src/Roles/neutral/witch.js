@@ -5,7 +5,7 @@ class witch {
         this.name = "Sorcière"
         this.description = "Vous êtes une sorcière qui contrôle les actions des autres."
         this.isUnique = false
-        this.needsTwoTargets = false
+        this.needsTwoTargets = true
         this.alignement = "Neutral Evil"
         this.command = "control"
         this.priority = 2
@@ -16,9 +16,12 @@ class witch {
         this.attack = 0
     }
 
-    action(author, target){
-        return new Action("control", author, target)
+    action(author, target1, target2)
+    {
+        target1.witch = author
+        return target1.role.action(target1, target2)
     }
+        
 }
 
 module.exports = witch

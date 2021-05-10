@@ -201,6 +201,201 @@ bot.on("message", (message) => {
     died.user.roles.remove(jour)
   }
 
+  var processActions = function() {
+
+    //priorité 1
+    actions.forEach(element => {
+      if(element.author.role.priority == 1)
+      {
+        if(element.target1.isjailed || element.target2.isjailed )
+        {
+          //Envoyer un message ici
+        }
+        else if(element.author.isjailed)
+        {
+          //Envoyer un message ici
+        }
+        else if(element.author.witch != null)
+        {
+          //Envoyer un message ici
+        }
+        else{
+          switch(element.type){
+            case "onalert" :
+              if(element.author.actionsRemaining != 0)
+              {
+                element.author.isAlert = true
+                element.author.actionsRemaining --
+                //Message de confirmation d'action
+              }
+              else{
+                //Message d'erreur ici
+              }
+              break;
+            case "transport" :
+              element.target1.trans = element.target2
+              element.target2.trans = element.target1
+              //Message de confirmation d'action
+              break;
+            case "jestExecute" :
+              kill(element.target1)
+              //Message de confirmation d'action
+              break;
+            case "ambush" :
+              element.target1.ambushed = element.author
+              //Message de confirmation d'action
+              break;
+            case "seance" :
+              if(!element.author.seanceUsed)
+              {
+                let channelName = `seance ` + target1.user.username 
+                element.author.seanceUsed = true
+            
+                message.guild.channels.create(channelName,{type:"text",})
+                .then((channel) => {
+                  channel.setParent(parentwhisp)
+                  channel.overwritePermissions([
+                  {
+                    id: channel.guild.id,
+                    deny: ['VIEW_CHANNEL'],
+                  },{
+                    id: vivant,
+                    deny: ['VIEW_CHANNEL'],
+                  },{
+                    id: author.id,
+                    allow: ['VIEW_CHANNEL'],
+                  },{
+                    id: tagged.id,
+                    allow: ['VIEW_CHANNEL'],
+                  },{
+                    id: spec,
+                    allow: ['VIEW_CHANNEL'],
+                    deny: ['SEND_MESSAGES'],
+                  },{
+                    id: mort,
+                    deny: ['VIEW_CHANNEL'],
+                  }
+                  ])
+                })
+                //Message de confirmation ici
+              }
+              else{
+                //message d'erreur ici
+              }
+              break;
+          }
+        }
+      }
+    });
+
+    //Priorité 2
+    actions.forEach(element => {
+      if(element.author.role.priority == 2)
+      {
+        if(element.target1.isjailed)
+        {
+          //Envoyer un message ici
+        }
+        else if(element.author.isjailed)
+        {
+          //Envoyer un message ici
+        }
+        else if(element.author.witch != null)
+        {
+          //Envoyer un message ici
+        }
+        else{
+          element.target1.isroleblocked = true
+          //Message de confirmation d'action
+        }
+      }
+    });
+
+        /*
+    inv : 4
+    LO : 6
+    Sher : 4
+    Spy : 6
+    Jail : 5
+    VH : 5
+    Vig : 5
+
+    Hypnotist à réviser...
+    GF : 5
+    Maf : 5
+    Consig : 4
+
+    Amnesiac : 6
+    vamp : 5
+    Arso : 3 (5 if self)
+    sk : 5
+    ww : 5
+    */
+
+    //Priorité 3
+    actions.forEach(element => {
+      if(element.author.role.priority == 3)
+      {
+        if(element.target1.isjailed)
+        {
+          //Envoyer un message ici
+        }
+        else if(element.author.isjailed)
+        {
+          //Envoyer un message ici
+        }
+        else if(element.author.witch != null)
+        {
+          //Envoyer un message ici
+        }
+        else if(element.author.isroleblocked)
+        {
+          //Envoyer un message ici
+        }
+        else{
+          switch(element.type){
+            case "guard" :
+              break;
+            case "heal" :
+              break;
+            case "disguise" :
+              break;
+            case "rewrite" :
+              break;
+            case "frame" :
+              break;
+            case "clean" :
+              break;
+            case "blackmail" :
+              break;
+            case "vest" :
+              break;
+          }
+        }
+      }
+    });
+
+    //reset des valeurs
+    actions = []
+    alive().forEach(player =>{
+      if(player.witch != null)
+      {
+        //player.witch.interface.send()
+        player.witch = null
+      }
+      player.roleappear = player.role
+      player.lastwillappear = player.lastwill
+      player.isroleblocked = false
+      player.isjailed = false
+      player.isAlert = false
+      player.guarded = null
+      player.healed = null
+      player.trans = player
+      player.ambushed = null
+      player.ambushDone = false
+    })
+  }
+
   if(cmd == "end") {
     if(!god && !dev) return message.channel.send(pasGod)
     for(let i = 0; i < listejoueur.length; i++)

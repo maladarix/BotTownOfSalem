@@ -17,7 +17,7 @@ class Blackmailer {
     }
 
     action(author, target){
-        return new Action("balckmail", author, target)
+        return new Action("blackmail", author, target)
     }
 }
 

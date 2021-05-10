@@ -17,7 +17,7 @@ class amb {
     }
 
     action(author, target){
-        return new Action("visit", author, target)
+        return new Action("ambush", author, target)
     }
 }
 

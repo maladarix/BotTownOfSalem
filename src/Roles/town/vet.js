@@ -13,6 +13,7 @@ class vet {
         this.hab = "Décidez si vous êtes en alerte ou non. Lorsque vous tuerez quiconque vous visitera. Vous pouvez être en alerte 3 fois dans la partie."
         this.defense = 0
         this.attack = 3
+        this.actionsRemaining = 3
     }
 
     action(author, target){

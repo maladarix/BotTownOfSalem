@@ -17,7 +17,7 @@ class surv {
     }
 
     action(author, target){
-        return new Action("guard", author, target)
+        return new Action("vest", author, target)
     }
 }
 

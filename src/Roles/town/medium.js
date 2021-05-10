@@ -14,10 +14,11 @@ class medium {
         this.hab = "Si vous êtes morts, vous pouvez choisir une cible vivante pour discuter."
         this.defense = 0
         this.attack = 0
+        this.seanceUsed = false
     }
 
     action(author, target){
-        return new Action("lookout", author, target)
+        return new Action("seance", author, target)
     }
 } 
 
