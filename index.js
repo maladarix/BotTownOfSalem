@@ -294,14 +294,41 @@ bot.on("message", (message) => {
       {
         if(element.target1.isjailed)
         {
-          //Envoyer un message ici
+          element.author.interface.send("Votre action a échoué! Votre cible était en prison.")
         }
         else if(element.author.isjailed)
         {
-          //Envoyer un message ici
+          element.author.interface.send("Votre action a échoué! Vous étiez en prison.")
         }
         else if(element.author.witch != null)
         {
+          //Envoyer un message ici
+        }
+        else if (element.target1.role.name == "Veteran" && element.target1.role.isAlert)
+        {
+          kill(element.author)
+          //Envoyer un message ici
+        }
+        else if (element.target1.ambushed != null)
+        {
+          if(!element.target1.ambushDone)
+          {
+            let healed = false
+            actions.forEach(heal => {
+              if (heal.type == "heal" && heal.target1 == element.target1){
+                healed = true
+              }
+            })
+            if(healed)
+            {
+              //Envoyer un message ici
+            }
+            else
+            {
+            kill(element.author)
+            ambushDone = true
+            }
+          }
           //Envoyer un message ici
         }
         else{
@@ -352,26 +379,61 @@ bot.on("message", (message) => {
         {
           //Envoyer un message ici
         }
-        else{
-          switch(element.type){
-            case "guard" :
-              break;
-            case "heal" :
-              break;
-            case "disguise" :
-              break;
-            case "rewrite" :
-              break;
-            case "frame" :
-              break;
-            case "clean" :
-              break;
-            case "blackmail" :
-              break;
-            case "vest" :
-              break;
-          }
+        else if (element.target1.role.name == "Veteran" && element.target1.role.isAlert)
+        {
+          kill(element.author)
+          //Envoyer un message ici
         }
+        else if (element.target1.ambushed != null)
+        {
+          if(!element.target1.ambushDone)
+          {
+            let healed = false
+            actions.forEach(heal => {
+              if (heal.type == "heal" && heal.target1 == element.target1){
+                healed = true
+              }
+            })
+            if(healed)
+            {
+              //Envoyer un message ici
+            }
+            else
+            {
+            kill(element.author)
+            ambushDone = true
+            }
+          }
+          //Envoyer un message ici
+        }
+        else{
+          element.target1.isroleblocked = true
+          //Message de confirmation d'action
+        }
+      }
+      else{
+        switch(element.type){
+          case "guard" :
+            element.target1.guarded = element.author
+            //Message de confirmation d'action
+            break;
+          case "heal" :
+            element.target1.healed = element.author
+            //Message de confirmation d'action
+            break;
+          case "disguise" :
+            break;
+          case "rewrite" :
+            break;
+          case "frame" :
+            break;
+          case "clean" :
+            break;
+          case "blackmail" :
+            break;
+          case "vest" :
+            break;
+         }
       }
     });
 
