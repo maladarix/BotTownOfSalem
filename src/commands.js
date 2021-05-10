@@ -4,11 +4,11 @@ const roles = require('./Roles/roles')
 
 let towninvest = [roles.prototype.getInvest(), roles.prototype.getLoukout(), roles.prototype.getSheriff(), roles.prototype.getAgent(), roles.prototype.getSpy()]
 let townprotec = [roles.prototype.getBg(), roles.prototype.getDoc()]
-let townsupport = [roles.prototype.getEscort(), roles.prototype.getMaire(), roles.prototype.getMedium(), roles.prototype.getRetri(), roles.prototype.getTrans()]
+let townsupport = [roles.prototype.getEscort(), roles.prototype.getMaire(), roles.prototype.getRetri(), roles.prototype.getTrans()]
 let townkilling = [roles.prototype.getVig(), roles.prototype.getVet(), roles.prototype.getJailor()]
 
 let randomtown = [roles.prototype.getInvest(), roles.prototype.getLoukout(), roles.prototype.getSheriff(), roles.prototype.getAgent(), roles.prototype.getSpy(),
-    roles.prototype.getBg(), roles.prototype.getDoc(), roles.prototype.getEscort(), roles.prototype.getMaire(), roles.prototype.getMedium(), roles.prototype.getRetri(),
+    roles.prototype.getBg(), roles.prototype.getDoc(), roles.prototype.getEscort(), roles.prototype.getMaire(), roles.prototype.getRetri(),
     roles.prototype.getTrans(), roles.prototype.getVig(), roles.prototype.getVet(), roles.prototype.getJailor()]
 
 
@@ -30,7 +30,7 @@ let randomneutral = [roles.prototype.getAmne(), roles.prototype.getSurv(), roles
 
 
 let anyrole = [roles.prototype.getInvest(),roles.prototype.getLoukout(), roles.prototype.getSheriff(), roles.prototype.getAgent(), roles.prototype.getSpy(), roles.prototype.getBg(), 
-    roles.prototype.getDoc(), roles.prototype.getEscort(), roles.prototype.getMaire(), roles.prototype.getMedium(), roles.prototype.getRetri(), roles.prototype.getTrans(), 
+    roles.prototype.getDoc(), roles.prototype.getEscort(), roles.prototype.getMaire(), roles.prototype.getRetri(), roles.prototype.getTrans(), 
     roles.prototype.getVig(), roles.prototype.getVet(), roles.prototype.getWerewolf(), roles.prototype.getJailor(), roles.prototype.getDisg(), 
     roles.prototype.getForger(), roles.prototype.getFramer(), roles.prototype.getJani(), roles.prototype.getHypno(), roles.prototype.getBlackmail(), roles.prototype.getConsig(), 
     roles.prototype.getConsort(), roles.prototype.getGodfather(), roles.prototype.getMafioso(), roles.prototype.getAmb(), roles.prototype.getAmne(), roles.prototype.getSurv(), 
@@ -107,8 +107,6 @@ class commands{
                 this.getEscort()
             }else if(role == "Maire") {
                 this.getMaire()
-            }else if(role == "Medium") {
-                this.getMedium()
             }else if(role == "Retributionist") {
                 this.getRetri()
             }else if(role == "Transporteur") {
@@ -393,10 +391,6 @@ class commands{
         }else{
             gameroles.push(roles.prototype.getMaire())
         }
-    }
-
-    getMedium(){
-        gameroles.push(roles.prototype.getMedium())
     }
 
     getRetri(){

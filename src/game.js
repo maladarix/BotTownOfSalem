@@ -10,7 +10,7 @@ class Partie{
         this.listeroles = []
         this.personom = ""
         this.persoGm = []
-        this.time = "jour"
+        this.time = "nuit"
         this.fullmoon = false
         
     }

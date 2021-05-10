@@ -49,9 +49,10 @@ let parentwhisp = /*"824726713605947403"    */"829239671925637150"
 let parentInterface=/*"832301102236958770"  */"829239671925637150"
 let adminchat = /*"829870229470838814"      */"833229701190385676"
 let listeroleid = /*"824731870628413480"    */"833229701190385676"
-let numJour = 0
+let numJour = -1
 let numNuit = 0
 var nbWhispJour = 1
+let commencer = false
 
 let rolesEtAlig = ["Investigateur", "Lookout", "Sherif", "Spy", "Agent", "Jailor", "Vampire-hunter", "Veteran", "Vigilante", "Bodyguard", "Doctor", "Escorte"
 , "Maire", "Medium", "Retributionist", "Transporter", "Disguiser", "Forger", "Framer", "Hypnotiseur", "Consierge", "Ambusher", "Godfather", "Mafioso", "Blackmailer"
@@ -449,7 +450,73 @@ bot.on("message", (message) => {
   else if (cmd == "alive") {
     if(!god && !dev) return message.channel.send(pasGod);
     if(!args[0]) return message.channel.send(qui)
-    taggedUser.roles.add(vivant)
+    if(tagged == null) return message.channel.send(new Discord.MessageEmbed()
+    .setDescription("Le joueur n'est pas add")
+    .setColor(color))
+    if(start == true) {
+      if(!taggedUser._roles.includes(vivant)) {
+        taggedUser.roles.add(vivant)
+        tagged.serverRoles.push(vivant)
+        taggedUser.roles.remove(spec)
+        tagged.number = numjoueur + 1
+        numjoueur ++
+
+        let messainter = new Discord.MessageEmbed()
+        .setDescription(`Salut <@${tagged.id}>! Ceci est ton interface avec le jeu. Je m'explique. Ici tu auras la description de ton rôle, et tu pourras écrire tes ` + 
+        "actions que tu veux effectuer dans la nuit. De plus, tu pourras poser toutes tes questions par rapport au fonctionnement du jeu. Finalement, " + 
+        "tu peux écrire ici un last will qui sera révélé à tout le monde lors de ta mort. Ce channel sera vidé chaque jour à l'exception de ce message, " +
+        "de ta description de rôle, ainsi que de ton last will.")
+        .setColor(color)
+
+        let interface = tagged.user.displayName
+        message.guild.channels.create(interface + " Interface",{type:"text",})
+        .then((channel) => {
+          channel.setParent(parentInterface)
+          channel.overwritePermissions([
+          {
+            id: channel.guild.id,
+            deny: ['VIEW_CHANNEL'],
+          },
+          {
+            id: vivant,
+            deny: ['VIEW_CHANNEL'],
+          },{
+            id: tagged.id,
+            allow: ['VIEW_CHANNEL'],
+          },{
+            id: spec,
+            allow: ['VIEW_CHANNEL'],
+            deny: ['SEND_MESSAGES'],
+          },{
+            id: mort,
+            deny: ['VIEW_CHANNEL'],
+          }
+          ])
+          .then(setTimeout(() => {
+            channel.send(messainter)
+          }, 1500))
+          tagged.interface = channel.id
+          interfaces.push(channel.id)
+          channel.setTopic(`<@&${godId}> pour avoir de l'aide direct`)
+          })
+
+          if(alive().length == nbrJoueurMax){
+          Commands.prototype.start(partie, alive())
+          partie.isStarted = true
+          adminchannel.send(new Discord.MessageEmbed()
+          .setDescription("Vous pouvez maintenant distribuer les rôles!")
+          .setColor(color))
+        }
+      }else{
+        message.channel.send(new Discord.MessageEmbed()
+        .setDescription("Ce joueur est déja dans la partie!")
+        .setColor(color))
+      }  
+    }else{
+      message.channel.send(new Discord.MessageEmbed()
+      .setDescription("Tu dois start une game!")
+      .setColor(color))
+    }
   }
 
   else if(cmd == "add") {
@@ -692,6 +759,10 @@ bot.on("message", (message) => {
   else if(cmd == "roles") {
     if(!god && !dev) return message.channel.send(pasGod)
     if(partie.isStarted == false) return message.channel.send(pascomme)
+    if(commencer == true) return message.channel.send(new Discord.MessageEmbed()
+    .setDescription("La partie est déja commencée!")
+    .setColor(color))
+    commencer = true
     let joueuretnum = []
     let roles = partie.listeroles
     roles.forEach(role => {
@@ -709,12 +780,6 @@ bot.on("message", (message) => {
           player.id,
           {VIEW_CHANNEL: true}
         )
-      }else if(player.role.alignement == ("Mafia Killing") || ("Mafia Support") || ("Mafia Deception")) {
-        mafiaChan.updateOverwrite(
-          player.id,
-          {VIEW_CHANNEL: true, SEND_MESSAGES: true}
-        )
-
       }else if(player.role.name == "Vampire") {
         vampirechan.updateOverwrite(
           player.id,
@@ -724,6 +789,21 @@ bot.on("message", (message) => {
         observatoirechan.updateOverwrite(
           player.id,
           {VIEW_CHANNEL: true}
+        )
+      }else if(player.role.alignement == "Mafia Killing") {
+        mafiaChan.updateOverwrite(
+          player.id,
+          {VIEW_CHANNEL: true, SEND_MESSAGES: true}
+        )
+      }else if(player.role.alignement == "Mafia Support") {
+        mafiaChan.updateOverwrite(
+          player.id,
+          {VIEW_CHANNEL: true, SEND_MESSAGES: true}
+        )
+      }else if(player.role.alignement == "Mafia Deception") {
+        mafiaChan.updateOverwrite(
+          player.id,
+          {VIEW_CHANNEL: true, SEND_MESSAGES: true}
         )
       }
       
@@ -754,7 +834,7 @@ bot.on("message", (message) => {
         .addField("**Ton rôle**", player.role.name)
         .addField("**Allignement**", player.role.alignement)
         .addField("**Description**", player.role.description)
-        .addField("**Commande pour action**", player.role.command + "\n" + `Quelques commandes fonctionne pour le momment! les <@&${godId}> viendrons vous expliquer si vous avez une commande à faire.`)
+        .addField("**Commande pour action**", player.role.command + "\n" + `Quelques commandes fonctionne pour le moment! les <@&${godId}> viendrons vous expliquer si vous avez une commande à faire.`)
         .addField("**Habiletée**", player.role.hab)
         .addField("**Ta cible**" , ciblenom)
         .addField("**Gagnez avec**", player.role.winwith)
@@ -770,7 +850,7 @@ bot.on("message", (message) => {
         .addField("**Ton rôle**", player.role.name)
         .addField("**Allignement**", player.role.alignement)
         .addField("**Description**", player.role.description)
-        .addField("**Commande pour action**", player.role.command + "\n" + `Quelques commandes fonctionne pour le momment! les <@&${godId}> viendrons vous expliquer si vous avez une commande à faire.`)
+        .addField("**Commande pour action**", player.role.command + "\n" + `Quelques commandes fonctionne pour le moment! les <@&${godId}> viendrons vous expliquer si vous avez une commande à faire.`)
         .addField("**Habiletée**", player.role.hab)
         .addField("**Gagnez avec**", player.role.winwith)
         .addField("**Plus d'info sur ton wiki**", player.role.wikiLink)
@@ -788,25 +868,41 @@ bot.on("message", (message) => {
     joueuretnum.push(`${player.number}. ${player.name}`)
     });
 
-      adminchannel.send(new Discord.MessageEmbed()
-      .setTitle("**Liste des joueurs avec leurs roles**")
-      .setDescription(joueurroles)
-      .setColor(color))
+    adminchannel.send(new Discord.MessageEmbed()
+    .setTitle("**Liste des joueurs avec leurs roles**")
+    .setDescription(joueurroles)
+    .setColor(color))
 
-      adminchannel.send(new Discord.MessageEmbed()
-      .setTitle(`Liste de rôle: **(${partie.gamemode.name})**`)
-      .setDescription(listeroles)
-      .setColor(color))
+    adminchannel.send(new Discord.MessageEmbed()
+    .setTitle(`Liste de rôle: **(${partie.gamemode.name})**`)
+    .setDescription(listeroles)
+    .setColor(color))
 
-      listerolechan.send(new Discord.MessageEmbed()
-      .setTitle(`**Partie en cour: ${partie.gamemode.name}**`)
-      .setDescription(partie.gamemode.list)
-      .setColor(color))
+    listerolechan.send(new Discord.MessageEmbed()
+    .setTitle(`**Partie en cour: ${partie.gamemode.name}**`)
+    .setDescription(partie.gamemode.list)
+    .setColor(color))
 
-      listerolechan.send(new Discord.MessageEmbed()
-      .setTitle("Le numéro des joueurs")
+    listerolechan.send(new Discord.MessageEmbed()
+    .setTitle("Le numéro des joueurs")
       .setDescription(joueuretnum)
       .setColor(color))
+
+    partie.time = "jour"
+    numJour = numJour + 1
+  
+    villagechan.send(`<@&${vivant}>, Jour **${numJour}**`)
+    adminchannel.send(new Discord.MessageEmbed()
+    .setDescription(`Jour **${numJour}**`)
+    .setColor(color))
+  
+    alive().forEach(player => {
+      player.user.roles.add(jour)
+      player.user.roles.remove(nuit)
+      player.whispRemaining = nbWhispJour
+      player.hasVoted = false
+      player.isjailed = false
+    });
   }
 
   else if(cmd == "results"){
@@ -1654,7 +1750,7 @@ bot.on("messageReactionAdd", (reaction, user) => {
   if(reaction.message.channel == quiVeutJouer) {
     if (reactor == null){
       reaction.message.channel.send(new Discord.MessageEmbed()
-        .setDescription("Vous ne faites pas parti du serveur, **veuillez contacter un admin**")
+        .setDescription(`<@${reactor.id}>, vous ne faites pas parti du serveur, **veuillez contacter un admin**`)
         .setColor(color))
     }
     else{
@@ -1717,13 +1813,13 @@ bot.on("messageReactionAdd", (reaction, user) => {
           }
           else{
             reaction.message.channel.send(new Discord.MessageEmbed()
-            .setDescription("La partie est déjà commencée, vous pouvez tout de même **spectate** avec des **yeux**")
+            .setDescription(`<@${reactor.id}>, la partie est déjà commencée, vous pouvez tout de même **spectate** avec des **yeux**`)
             .setColor(color))
           }
         }
         else{
           reaction.message.channel.send(new Discord.MessageEmbed()
-            .setDescription("Vous faites déjà partie de la partie!")
+            .setDescription(`<@${reactor.id}>, vous faites déjà partie de la partie!`)
             .setColor(color))
         }
       } 
@@ -1733,7 +1829,7 @@ bot.on("messageReactionAdd", (reaction, user) => {
         }
         else{
           reaction.message.channel.send(new Discord.MessageEmbed()
-            .setDescription("Vous ne pouvez pas **spectate** si vous faites **déjà** partie de la partie!")
+            .setDescription(`<@${reactor.id}>, vous ne pouvez pas **spectate** si vous faites **déjà** partie de la partie!`)
             .setColor(color))
         }
       }
