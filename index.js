@@ -99,6 +99,7 @@ let alive = function (){
 
 bot.on('ready', () => {
     console.log("bot online")
+    console.log(new Date())
     bot.user.setActivity("Ben oui, chui Jailor")
 })
 
