@@ -8,6 +8,7 @@ class Player {
         this.id = joueur.user.id
         this.interface = ""
         this.name = joueur.user.username
+        this.displayname = (joueur.nickname) ? joueur.nickname : joueur.user.username
         this.serverRoles = joueur._roles
         this.role = null
         this.roleappear = null
@@ -17,6 +18,7 @@ class Player {
         this.votesFor = 0
         this.registeredVote = null
         this.lastwill = null
+        this.actiondone = false
         this.isroleblocked = false
         this.isjailed = false
         this.isAlert = false
