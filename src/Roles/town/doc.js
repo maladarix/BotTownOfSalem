@@ -9,6 +9,7 @@ class Doc {
         this.alignement = "Town Protective"
         this.command = "heal"
         this.priority = 3
+        this.use = 1
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Doctor"
         this.winwith = "Town, Survivants."
         this.hab = "Aller chez quelqu’un chaque nuit pour pouvoir le sauver s’il se fait attaquer. Vous pouvez aussi vous protéger vous-même, mais seulement 1 fois dans la partie."

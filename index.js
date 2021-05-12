@@ -822,12 +822,12 @@ bot.on("message", (message) => {
   else if(cmd == "vivants") {
     let joueuretnum = []
     let ordreJoueurs = alive()
-  ordreJoueurs.sort(function(a, b){return a.number - b.number});
-  ordreJoueurs.forEach(player => {
+    ordreJoueurs.sort(function(a, b){return a.number - b.number});
+    ordreJoueurs.forEach(player => {
     joueuretnum.push(`${player.number}. ${player.displayname}`)
-  });
+    });
 
-  message.channel.send(new Discord.MessageEmbed()
+    message.channel.send(new Discord.MessageEmbed()
       .setTitle("Le numéro des joueurs vivants")
       .setDescription(joueuretnum)
       .setColor(color))
@@ -1106,7 +1106,6 @@ bot.on("message", (message) => {
         .addField("**Ton rôle**", player.role.name)
         .addField("**Allignement**", player.role.alignement)
         .addField("**Description**", player.role.description)
-        .addField("**Commande pour action**", player.role.command + "\n" + `Quelques commandes fonctionne pour le moment! les <@&${godId}> viendrons vous expliquer si vous avez une commande à faire.`)
         .addField("**Habiletée**", player.role.hab)
         .addField("**Ta cible**" , cible.displayName)
         .addField("**Gagnez avec**", player.role.winwith)
@@ -1122,7 +1121,6 @@ bot.on("message", (message) => {
         .addField("**Ton rôle**", player.role.name)
         .addField("**Allignement**", player.role.alignement)
         .addField("**Description**", player.role.description)
-        .addField("**Commande pour action**", player.role.command + "\n" + `Quelques commandes fonctionne pour le moment! les <@&${godId}> viendrons vous expliquer si vous avez une commande à faire.`)
         .addField("**Habiletée**", player.role.hab)
         .addField("**Gagnez avec**", player.role.winwith)
         .addField("**Plus d'info sur ton wiki**", player.role.wikiLink)
@@ -1870,11 +1868,11 @@ bot.on('message', async (message) => {
     }
   }
 
-  else if(partie.isStarted == true) {
-    //if(god || spec) return
+  else if(cmd == "action") {
+    if(god || spec) return
     if(author.user._roles.includes(vivant)) {
       if(partie.time == "nuit") {
-        if(cmd == author.role.action().type) {
+        if(partie.isStarted == true) {
           if(author.interface == message.channel.id) {
             let joueurvisé1 = ""
             let joueurvisé2 = ""
@@ -1922,7 +1920,13 @@ bot.on('message', async (message) => {
 
             let usernameauth = author.displayname
 
-            if(author.role.name == "Jailor") {
+            if(author.role.command == "---") {
+              message.channel.send(new Discord.MessageEmbed()
+              .setDescription("Tu n'as pas d'action!")
+              .setColor(color))
+            }
+
+            else if(author.role.name == "Jailor") {
               if(numNuit != 1) {
                 actions.push(author.role.action(author, jailed))
                 message.channel.send(new Discord.MessageEmbed()
@@ -1938,10 +1942,172 @@ bot.on('message', async (message) => {
             }
                   
             else if(author.role.name == "Bodyguard") {
-              if(author)
-              actions.push(author.role.action(author, joueurvisé1))
+              if(author.role.displayname != username[0].displayname) {
+                actions.push(author.role.action(author, joueurvisé1))
+                message.channel.send(new Discord.MessageEmbed()
+                .setDescription(`Tu a décidé de protéger **${username[0]}**`)
+                .setColor(color))
+              }else{
+                if(author.role.use != 0) {
+                  message.channel.send(new Discord.MessageEmbed()
+                  .setDescription("Tu as décidé de te protégé cette nuit!")
+                  .setColor(color))
+                  author.role.use --
+                  actions.push(author.role.action(author, author))
+                }else{
+                  message.channel.send(new Discord.MessageEmbed()
+                  .setDescription("Tu peut te protéger seulement une fois!")
+                  .setColor(color))
+                }
+              }
+            }
+
+            else if(author.role.name == "Docteur") {
+              if(author.role.displayname != username[0].displayname) {
+                actions.push(author.role.action(author, joueurvisé1))
+                message.channel.send(new Discord.MessageEmbed()
+                .setDescription(`Tu a décidé de heal **${username[0]}**`)
+                .setColor(color))
+              }else{
+                if(author.role.use != 0) {
+                  message.channel.send(new Discord.MessageEmbed()
+                  .setDescription("Tu as décidé de te heal cette nuit!")
+                  .setColor(color))
+                  author.role.use --
+                  actions.push(author.role.action(author, author))
+                }else{
+                  message.channel.send(new Discord.MessageEmbed()
+                  .setDescription("Tu peut te heah seulement une fois!")
+                  .setColor(color))
+                }
+              }
+            }
+
+            else if(author.role.name == "Escorte") {
+              if(author.displayname != joueurvisé1.displayname) {
+                actions.push(author.role.action(author, joueurvisé1))
+              }else{
+                message.channel.send(new Discord.MessageEmbed()
+                .setDescription("Tu ne peut pas te block toi même!")
+                .setColor(color))
+              }
+            }
+
+            else if(author.role.name == "Investigator") {
+              if(author.displayname != joueurvisé1.displayname) {
+                actions.push(author.role.action(author, joueurvisé1))
+              }else{
+                message.channel.send(new Discord.MessageEmbed()
+                .setDescription("Tu ne peut pas t'invest toi même!")
+                .setColor(color))
+              }
+            }
+
+            else if(author.role.name == "Lookout") {
+              if(author.displayname != joueurvisé1.displayname) {
+                actions.push(author.role.action(author, joueurvisé1)) 
+              }else{
+                message.channel.send(new Discord.MessageEmbed()
+                .setDescription("Tu ne peut pas te visiter toi même!")
+                .setColor(color))
+              }
+            }
+            
+            else if(author.role.name == "Maire") {
               message.channel.send(new Discord.MessageEmbed()
-              .setDescription(`Tu a décidé de protéger ${username[0]}`))
+              .setDescription("Fait **!reveal** pour faire ton action!")
+              .setColor(color))
+            }
+
+            else if(author.role.name == "Medium") {
+              actions.push(author.role.action(author, joueurvisé1))
+            }
+
+            else if(author.role.name == "Retributionist") {
+              if(joueurvisé1.role.alignement == (("Town Investigative") || ("Town Protective") || ("Town Support") || ("Town Killing"))) {
+                let retriplayer = ""
+                alive().forEach(joueur => {
+                  if(joueur.number == args[0]) {
+                  retriplayer = joueur
+                  }
+                })
+                if(joueurvisé1.user.roles.cache.has(mort)) {
+                  actions.push(author.role.action(author, retriplayer))//to check
+                }else{
+                  message.channel.send(new Discord.MessageEmbed()
+                  .setDescription("Ce joueur n'est pas mort!")
+                  .setColor(color))
+                }
+              }else{
+                message.channel.send(new Discord.MessageEmbed()
+                .setDescription("Tu dois choisir un joueur avec un rôle town!")
+                .setColor(color))
+              }
+            }
+
+            else if(author.role.name == "Sheriff") {
+              if(author.displayname != joueurvisé1.displayname) {
+                actions.push(author.role.action(author, joueurvisé1))
+              }else{
+                message.channel.send(new Discord.MessageEmbed()
+                .setDescription("Tu ne peut pas t'invest toi même!")
+                .setColor(color))
+              }
+            }
+
+            else if(author.role.name == "Spy") {
+              if(author.displayname != joueurvisé1.displayname) {
+                actions.push(author.role.action(author, joueurvisé1))
+              }else{
+                message.channel.send(new Discord.MessageEmbed()
+                .setDescription("Tu ne peut pas te bug toi même!")
+                .setColor(color))
+              }
+            }
+
+            else if(author.role.name == "Transporteur") {
+              if(joueurvisé1 != joueurvisé2) {
+                actions.push(author.role.action(author, joueurvisé1, joueurvisé2))
+              }else{
+                message.channel.send(new Discord.MessageEmbed()
+                .setDescription("Tu as transport le même joueur!")
+                .setColor(color))
+              }
+            }
+
+            else if(author.role.name == "Vampire-Hunter") {
+              if(author.displayname != joueurvisé1.displayname) {
+                actions.push(author.role.action(author, joueurvisé1))
+              }else{
+                message.channel.send(new Discord.MessageEmbed()
+                .setDescription("Tu ne peut pas te visiter toi même!")
+                .setColor(color))
+              }
+            }
+
+            else if(author.role.name == "Vétéran") {
+              if(author.role.use != 0) {
+                message.channel.send(new Discord.MessageEmbed()
+                .setDescription("Tu as décidé d'être en alerte cette nuit!")
+                .setColor(color))
+                author.role.use --
+                actions.push(author.role.action(author, author))
+              }else{
+                message.channel.send(new Discord.MessageEmbed()
+                .setDescription("Tu peut être en allerte qu'une seul fois!")
+                .setColor(color))
+              }
+            }
+
+            else if(author.role.name == "Vigilante") {
+              if(author.role.use != 0) {
+                author.role.use --
+                actions.push(author.role.action(author, joueurvisé1))
+              }else{
+                message.channel.send(new Discord.MessageEmbed()
+                .setDescription("Tu peut attaquer que 3 fois!")
+                .setColor(color))
+              }
             }
                   
             else if(author.role.name == "Jester") {
@@ -1956,16 +2122,7 @@ bot.on('message', async (message) => {
                 .setColor(color))
               }
             }
-                  
-            else if(author.role.name == "Escorte") {
-              if(author.user.user.username == joueurvisé1.user.username) return message.channel.send(new Discord.MessageEmbed()
-              .setDescription("Tu ne peut pas faire ton action sur toi même!")
-              .setColor(color))
-              rolesblocked.push(taggedUser[0])//ne sais pas si c'est un roles avec roleblockImmunity
-              message.channel.send(new Discord.MessageEmbed()
-              .setDescription(`Tu as décidé de roleblock ${username[0]}`)
-              .setColor(color))
-            }
+
           }else{
             message.delete()
             message.channel.send(new Discord.MessageEmbed()
@@ -1980,7 +2137,7 @@ bot.on('message', async (message) => {
       }else{
         message.delete()
         message.channel.send(new Discord.MessageEmbed()
-        .setDescription("Tu n'est pas **Vivant**")
+        .setDescription("Ce n'est pas encore la **nuit**!")
         .setColor(color)).then((sent) => {
           setTimeout(function () {
             sent.delete();
@@ -1989,8 +2146,12 @@ bot.on('message', async (message) => {
       }
     }else{
       message.channel.send(new Discord.MessageEmbed()
-      .setDescription("Ce n'est pas encore la **nuit**!")
-      .setColor(color))
+      .setDescription("Tu n'est pas **Vivant**")
+      .setColor(color)).then((sent) => {
+        setTimeout(function () {
+          sent.delete();
+        }, 2000);
+      });
     }  
   }  
 });

@@ -4,7 +4,7 @@ class Retri {
         this.name = "Retributionist"
         this.description = "Vous êtes une créature mythique qui a le pouvoir de ramener les morts à la vie."
         this.isUnique = true
-        this.needsTwoTargets = true
+        this.needsTwoTargets = false
         this.alignement = "Town Support"
         this.command = "retribute"
         this.priority = 1
@@ -16,7 +16,7 @@ class Retri {
     }
 
     action(author, target1, target2){
-        return new Action("retribute", author, target1, target2)
+        return new Action("retribute", author, target1)
     }
 }
 
