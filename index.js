@@ -896,9 +896,25 @@ bot.on("message", (message) => {
 
       jailedChan.updateOverwrite(
         player.id,
-        {"VIEW_CHANNEL": false})
+        {"VIEW_CHANNEL": false}
+      )
+      if(player.role.alignement == (("Mafia Support") || ("Mafia Killing") || ("Mafia Deception"))) {
+        mafiaChan.updateOverwrite(
+          player.id,
+          {"VIEW_CHANNEL": true}
+        )
+      }else if(player.role.name == "Vampire") {
+        vampirechan.updateOverwrite(
+          player.id,
+          {"VIEW_CHANNEL": true}
+        )
+      }else if(player.role.name == "Vampire-Hunter") {
+        observatoirechan.updateOverwrite(
+          player.id,
+          {"VIEW_CHANNEL": true}
+        )
       }
-    );
+    });
   }
 
   else if(cmd == "nuit") {
@@ -942,7 +958,7 @@ bot.on("message", (message) => {
     whispersChannels = []
 
     if(jailed != "") {
-      jailedChan.updateOverwrite(
+    jailedChan.updateOverwrite(
       jailed.id,
       {"VIEW_CHANNEL": true})
 
