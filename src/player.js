@@ -26,6 +26,7 @@ class Player {
         this.healed = null
         this.ambushed = null
         this.ambushDone = false
+        this.isframed = false
         this.trans = this
         this.witch = null
         this.mvp = 0

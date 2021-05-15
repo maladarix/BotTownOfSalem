@@ -56,12 +56,12 @@ let numNuit = 0
 var nbWhispJour = 1
 let commencer = false
 
-let rolesEtAlig = ["Investigateur", "Lookout", "Sherif", "Spy", "Agent", "Jailor", "Vampire-hunter", "Veteran", "Vigilante", "Bodyguard", "Doctor", "Escorte"
+let rolesEtAlig = ["Investigateur", "Lookout", "Sherif", "Spy", "Agent", "Jailor", "Vampire-hunter", "Veteran", "Vigilante", "Bodyguard", "Docteur", "Escorte"
 , "Maire", "Medium", "Retributionist", "Transporter", "Disguiser", "Forger", "Framer", "Hypnotiseur", "Consierge", "Ambusher", "Godfather", "Mafioso", "Blackmailer"
 , "Conseiller", "Consort", "Amnesiac", "Survivant", "Vampire", "Executionner", "Jester", "Sorcière", "Arsonist", "Serial-killer", "Loup-garou", "ti" ,"tp", "ts", "tk", "md", "ms", "mk"
 , "nb", "nk", "ne", "nc", "rt", "rm", "rn", "any"]
 
-let roles = ["Investigateur", "Lookout", "Sherif", "Spy", "Agent", "Jailor", "Vampire-hunter", "Veteran", "Vigilante", "Bodyguard", "Doctor", "Escorte"
+let roles = ["Investigateur", "Lookout", "Sherif", "Spy", "Agent", "Jailor", "Vampire-hunter", "Veteran", "Vigilante", "Bodyguard", "Docteur", "Escorte"
 , "Maire", "Medium", "Retributionist", "Transporter", "Disguiser", "Forger", "Framer", "Hypnotiseur", "Consierge", "Ambusher", "Godfather", "Mafioso", "Blackmailer"
 , "Conseiller", "Consort", "Amnesiac", "Survivant", "Vampire", "Executionner", "Jester", "Sorcière", "Arsonist", "Serial-killer", "Loup-garou"]
 
@@ -99,7 +99,7 @@ let alive = function (){
 
 bot.on('ready', () => {
     console.log("bot online")
-    console.log(new Date())
+    console.log(new Date().toLocaleString())
     bot.user.setActivity("Ben oui, chui Jailor")
 })
 
@@ -618,7 +618,6 @@ bot.on("message", (message) => {
   else if(cmd == "forger") {
     if(partie.isStarted == false) return message.channel.send(pascomme)
     if(!god && !dev) return message.channel.send(pasGod)
-    if(!tagged) return message.channel.send(qui)
     if(!args[1]) return message.channel.send(new Discord.MessageEmbed()
     .setDescription("Quel rôle?")
     .setColor(color))
@@ -626,26 +625,36 @@ bot.on("message", (message) => {
     .setDescription("Lastwill?")
     .setColor(color))
     let forgerlw = []
+    let good = false
+    let joueurvisé = ""
+
+    alive().forEach(joueur => {
+      if(joueur.number == args[0]) {
+      joueurvisé = joueur
+      good = true
+      }
+    });
+
+    if(good == false) return message.channel.send(qui)
 
     args.slice(2).forEach(mot => {
       forgerlw += mot + " "
     })
-    tagged.lastwillappear = forgerlw
+    joueurvisé.lastwillappear = forgerlw
 
-    if(args[2]) {
-      if(roles.includes(args[1])) {
-        tagged.roleappear = args[1]
-      }else{
-        message.channel.send(new Discord.MessageEmbed()
-        .setDescription("Je ne trouve pas ca rôle")
-        .setColor(color))
-      }
-    }
+    
+    if(roles.includes(args[1])) {
+      joueurvisé.roleappear = args[1]
+    }else return message.channel.send(new Discord.MessageEmbed()
+      .setDescription("Je ne trouve pas ca rôle")
+      .setColor(color))
+      
+
 
     message.channel.send(new Discord.MessageEmbed()
-    .setTitle(`Info sur **${tagged.displayname}**:`)
-    .addField("Rôle", tagged.roleappear)
-    .addField("Lastwill", tagged.lastwillappear)
+    .setTitle(`Info sur **${joueurvisé.displayname}**:`)
+    .addField("Rôle", joueurvisé.roleappear)
+    .addField("Lastwill", joueurvisé.lastwillappear)
     .setColor(color))
   }
 
@@ -858,21 +867,7 @@ bot.on("message", (message) => {
       gameannoncchan.send(messagejour)
       
     }
-    /*if(jailedkill != "") {
-      kill(jailedkill)
-      jailed  = ""
-    }
-    jailed = ""*/
     actions.forEach(action => {
-    });
-    //adminchannel.send(jailedkill)
-
-    alive().forEach(member => {
-      if(member.role.name == "Maire") {
-        if(member.role.isreveal == true) {
-          votemaire = 2
-        }
-      }
     });
 
     partie.time = "jour"
@@ -893,6 +888,16 @@ bot.on("message", (message) => {
       player.whispRemaining = nbWhispJour
       player.hasVoted = false
       player.isjailed = false
+      player.isframed = false
+      player.lastwillappear = player.lastwill
+      player.roleappear = player.role.name
+
+      if(player.role.name == "Maire") {
+        if(player.role.isreveal == true) {
+          votemaire = 2
+        }
+      }
+
 
       jailedChan.updateOverwrite(
         player.id,
@@ -1204,17 +1209,9 @@ bot.on("message", (message) => {
         }
       }
     });  
-    if(targetedPlayer.length > 1) {
-      var desc = "Il y a une égalité entre "
-      targetedPlayer.forEach(player => {
-        if(player.id != targetedPlayer[0].id){
-          desc += " et "
-        }
-        desc += player.displayname
-      });
-      desc += ". Aucun des deux ne sera pendu"
+    if(targetedPlayer.length == alive().length) {
       return message.channel.send(new Discord.MessageEmbed()
-      .setDescription(desc)
+      .setDescription("Il n'y a pas eu de vote aujourd'hui")
       .setColor(color))
     }else if (targetedPlayer.length == 1){
       if(targetedPlayer[0].votesFor > (alive().length/2)){
@@ -1229,8 +1226,16 @@ bot.on("message", (message) => {
       .setColor(color))
       }
     }else{
+      var desc = "Il y a une égalité entre "
+      targetedPlayer.forEach(player => {
+        if(player.id != targetedPlayer[0].id){
+          desc += " et "
+        }
+        desc += player.displayname
+      });
+      desc += ". Aucun des deux ne sera pendu"
       return message.channel.send(new Discord.MessageEmbed()
-      .setDescription("Il n'y a pas eu de vote aujourd'hui")
+      .setDescription(desc)
       .setColor(color))
     }
   }
@@ -1703,13 +1708,13 @@ bot.on('message', async (message) => {
         jailed = joueurvisé
         if(joueurvisé == "") return message.channel.send(trouvePas)
         if(!joueurvisé.user.roles.cache.has(vivant)) return message.channel.send(pasVivant)
-        /*if(joueurvisé.user.id == message.author.id) return message.channel.send(new Discord.MessageEmbed()
+        if(joueurvisé.user.id == message.author.id) return message.channel.send(new Discord.MessageEmbed()
         .setDescription("Tu ne peut pas te jailed toi même!")
         .setColor(color)).then((sent) => {
           setTimeout(function () {
             sent.delete();
           }, 2000);
-        });*/
+        });
 
         if(partie.time == "jour") {
           let interfachan = message.guild.channels.cache.get(author.interface)
@@ -1884,7 +1889,7 @@ bot.on('message', async (message) => {
     }
   }
 
-  else if(cmd == "action") {
+  /*else if(cmd == "action") {
     if(god || spec) return
     if(author.user._roles.includes(vivant)) {
       if(partie.time == "nuit") {
@@ -2169,10 +2174,10 @@ bot.on('message', async (message) => {
         }, 2000);
       });
     }  
-  }  
+  }*/ 
 });
 
-bot.on("messageReactionAdd", (reaction, user) => {
+bot.on("messageReactionAdd", async (reaction, user) => {
   let adminchannel = reaction.message.guild.channels.cache.get(adminchat)
   if(user.bot) return;
   var reactor = null
@@ -2248,13 +2253,21 @@ bot.on("messageReactionAdd", (reaction, user) => {
           else{
             reaction.message.channel.send(new Discord.MessageEmbed()
             .setDescription(`<@${reactor.id}>, la partie est déjà commencée, vous pouvez tout de même **spectate** avec des **yeux**`)
-            .setColor(color))
+            .setColor(color)).then((sent) => {
+              setTimeout(function () {
+                sent.delete();
+              }, 5000);
+            });
           }
         }
         else{
           reaction.message.channel.send(new Discord.MessageEmbed()
             .setDescription(`<@${reactor.id}>, vous faites déjà partie de la partie!`)
-            .setColor(color))
+            .setColor(color)).then((sent) => {
+              setTimeout(function () {
+                sent.delete();
+              }, 5000);
+            });
         }
       } 
       if(reaction.emoji == eyesId){
@@ -2264,7 +2277,11 @@ bot.on("messageReactionAdd", (reaction, user) => {
         else{
           reaction.message.channel.send(new Discord.MessageEmbed()
             .setDescription(`<@${reactor.id}>, vous ne pouvez pas **spectate** si vous faites **déjà** partie de la partie!`)
-            .setColor(color))
+            .setColor(color)).then((sent) => {
+              setTimeout(function () {
+                sent.delete();
+              }, 5000);
+            });
         }
       }
     }
