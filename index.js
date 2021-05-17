@@ -91,7 +91,8 @@ let alive = function (){
   let alive = new Array()
   listejoueur.forEach(player => {
     if (player.serverRoles.includes(vivant)){
-      alive.push(player);
+      alive.push(player)
+      console.log("Allo")
     }
   })
   return alive
@@ -737,79 +738,79 @@ bot.on("message", (message) => {
   else if (cmd == "alive") {
     if(!god && !dev) return message.channel.send(pasGod);
     if(!args[0]) return message.channel.send(qui)
-    if(tagged == null) return message.channel.send(new Discord.MessageEmbed()
-    .setDescription("Le joueur n'est pas add")
-    .setColor(color))
+    if(!listejoueur.includes(new Player(taggedUser))){
+      listejoueur.push(new Player(taggedUser))
+    }
+    listejoueur.forEach(player => {
+      if(taggedUser.user.username  == player.name){
+        tagged = player
+      }
+    })
     if(start == true) {
-      if(!taggedUser._roles.includes(vivant)) {
-        taggedUser.roles.add(vivant)
-        tagged.serverRoles.push(vivant)
-        taggedUser.roles.remove(spec)
-        tagged.number = numjoueur + 1
-        numjoueur ++
+      if(alive().length < nbrJoueurMax) {
+        if(!taggedUser._roles.includes(vivant)) {
+          taggedUser.roles.add(vivant)
+          taggedUser.roles.remove(spec)
+          tagged.user.number = numjoueur + 1
+          numjoueur ++
 
-        let messainter = new Discord.MessageEmbed()
-        .setDescription(`Salut <@${tagged.id}>! Ceci est ton interface avec le jeu. Je m'explique. Ici tu auras la description de ton rôle, et tu pourras écrire tes ` + 
-        "actions que tu veux effectuer dans la nuit. De plus, tu pourras poser toutes tes questions par rapport au fonctionnement du jeu. Finalement, " + 
-        "tu peux écrire ici un last will qui sera révélé à tout le monde lors de ta mort. Ce channel sera vidé chaque jour à l'exception de ce message, " +
-        "de ta description de rôle, ainsi que de ton last will.")
-        .setColor(color)
+          let messainter = new Discord.MessageEmbed()
+          .setDescription(`Salut <@${tagged.id}>! Ceci est ton interface avec le jeu. Je m'explique. Ici tu auras la description de ton rôle, et tu pourras écrire tes ` + 
+          "actions que tu veux effectuer dans la nuit. De plus, tu pourras poser toutes tes questions par rapport au fonctionnement du jeu. Finalement, " + 
+          "tu peux écrire ici un last will qui sera révélé à tout le monde lors de ta mort. Ce channel sera vidé chaque jour à l'exception de ce message, " +
+          "de ta description de rôle, ainsi que de ton last will.")
+          .setColor(color)
 
-        let interface = tagged.user.displayName
-        message.guild.channels.create(interface + " Interface",{type:"text",})
-        .then((channel) => {
-          channel.setParent(parentInterface)
-          channel.overwritePermissions([
-          {
-            id: channel.guild.id,
-            deny: ['VIEW_CHANNEL'],
-          },
-          {
-            id: vivant,
-            deny: ['VIEW_CHANNEL'],
-          },{
-            id: tagged.id,
-            allow: ['VIEW_CHANNEL'],
-          },{
-            id: spec,
-            allow: ['VIEW_CHANNEL'],
-            deny: ['SEND_MESSAGES'],
-          },{
-            id: mort,
-            deny: ['VIEW_CHANNEL'],
+          let interface = tagged.user.displayName
+          message.guild.channels.create(interface + " Interface",{type:"text",})
+          .then((channel) => {
+            channel.setParent(parentInterface)
+            channel.overwritePermissions([
+            {
+              id: channel.guild.id,
+              deny: ['VIEW_CHANNEL'],
+            },
+            {
+              id: vivant,
+              deny: ['VIEW_CHANNEL'],
+            },{
+              id: tagged.id,
+              allow: ['VIEW_CHANNEL'],
+            },{
+              id: spec,
+              allow: ['VIEW_CHANNEL'],
+              deny: ['SEND_MESSAGES'],
+            },{
+              id: mort,
+              deny: ['VIEW_CHANNEL'],
+            }
+            ])
+            .then(setTimeout(() => {
+              channel.send(messainter)
+            }, 1500))
+            tagged.user.interface = channel.id
+            interfaces.push(channel.id)
+            channel.setTopic(`<@&${godId}> pour avoir de l'aide direct`)
+            })
+            
+            if(alive().length == nbrJoueurMax){
+            Commands.prototype.start(partie, alive())
+            partie.isStarted = true
+            adminchannel.send(new Discord.MessageEmbed()
+            .setDescription("Vous pouvez maintenant distribuer les rôles!")
+            .setColor(color))
           }
-          ])
-          .then(setTimeout(() => {
-            channel.send(messainter)
-          }, 1500))
-          tagged.interface = channel.id
-          interfaces.push(channel.id)
-          channel.setTopic(`<@&${godId}> pour avoir de l'aide direct`)
-          })
-
-          if(alive().length == nbrJoueurMax){
-          Commands.prototype.start(partie, alive())
-          partie.isStarted = true
-          adminchannel.send(new Discord.MessageEmbed()
-          .setDescription("Vous pouvez maintenant distribuer les rôles!")
+        }else{
+          message.channel.send(new Discord.MessageEmbed()
+          .setDescription("Ce joueur est déja dans la partie!")
           .setColor(color))
-        }
-      }else{
-        message.channel.send(new Discord.MessageEmbed()
-        .setDescription("Ce joueur est déja dans la partie!")
-        .setColor(color))
+        }  
       }  
     }else{
       message.channel.send(new Discord.MessageEmbed()
       .setDescription("Tu dois start une game!")
       .setColor(color))
     }
-  }
-
-  else if(cmd == "add") {
-    if(!god && !dev) return message.channel.send(pasGod)
-    if(!args[0]) return message.channel.send(qui)
-    listejoueur.push(new Player(taggedUser))
   }
 
   else if(cmd == "swhisp") {
@@ -1524,7 +1525,6 @@ bot.on("message", (message) => {
   else if(cmd == "helpcommands") {
     let helpcommandsgod = new Discord.MessageEmbed()
       .setTitle("**Commandes God**")
-      .addField("!add @[User]", "Pour ajouter un joueur à la liste de joueur")
       .addField("!swhisp [nbWhisp]", "Mettre la limite de whisp par jour")
       .addField("!gamemode [gamemode]", "Choisie le gamemode de la partie")
       .addField("!jour (message)", "Permet de mettre le jour")
@@ -1637,7 +1637,6 @@ bot.on('message', async (message) => {
     .setDescription("Tu as déja envoyer un start")
     .setColor(color))
 
-    start = true
     for (let i = 1; i <= classique20.length; i++){
       class20 += i + ". " + classique20[i-1] + "\n"
     }
@@ -1660,6 +1659,7 @@ bot.on('message', async (message) => {
       nbrJoueurMax = args[0]
       slineNum = 1
     }
+    start = true
     if(partie.gamemode == "Classique 20 joueurs") {
       listerolechan.send(new Discord.MessageEmbed()
       .setTitle("Partie en cour: **Clasique 20 joueurs**")
@@ -2180,114 +2180,104 @@ bot.on('message', async (message) => {
 bot.on("messageReactionAdd", async (reaction, user) => {
   let adminchannel = reaction.message.guild.channels.cache.get(adminchat)
   if(user.bot) return;
+  var reactoradd = reaction.message.channel.guild.members.cache.get(user.id)
   var reactor = null
-  listejoueur.forEach(player => {
-    if (user.username == player.name){
-      reactor = player
-    }
-  })
   if(reaction.message.channel == quiVeutJouer) {
-    if (reactor == null){
-      reaction.message.channel.send(new Discord.MessageEmbed()
-        .setDescription(`<@${user.id}>, vous ne faites pas parti du serveur, **veuillez contacter un admin**`)
-        .setColor(color))
+    if(!listejoueur.includes(new Player(reactoradd))){
+      listejoueur.push(new Player(reactoradd))
     }
-    else{
-    try{
-      if(reaction.emoji.id == turtleId){
-        if(!reactor.serverRoles.includes(vivant)) {
-          if(alive().length < nbrJoueurMax) {
-            reactor.user.roles.add(vivant)
-            reactor.serverRoles.push(vivant)
-            reactor.user.roles.remove(spec)
-            reactor.number = numjoueur + 1
-            numjoueur ++
+    listejoueur.forEach(player => {
+      if(user.username == player.name){
+        reactor = player
+      }
+    })
+    if(reaction.emoji.id == turtleId){
+      if(!reactor.serverRoles.includes(vivant)) {
+        if(alive().length < nbrJoueurMax) {
+          reactor.user.roles.add(vivant)
+          reactor.serverRoles.push(vivant)
+          reactor.user.roles.remove(spec)
+          reactor.number = numjoueur + 1
+          numjoueur ++
 
-            let messainter = new Discord.MessageEmbed()
-            .setDescription(`Salut <@${reactor.id}>! Ceci est ton interface avec le jeu. Je m'explique. Ici tu auras la description de ton rôle, et tu pourras écrire tes ` + 
-            "actions que tu veux effectuer dans la nuit. De plus, tu pourras poser toutes tes questions par rapport au fonctionnement du jeu. Finalement, " + 
-            "tu peux écrire ici un last will qui sera révélé à tout le monde lors de ta mort. Ce channel sera vidé chaque jour à l'exception de ce message, " +
-            "de ta description de rôle, ainsi que de ton last will.")
-            .setColor(color)
+          let messainter = new Discord.MessageEmbed()
+          .setDescription(`Salut <@${reactor.id}>! Ceci est ton interface avec le jeu. Je m'explique. Ici tu auras la description de ton rôle, et tu pourras écrire tes ` + 
+          "actions que tu veux effectuer dans la nuit. De plus, tu pourras poser toutes tes questions par rapport au fonctionnement du jeu. Finalement, " + 
+          "tu peux écrire ici un last will qui sera révélé à tout le monde lors de ta mort. Ce channel sera vidé chaque jour à l'exception de ce message, " +
+          "de ta description de rôle, ainsi que de ton last will.")
+          .setColor(color)
 
-            let interface = reactor.user.displayName
-            reaction.message.guild.channels.create(interface + " Interface",{type:"text",})
-            .then((channel) => {
-              channel.setParent(parentInterface)
-              channel.overwritePermissions([
-              {
-                id: channel.guild.id,
-                deny: ['VIEW_CHANNEL'],
-              },
-              {
-                id: vivant,
-                deny: ['VIEW_CHANNEL'],
-              },{
-                id: reactor.id,
-                allow: ['VIEW_CHANNEL'],
-              },{
-                id: spec,
-                allow: ['VIEW_CHANNEL'],
-                deny: ['SEND_MESSAGES'],
-              },{
-                id: mort,
-                deny: ['VIEW_CHANNEL'],
-              }
-              ])
-              .then(setTimeout(() => {
-                channel.send(messainter)
-              }, 1500))
-              reactor.interface = channel.id
-              interfaces.push(channel.id)
-              channel.setTopic(`<@&${godId}> pour avoir de l'aide direct`)
-              })
+          let interface = reactor.user.displayName
+          reaction.message.guild.channels.create(interface + " Interface",{type:"text",})
+          .then((channel) => {
+            channel.setParent(parentInterface)
+            channel.overwritePermissions([
+            {
+              id: channel.guild.id,
+              deny: ['VIEW_CHANNEL'],
+            },
+            {
+              id: vivant,
+              deny: ['VIEW_CHANNEL'],
+            },{
+              id: reactor.id,
+              allow: ['VIEW_CHANNEL'],
+            },{
+              id: spec,
+              allow: ['VIEW_CHANNEL'],
+              deny: ['SEND_MESSAGES'],
+            },{
+             id: mort,
+              deny: ['VIEW_CHANNEL'],
+            }
+            ])
+            .then(setTimeout(() => {
+              channel.send(messainter)
+            }, 1500))
+            reactor.interface = channel.id
+            interfaces.push(channel.id)
+            channel.setTopic(`<@&${godId}> pour avoir de l'aide direct`)
+            })
 
-            if(alive().length == nbrJoueurMax){
-              Commands.prototype.start(partie, alive())
-              partie.isStarted = true
-              adminchannel.send(new Discord.MessageEmbed()
-              .setDescription("Vous pouvez maintenant distribuer les rôles!")
-              .setColor(color))
-            } 
-          }
-          else{
-            reaction.message.channel.send(new Discord.MessageEmbed()
-            .setDescription(`<@${reactor.id}>, la partie est déjà commencée, vous pouvez tout de même **spectate** avec des **yeux**`)
-            .setColor(color)).then((sent) => {
-              setTimeout(function () {
-                sent.delete();
-              }, 5000);
-            });
-          }
-        }
-        else{
+          if(alive().length == nbrJoueurMax){
+            Commands.prototype.start(partie, alive())
+            partie.isStarted = true
+            adminchannel.send(new Discord.MessageEmbed()
+            .setDescription("Vous pouvez maintenant distribuer les rôles!")
+            .setColor(color))
+          } 
+        }else{
           reaction.message.channel.send(new Discord.MessageEmbed()
-            .setDescription(`<@${reactor.id}>, vous faites déjà partie de la partie!`)
-            .setColor(color)).then((sent) => {
-              setTimeout(function () {
-                sent.delete();
-              }, 5000);
-            });
+          .setDescription(`<@${reactor.id}>, la partie est déjà commencée, vous pouvez tout de même **spectate** avec des **yeux**`)
+          .setColor(color)).then((sent) => {
+            setTimeout(function () {
+              sent.delete();
+            }, 5000);
+          });
         }
-      } 
-      if(reaction.emoji == eyesId){
-        if(!reactor.serverRoles.includes(vivant)){
-          reactor.user.roles.add(spec)
-        }
-        else{
-          reaction.message.channel.send(new Discord.MessageEmbed()
-            .setDescription(`<@${reactor.id}>, vous ne pouvez pas **spectate** si vous faites **déjà** partie de la partie!`)
-            .setColor(color)).then((sent) => {
-              setTimeout(function () {
-                sent.delete();
-              }, 5000);
-            });
-        }
+      }else{
+        reaction.message.channel.send(new Discord.MessageEmbed()
+          .setDescription(`<@${reactor.id}>, vous faites déjà partie de la partie!`)
+          .setColor(color)).then((sent) => {
+          setTimeout(function () {
+            sent.delete();
+          }, 5000);
+        });
+      }
+    }else if(reaction.emoji == eyesId){
+      if(!reactor.serverRoles.includes(vivant)){
+        reactor.user.roles.add(spec)
+      }else{
+        reaction.message.channel.send(new Discord.MessageEmbed()
+          .setDescription(`<@${reactor.id}>, vous ne pouvez pas **spectate** si vous faites **déjà** partie de la partie!`)
+          .setColor(color)).then((sent) => {
+          setTimeout(function () {
+            sent.delete();
+          }, 5000);
+        });
       }
     }
-    catch(err){console.log(err);}
   }
-}
 })
 
 bot.login(process.env.BOT_TOKEN)
