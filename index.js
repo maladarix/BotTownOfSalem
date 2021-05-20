@@ -92,7 +92,6 @@ let alive = function (){
   listejoueur.forEach(player => {
     if (player.serverRoles.includes(vivant)){
       alive.push(player)
-      console.log("Allo")
     }
   })
   return alive
@@ -102,6 +101,7 @@ bot.on('ready', () => {
     console.log("bot online")
     console.log(new Date().toLocaleString())
     bot.user.setActivity("Ben oui, chui Jailor")
+    bot.user.setActivity
 })
 
 let pascomme = new Discord.MessageEmbed()
@@ -126,7 +126,11 @@ let pastoi = new Discord.MessageEmbed()
 
 let pasVivant = new Discord.MessageEmbed()
 .setDescription("Ce joueur n'est pas vivant")
-.setColor(color);
+.setColor(color)
+
+let tpasvivant = new Discord.MessageEmbed()
+.setDescription("Tu n'est pas vivant")
+.setColor(color)
 
 bot.on("message", (message) => {
   if(message.author.bot) return
@@ -200,6 +204,7 @@ bot.on("message", (message) => {
     }
 
     died.user.roles.add(mort)
+    died.user.roles.add(spec)
     died.user.roles.remove(vivant)
     died.user.roles.remove(nuit)
     died.user.roles.remove(jour)
@@ -581,6 +586,7 @@ bot.on("message", (message) => {
   
   else if(cmd == "lastwill") {
     if(partie.isStarted == false) return message.channel.send(pascomme)
+    if(!message.member.roles._roles.has(vivant)) return message.channel.send(tpasvivant)
     var messageLW = "" 
     if(args.length >= 1 && taggedUser == null) {
       args.forEach(mot => {
@@ -619,6 +625,7 @@ bot.on("message", (message) => {
   else if(cmd == "forger") {
     if(partie.isStarted == false) return message.channel.send(pascomme)
     if(!god && !dev) return message.channel.send(pasGod)
+    if(!taggedUser.roles.cache.has(vivant)) return message.channel.send(pasVivant)
     if(!args[1]) return message.channel.send(new Discord.MessageEmbed()
     .setDescription("Quel rôle?")
     .setColor(color))
@@ -663,6 +670,7 @@ bot.on("message", (message) => {
     if(!god && !dev) return message.channel.send(pasGod)
     if(partie.isStarted == false) return message.channel.send(pascomme)
     if(!args[0]) return message.channel.send(qui)
+    if(!taggedUser.roles.cache.has(vivant)) return message.channel.send(pasVivant)
     kill(tagged)
   }
 
@@ -682,6 +690,12 @@ bot.on("message", (message) => {
     });
 
     adminchannel.send(messageaction)
+  }
+
+  else if(cmd == "speak") {
+    if(partie.isStarted == false) return message.channel.send(pascomme)
+    if(!message.member.roles._roles.has(vivant)) return message.channel.send(tpasvivant)
+    villagechan.send(`<@${author.id}>: Je suis blackmailed`)
   }
 
   else if(cmd == "mvp") {
@@ -750,6 +764,7 @@ bot.on("message", (message) => {
       if(alive().length < nbrJoueurMax) {
         if(!taggedUser._roles.includes(vivant)) {
           taggedUser.roles.add(vivant)
+          taggedUser._roles.push(vivant)
           taggedUser.roles.remove(spec)
           tagged.user.number = numjoueur + 1
           numjoueur ++
@@ -788,7 +803,7 @@ bot.on("message", (message) => {
             .then(setTimeout(() => {
               channel.send(messainter)
             }, 1500))
-            tagged.user.interface = channel.id
+            tagged.interface = channel.id
             interfaces.push(channel.id)
             channel.setTopic(`<@&${godId}> pour avoir de l'aide direct`)
             })
@@ -995,6 +1010,7 @@ bot.on("message", (message) => {
       .setColor(color);
     
     if(partie.isStarted == false) return message.channel.send(pascomme)
+    if(!message.member.roles._roles.has(vivant)) return message.channel.send(tpasvivant)
     if(message.channel.name != dmChan.name) return message.channel.send(demWhisp)
     if(partie.time == "nuit") return message.channel.send(nuitwhisp)
     if(!args[0]) return message.channel.send(qui)
@@ -1046,9 +1062,6 @@ bot.on("message", (message) => {
       id: spec,
       allow: ['VIEW_CHANNEL'],
       deny: ['SEND_MESSAGES'],
-    },{
-      id: mort,
-      deny: ['VIEW_CHANNEL'],
     }
     ])
     whispersChannels.push(channel.id)
@@ -1120,7 +1133,6 @@ bot.on("message", (message) => {
             }
           }
         }while (!good)
-
         let interfacechan =  message.guild.channels.cache.get(player.interface)
         interfacechan.send(new Discord.MessageEmbed()
         .setTitle("**Ton rôle**")
@@ -1129,7 +1141,7 @@ bot.on("message", (message) => {
         .addField("**Allignement**", player.role.alignement)
         .addField("**Description**", player.role.description)
         .addField("**Habiletée**", player.role.hab)
-        .addField("**Ta cible**" , cible.displayName)
+        .addField("**Ta cible**" , cible.displayname)
         .addField("**Gagnez avec**", player.role.winwith)
         .addField("**Plus d'info sur ton wiki**", player.role.wikiLink)
         .setColor(color))
@@ -1821,6 +1833,7 @@ bot.on('message', async (message) => {
     .setDescription("Ce joueur n'est pas vivant")
     .setColor(color)
     if(partie.isStarted == false) return message.channel.send(pascomme)
+    if(!message.member.roles._roles.has(vivant)) return message.channel.send(tpasvivant)
     if(message.channel.name != pendChan.name) return message.channel.send(pendrChan);
     if(!args[0]) return message.channel.send(qui);
     if(!taggedUser[0].roles.cache.has(vivant)) return message.channel.send(pasVivant);
@@ -2191,6 +2204,13 @@ bot.on("messageReactionAdd", async (reaction, user) => {
         reactor = player
       }
     })
+    if(partie.isStarted == true) return reaction.message.channel.send(new Discord.MessageEmbed()
+    .setDescription(`<@${reactor.id}>, la partie est déjà commencée, vous pouvez tout de même **spectate** avec des **yeux**`)
+    .setColor(color)).then((sent) => {
+      setTimeout(function () {
+        sent.delete();
+      }, 5000);
+    });
     if(reaction.emoji.id == turtleId){
       if(!reactor.serverRoles.includes(vivant)) {
         if(alive().length < nbrJoueurMax) {
@@ -2226,9 +2246,6 @@ bot.on("messageReactionAdd", async (reaction, user) => {
               id: spec,
               allow: ['VIEW_CHANNEL'],
               deny: ['SEND_MESSAGES'],
-            },{
-             id: mort,
-              deny: ['VIEW_CHANNEL'],
             }
             ])
             .then(setTimeout(() => {
