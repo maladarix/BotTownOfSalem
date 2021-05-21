@@ -100,8 +100,7 @@ let alive = function (){
 bot.on('ready', () => {
     console.log("bot online")
     console.log(new Date().toLocaleString())
-    bot.user.setActivity("Ben oui, chui Jailor")
-    bot.user.setActivity
+    bot.user.setActivity('Phil pcq stun traitre', { type: 'WATCHING' })
 })
 
 let pascomme = new Discord.MessageEmbed()
@@ -766,8 +765,9 @@ bot.on("message", (message) => {
           taggedUser.roles.add(vivant)
           taggedUser._roles.push(vivant)
           taggedUser.roles.remove(spec)
-          tagged.user.number = numjoueur + 1
+          tagged.number = numjoueur + 1
           numjoueur ++
+          console.log(tagged)
 
           let messainter = new Discord.MessageEmbed()
           .setDescription(`Salut <@${tagged.id}>! Ceci est ton interface avec le jeu. Je m'explique. Ici tu auras la description de ton rôle, et tu pourras écrire tes ` + 

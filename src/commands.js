@@ -51,7 +51,7 @@ class commands{
         currentgamemode.forEach(role => {
             if(role == "Jailor") {
                 this.getJailor()
-            }else if(role == "Doctor") {
+            }else if(role == "Docteur") {
                 this.getDoctor()
             }else if(role == "Investigateur") {
                 this.getInvestigateur()
@@ -172,7 +172,7 @@ class commands{
           }
         listerandom = shuffle(players)
         for (let index = 0; index < listerandom.length; index++) {
-        listerandom[index].role = gameroles[index]
+            listerandom[index].role = gameroles[index]
         }
     }
 

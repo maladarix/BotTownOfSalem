@@ -4,7 +4,7 @@ class Lookout {
     constructor(){
         this.name = "Lookout"
         this.description = "Vous êtes un observateur doté d’un œil de faucon qui campe discrètement à l’extérieur des maisons pour obtenir de l’information."
-        this.isUnique = true
+        this.isUnique = false
         this.needsTwoTargets = false
         this.alignement = "Town Investigative"
         this.command = "lookout"
