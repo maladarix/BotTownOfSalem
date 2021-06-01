@@ -3,6 +3,7 @@ const Commands = require('./src/commands.js');
 const Player = require('./src/player.js');
 const Partie = require('./src/game.js');
 const dis = require('./src/Roles/mafia/dis.js');
+const medu = require('./src/Roles/coven/medusa.js');
 const bot = new Discord.Client();
 require("dotenv").config()
 var nbrJoueurMax = 0
@@ -26,31 +27,31 @@ let reactions = ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣
 
 //const game
 //           id serv officiel                id serv test
-let mort = /*"824726156141658132"           */"829832421825708064"
-let jour = /*"825029496305614927"           */"829254726495240214"
-let nuit = /*"824749359118811187"           */"829254687630557185"
-let vivant = /*"824725851198849075"         */"829205364444364800"
-let spec = /*"824726635902271518"           */"829250418244321280"
+let mort = /*"824726156141658132"*/           "829832421825708064"
+let jour = /*"825029496305614927"*/           "829254726495240214"
+let nuit = /*"824749359118811187"*/           "829254687630557185"
+let vivant = /*"824725851198849075"*/         "829205364444364800"
+let spec = /*"824726635902271518"*/           "829250418244321280"
 let devid = "830253971637665832"
-let quiVeutJouer = /*"824725623346954271"   */"829873265194303498"
-let jailedid = /*"824761075387727912"       */"830240201111896135"
-let jail = /*"824728100645896314"           */"830240173727547424"
-let vampirechat = /*"839977061384978492"    */"839977899581767700"
-let observatoire = /*"839977410966847539"   */"839977922328526858"
-let mafiaChat = /*"824731087863021588"      */"830240221584687104"
-let panchanid = /*"824727128758943795"      */"829269425290215463"
-let dmchanid = /*"824726760808513606"       */"829216633205424128"
-let villageid = /*"824727077366005800"      */"837575217907105813"
-let gameannoncid = /*"824732131678617600"   */"837499365835669536"
-let spyHideout = /*"824762348396216401"     */"830240252248850433"
-let turtleId = /*"830113799763525642"       */"830121244208267334"
-let eyesId = /*"830114000448258058"         */"830121185885945880"
-let godId = /*"824725152692174879"          */"829228486660063262"
-let graveyard = /*"825868136782757918"      */"835014782594711593"    
-let parentwhisp = /*"824726713605947403"    */"829239671925637150"
-let parentInterface=/*"832301102236958770"  */"829239671925637150"
-let adminchat = /*"829870229470838814"      */"833229701190385676"
-let listeroleid = /*"824731870628413480"    */"833229701190385676"
+let quiVeutJouer = /*"824725623346954271"*/   "829873265194303498"
+let jailedid = /*"824761075387727912"*/       "830240201111896135"
+let jail = /*"824728100645896314"*/           "830240173727547424"
+let vampirechat = /*"839977061384978492"*/    "839977899581767700"
+let observatoire = /*"839977410966847539"*/   "839977922328526858"
+let mafiaChat = /*"824731087863021588"*/      "830240221584687104"
+let panchanid = /*"824727128758943795"*/      "829269425290215463"
+let dmchanid = /*"824726760808513606"*/       "829216633205424128"
+let villageid = /*"824727077366005800"*/      "837575217907105813"
+let gameannoncid = /*"824732131678617600"*/   "837499365835669536"
+let spyHideout = /*"824762348396216401"*/     "830240252248850433"
+let turtleId = /*"830113799763525642"*/       "830121244208267334"
+let eyesId = /*"830114000448258058"*/         "830121185885945880"
+let godId = /*"824725152692174879"*/          "829228486660063262"
+let graveyard = /*"825868136782757918"*/      "835014782594711593"    
+let parentwhisp = /*"824726713605947403"*/    "829239671925637150"
+let parentInterface=/*"832301102236958770"*/  "829239671925637150"
+let adminchat = /*"829870229470838814"*/      "833229701190385676"
+let listeroleid = /*"824731870628413480"*/    "833229701190385676"
 let numJour = -1
 let numNuit = 0
 var nbWhispJour = 1
@@ -86,23 +87,6 @@ let messageJouer = new Discord.MessageEmbed()
 .setColor(color)
 const partie = new Partie()
 
-
-let alive = function (){
-  let alive = new Array()
-  listejoueur.forEach(player => {
-    if (player.serverRoles.includes(vivant)){
-      alive.push(player)
-    }
-  })
-  return alive
-}
-
-bot.on('ready', () => {
-    console.log("bot online")
-    console.log(new Date().toLocaleString())
-    bot.user.setActivity('Phil pcq stun traitre', { type: 'WATCHING' })
-})
-
 let pascomme = new Discord.MessageEmbed()
 .setDescription("La partie n'est pas encore commencée!")
 .setColor(color)
@@ -130,6 +114,22 @@ let pasVivant = new Discord.MessageEmbed()
 let tpasvivant = new Discord.MessageEmbed()
 .setDescription("Tu n'est pas vivant")
 .setColor(color)
+
+let alive = function (){
+  let alive = new Array()
+  listejoueur.forEach(player => {
+    if (player.serverRoles.includes(vivant)){
+      alive.push(player)
+    }
+  })
+  return alive
+}
+
+bot.on('ready', () => {
+  console.log("bot online")
+  console.log(new Date().toLocaleString())
+  bot.user.setActivity('Phil pcq stun traitre', { type: 'WATCHING' })
+})
 
 bot.on("message", (message) => {
   if(message.author.bot) return
@@ -161,6 +161,9 @@ bot.on("message", (message) => {
   if(message.channel == vampirechan){
     observatoirechan.send(message.content)
   }
+
+  if(message.content.includes("bot")) message.channel.send("Pourquoi tu parle de moi?")
+  if(message.content.includes("bot" && "merde")) message.channel.send("michan agrou")
 
   if(!message.content.startsWith(prefix)) return
 
@@ -767,7 +770,6 @@ bot.on("message", (message) => {
           taggedUser.roles.remove(spec)
           tagged.number = numjoueur + 1
           numjoueur ++
-          console.log(tagged)
 
           let messainter = new Discord.MessageEmbed()
           .setDescription(`Salut <@${tagged.id}>! Ceci est ton interface avec le jeu. Je m'explique. Ici tu auras la description de ton rôle, et tu pourras écrire tes ` + 
@@ -954,12 +956,13 @@ bot.on("message", (message) => {
     }
     partie.time = "nuit"
     numNuit = numNuit + 1
-    /*if(numNuit == (1 || 3)) {
+
+    if(numNuit == (1) || (3)) {
+      partie.fullmoon = false
+    }else{
       partie.fullmoon = true
       villagechan.send("Cette nuit est une nuit de **pleine lune**!")
-    }else{
-      partie.fullmoon = false
-    }*/
+    }
     
     villagechan.send(`<@&${vivant}>, Nuit **${numNuit}**`)
     adminchannel.send(new Discord.MessageEmbed()
@@ -1250,6 +1253,17 @@ bot.on("message", (message) => {
       return message.channel.send(new Discord.MessageEmbed()
       .setDescription(desc)
       .setColor(color))
+    }
+  }
+
+  else if(cmd == "coven") {
+    if(!god && !dev) return message.channel.send(pasGod)
+    if(partie.coven == true) {
+      partie.coven = false
+      message.channel.send("Le coven à été désactivé!")
+    }else{
+      partie.coven = true
+      message.channel.send("Le coven à été activé!")
     }
   }
 
@@ -1580,6 +1594,7 @@ bot.on("message", (message) => {
       message.channel.send(helpcommandsvivant); 
     }
   }
+  
 });
 
 bot.on('message', async (message) => {
@@ -1834,11 +1849,11 @@ bot.on('message', async (message) => {
     .setColor(color)
     if(partie.isStarted == false) return message.channel.send(pascomme)
     if(!message.member.roles._roles.has(vivant)) return message.channel.send(tpasvivant)
-    if(message.channel.name != pendChan.name) return message.channel.send(pendrChan);
-    if(!args[0]) return message.channel.send(qui);
-    if(!taggedUser[0].roles.cache.has(vivant)) return message.channel.send(pasVivant);
-    if(!taggedUser[0]) return message.channel.send(trouvePas);
-
+    if(message.channel.name != pendChan.name) return message.channel.send(pendrChan)
+    if(!args[0]) return message.channel.send(qui)
+    if(!taggedUser[0]) return message.channel.send(trouvePas)
+    if(!taggedUser[0].roles.cache.has(vivant)) return message.channel.send(pasVivant)
+    
     if(author.role.name == "Maire") {
       if(author.role.isreveal == true) {
         if(!author.hasVoted) {

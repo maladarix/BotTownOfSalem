@@ -36,7 +36,17 @@ let anyrole = [roles.prototype.getInvest(),roles.prototype.getLoukout(), roles.p
     roles.prototype.getConsort(), roles.prototype.getGodfather(), roles.prototype.getMafioso(), roles.prototype.getAmb(), roles.prototype.getAmne(), roles.prototype.getSurv(), 
     roles.prototype.getArso(), roles.prototype.getSerialk(), roles.prototype.getExec(), roles.prototype.getJester(), roles.prototype.getWitch()]
 
+let anycoven = [roles.prototype.getInvest(),roles.prototype.getLoukout(), roles.prototype.getSheriff(), roles.prototype.getAgent(), roles.prototype.getSpy(), roles.prototype.getBg(), 
+    roles.prototype.getDoc(), roles.prototype.getEscort(), roles.prototype.getMaire(), roles.prototype.getRetri(), roles.prototype.getTrans(), 
+    roles.prototype.getVig(), roles.prototype.getVet(), roles.prototype.getWerewolf(), roles.prototype.getJailor(), roles.prototype.getDisg(), 
+    roles.prototype.getForger(), roles.prototype.getFramer(), roles.prototype.getJani(), roles.prototype.getHypno(), roles.prototype.getBlackmail(), roles.prototype.getConsig(), 
+    roles.prototype.getConsort(), roles.prototype.getGodfather(), roles.prototype.getMafioso(), roles.prototype.getAmb(), roles.prototype.getAmne(), roles.prototype.getSurv(), 
+    roles.prototype.getArso(), roles.prototype.getSerialk(), roles.prototype.getExec(), roles.prototype.getJester(), roles.prototype.getWitch(), roles.prototype.getCovenlead(),
+    roles.prototype.getHexmas(), roles.prototype.getMedusa(), roles.prototype.getNecro(), roles.prototype.getPoiso(), roles.prototype.getPotion(), roles.prototype.getGuardian(),
+    roles.prototype.getJugger(), roles.prototype.getPira(), roles.prototype.getPlague(), roles.prototype.getCrusa(), roles.prototype.getPsy(), roles.prototype.getTracker(),
+    roles.prototype.getTrapper()]
 
+//roles unique coven: pirate plaguebearer juggernaut (tout coven)
 let currentgamemode = []
 let gameroles = []
 let customgm = []
@@ -92,7 +102,11 @@ class commands{
             }else if(role == "Neutral evil") {
                 this.getNeutralEvil()
             }else if(role == "Any") {
+              if (Partie.prototype.coven == true) {
+                this.getAnyCoven()
+              }else{
                 this.getAny()
+              }
             }else if(role == "Lookout") {
                 this.getLoukout()
             }else if(role == "Sherrif") {
@@ -149,6 +163,34 @@ class commands{
                 this.getJester()
             }else if(role == "Sorcière") {
                 this.getWitch()
+            }else if(role == "Coven-leader") {/////////////////
+                this.getCovenlead()
+            }else if(role == "Hex-master") {
+                this.getHexmas()
+            }else if(role == "Meduse") {
+                this.getMedusa()
+            }else if(role == "Necromane") {
+                this.getNecro()
+            }else if(role == "Poisoner") {
+                this.getPoiso()
+            }else if(role == "Potion-master") {
+                this.getPotion()
+            }else if(role == "Guardian-angel") {
+                this.getGuardian()
+            }else if(role == "Juggernaut") {
+                this.getJugger()
+            }else if(role == "Pirate") {
+              this.getPirate()
+            }else if(role == "Plaguebearer") {
+              this.getPlague()
+            }else if(role == "Crusader") {
+              this.getCrusa()
+            }else if(role == "Psychic") {
+              this.getPsy()
+            }else if(role == "Tracker") {
+              this.getTracker()
+            }else if(role == "Trapper") {
+              this.getTrapper()
             }else return
         })
 
@@ -310,6 +352,18 @@ class commands{
         let any = null
         do{
             any = anyrole[Math.floor(Math.random() * anyrole.length)]
+            if(!(any.isUnique && gameroles.some(role => role.name === any.name))) {
+               good = true
+            }
+        }while (!good)
+        gameroles.push(any)
+    }
+
+    getAnyCoven(){
+        let good = false
+        let any = null
+        do{
+            any = anycoven[Math.floor(Math.random() * anycoven.length)]
             if(!(any.isUnique && gameroles.some(role => role.name === any.name))) {
                good = true
             }

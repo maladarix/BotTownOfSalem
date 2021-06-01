@@ -1,5 +1,3 @@
-const Commands = require('./commands.js')
-
 class Player {
 
     constructor(joueur){

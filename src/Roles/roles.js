@@ -14,6 +14,10 @@ const trans = require('./town/trans')
 const vampHunter = require('./town/vampHunter')
 const vet = require('./town/vet')
 const vig = require('./town/vig')
+const Crusa = require('./town/crusa')
+const Psyc = require('./town/psy')
+const Tracker = require('./town/tracker')
+const Trap = require('./town/trapper')
 
 const amne = require('./neutral/amne')
 const arso = require('./neutral/arso')
@@ -24,6 +28,11 @@ const surv = require('./neutral/surv')
 const vamp = require('./neutral/vamp')
 const werewolf = require('./neutral/werewolf')
 const witch = require('./neutral/witch')
+const GuardianA = require('./neutral/ga')
+const Jugger = require('./neutral/jugger')
+const Pirate = require('./neutral/pira')
+const Plag = require('./neutral/plague')
+const Pestilence = require('./neutral/pesti')
 
 const amb = require('./mafia/amb')
 const blackmailer = require('./mafia/bm')
@@ -35,154 +44,221 @@ const framer = require('./mafia/framer')
 const godfather = require('./mafia/gf')
 const hypno = require('./mafia/hyp')
 const jani = require('./mafia/jan')
-const mafio = require('./mafia/maf')
+
+const covlead = require('./coven/covenlead')
+const hex = require('./coven/hexMas')
+const medu = require('./coven/medusa')
+const necro = require('./coven/necro')
+const poiso = require('./coven/poiso')
+const potion = require('./coven/potion')
 
 
 class Roles{
 
-    getBg(){
-        return new bg()
-    }
+  getBg(){
+    return new bg()
+  }
 
-    getAgent(){
-        return new agent()
-    }
+  getAgent(){
+    return new agent()
+  }
 
-    getDoc(){
-        return new doc()
-    }
+  getDoc(){
+    return new doc()
+  }
 
-    getEscort(){
-        return new escort()
-    }
+  getEscort(){
+    return new escort()
+  }
 
-    getInvest(){
-        return new invest()
-    }
+  getInvest(){
+    return new invest()
+  }
 
-    getJailor(){
-        return new jailor()
-    }
+  getJailor(){
+    return new jailor()
+  }
 
-    getLoukout(){
-        return new lookout()
-    }
+  getLoukout(){
+    return new lookout()
+  }
 
-    getMaire(){
-        return new maire()
-    }
+  getMaire(){
+    return new maire()
+  }
 
-    getMedium(){
-        return new medium()
-    }
+  getMedium(){
+    return new medium()
+  }
 
-    getRetri(){
-        return new retri()
-    }
+  getRetri(){
+    return new retri()
+  }
 
-    getSheriff(){
-        return new sherif()
-    }
+  getSheriff(){
+    return new sherif()
+  }
 
-    getSpy(){
-        return new spy()
-    }
+  getSpy(){
+    return new spy()
+  }
 
-    getTrans(){
-        return new trans()
-    }
+  getTrans(){
+    return new trans()
+  }
 
-    getVampHunter(){
-        return new vampHunter()
-    }
+  getVampHunter(){
+    return new vampHunter()
+  }
 
-    getVet(){
-        return new vet()
-    }
+  getVet(){
+    return new vet()
+  }
 
-    getVig(){
-        return new vig()
-    }
+  getVig(){
+    return new vig()
+  }
 
-    getAmne(){
-        return new amne()
-    }
+  getCrusa(){
+    return new Crusa()
+  }
 
-    getArso(){
-        return new arso()
-    }
+  getPsy(){
+    return new Psyc()
+  }
 
-    getExec(){
-        return new exec()
-    }
+  getTracker(){
+    return new Tracker()
+  }
 
-    getJester(){
-        return new jest()
-    }
+  getTrapper(){
+    return new Trap()
+  }
 
-    getSerialk(){
-        return new serialk()
-    }
+  getAmne(){
+    return new amne()
+  }
 
-    getSurv(){
-        return new surv()
-    }
+  getArso(){
+    return new arso()
+  }
 
-    getVamp(){
-        return new vamp()
-    }
+  getExec(){
+    return new exec()
+  }
 
-    getWerewolf(){
-        return new werewolf()
-    }
+  getJester(){
+    return new jest()
+  }
 
-    getWitch(){
-        return new witch()
-    }
+  getSerialk(){
+    return new serialk()
+  }
 
-    getAmb(){
-        return new amb()
-    }
+  getSurv(){
+    return new surv()
+  }
 
-    getBlackmail(){
-        return new blackmailer()
-    }
+  getVamp(){
+    return new vamp()
+  }
 
-    getConsig(){
-        return new consig()
-    }
+  getWerewolf(){
+    return new werewolf()
+  }
 
-    getConsort(){
-        return new consort()
-    }
+  getWitch(){
+    return new witch()
+  }
 
-    getDisg(){
-        return new dis()
-    }
+  getGuardian(){
+    return new GuardianA()
+  }
 
-    getForger(){
-        return new forger()
-    }
+  getJugger(){
+    return new Jugger()
+  }
 
-    getFramer(){
-        return new framer()
-    }
+  getPira(){
+    return new Pirate()
+  }
 
-    getGodfather(){
-        return new godfather()
-    }
+  getPlague(){
+    return new Plag()
+  }
 
-    getHypno(){
-        return new hypno()
-    }
+  getPesti(){
+    return new Pestilence()
+  }
 
-    getJani(){
-        return new jani()
-    }
+  getAmb(){
+    return new amb()
+  }
 
-    getMafioso(){
-        return new mafio()
-    }
+  getBlackmail(){
+    return new blackmailer()
+  }
+
+  getConsig(){
+    return new consig()
+  }
+
+  getConsort(){
+    return new consort()
+  }
+
+  getDisg(){
+    return new dis()
+  }
+
+  getForger(){
+    return new forger()
+  }
+
+  getFramer(){
+    return new framer()
+  }
+
+  getGodfather(){
+    return new godfather()
+  }
+
+  getHypno(){
+    return new hypno()
+  }
+
+  getJani(){
+    return new jani()
+  }
+
+  getMafioso(){
+    return new mafio()
+  }
+
+  getCovenlead(){
+    return new covlead()
+  }
+
+  getHexmas(){
+    return new hex()
+  }
+
+  getMedusa(){
+    return new medu()
+  }
+
+  getNecro(){
+    return new necro()
+  }
+
+  getPoiso(){
+    return new poiso()
+  }
+
+  getPotion(){
+    return new potion()
+  }
+  
 }
 
 module.exports = Roles

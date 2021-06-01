@@ -12,6 +12,7 @@ class Partie{
         this.persoGm = []
         this.time = "nuit"
         this.fullmoon = false
+        this.coven = false
         
     }
 }
