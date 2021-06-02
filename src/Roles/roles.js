@@ -44,6 +44,7 @@ const framer = require('./mafia/framer')
 const godfather = require('./mafia/gf')
 const hypno = require('./mafia/hyp')
 const jani = require('./mafia/jan')
+const mafio = require('./mafia/maf')
 
 const covlead = require('./coven/covenlead')
 const hex = require('./coven/hexMas')

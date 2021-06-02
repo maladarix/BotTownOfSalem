@@ -2,7 +2,7 @@ const Action = require('../../action')
 
 class necro {
   constructor(){
-    this.name = "Necromande"
+    this.name = "Necromane"
     this.description = "Vous êtes une sorcière maléfique qui a une rancune contre la ville."
     this.isUnique = true
     this.needsTwoTargets = false

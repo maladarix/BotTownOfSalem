@@ -1,15 +1,22 @@
 const Partie = require('./game');
 const index = require('../index');
-const roles = require('./Roles/roles')
+const roles = require('./Roles/roles');
+const gardian = require('./Roles/neutral/ga');
 
 let towninvest = [roles.prototype.getInvest(), roles.prototype.getLoukout(), roles.prototype.getSheriff(), roles.prototype.getAgent(), roles.prototype.getSpy()]
+let towninvestCoven = [roles.prototype.getInvest(), roles.prototype.getLoukout(), roles.prototype.getSheriff(), roles.prototype.getAgent(), roles.prototype.getSpy(), roles.prototype.getPsy(), roles.prototype.getTracker()]
 let townprotec = [roles.prototype.getBg(), roles.prototype.getDoc()]
+let townprotecCoven = [roles.prototype.getBg(), roles.prototype.getDoc(), roles.prototype.getCrusa(), roles.prototype.getTrapper()]
 let townsupport = [roles.prototype.getEscort(), roles.prototype.getMaire(), roles.prototype.getRetri(), roles.prototype.getTrans()]
 let townkilling = [roles.prototype.getVig(), roles.prototype.getVet(), roles.prototype.getJailor()]
 
 let randomtown = [roles.prototype.getInvest(), roles.prototype.getLoukout(), roles.prototype.getSheriff(), roles.prototype.getAgent(), roles.prototype.getSpy(),
-    roles.prototype.getBg(), roles.prototype.getDoc(), roles.prototype.getEscort(), roles.prototype.getMaire(), roles.prototype.getRetri(),
-    roles.prototype.getTrans(), roles.prototype.getVig(), roles.prototype.getVet(), roles.prototype.getJailor()]
+  roles.prototype.getBg(), roles.prototype.getDoc(), roles.prototype.getEscort(), roles.prototype.getMaire(), roles.prototype.getRetri(),
+  roles.prototype.getTrans(), roles.prototype.getVig(), roles.prototype.getVet(), roles.prototype.getJailor()]
+
+let randomtownCoven = [roles.prototype.getInvest(), roles.prototype.getLoukout(), roles.prototype.getSheriff(), roles.prototype.getAgent(), roles.prototype.getSpy(),
+  roles.prototype.getBg(), roles.prototype.getDoc(), roles.prototype.getEscort(), roles.prototype.getMaire(), roles.prototype.getRetri(),
+  roles.prototype.getTrans(), roles.prototype.getVig(), roles.prototype.getVet(), roles.prototype.getJailor(), roles.prototype.getCrusa(), roles.prototype.getTrapper(), roles.prototype.getPsy(), roles.prototype.getTracker()]
 
 
 let mafiadeception = [roles.prototype.getDisg(), roles.prototype.getForger(), roles.prototype.getFramer(), roles.prototype.getJani(), roles.prototype.getHypno()]
@@ -17,16 +24,24 @@ let mafiasupport = [roles.prototype.getBlackmail(), roles.prototype.getConsig(),
 let mafiakilling = [roles.prototype.getGodfather(), roles.prototype.getMafioso(), roles.prototype.getAmb()]
 
 let randommafia = [roles.prototype.getDisg(), roles.prototype.getForger(), roles.prototype.getFramer(), roles.prototype.getJani(), roles.prototype.getHypno(),
-    roles.prototype.getBlackmail(), roles.prototype.getConsig(), roles.prototype.getConsort(), roles.prototype.getGodfather(), roles.prototype.getMafioso(), roles.prototype.getAmb()]
+  roles.prototype.getBlackmail(), roles.prototype.getConsig(), roles.prototype.getConsort(), roles.prototype.getGodfather(), roles.prototype.getMafioso(), roles.prototype.getAmb()]
 
 
 let neutralbening = [roles.prototype.getAmne(), roles.prototype.getSurv()]
+let neutralbeninCoven = [roles.prototype.getAmne(), roles.prototype.getSurv(), roles.prototype.getGuardian()]
 let neutralkilling = [roles.prototype.getArso(), roles.prototype.getSerialk(), roles.prototype.getWerewolf()]
+let neutralkillingCoven = [roles.prototype.getArso(), roles.prototype.getSerialk(), roles.prototype.getWerewolf(), roles.prototype.getJugger()]
 let neutralevil = [roles.prototype.getExec(), roles.prototype.getJester(), roles.prototype.getWitch()]
-let neutralchaos = []
+let neutralchaos = [roles.prototype.getVamp()]
+let neutralchaosCoven = [roles.prototype.getVamp(), roles.prototype.getPira(), roles.prototype.getPlague()]
 
 let randomneutral = [roles.prototype.getAmne(), roles.prototype.getSurv(), roles.prototype.getArso(), roles.prototype.getSerialk(), roles.prototype.getExec(), roles.prototype.getJester(), 
-    roles.prototype.getWitch(), roles.prototype.getWerewolf()]
+  roles.prototype.getWitch(), roles.prototype.getWerewolf()]
+
+let randomneutralCoven = [roles.prototype.getAmne(), roles.prototype.getSurv(), roles.prototype.getArso(), roles.prototype.getSerialk(), roles.prototype.getExec(), roles.prototype.getJester(), 
+  roles.prototype.getWitch(), roles.prototype.getWerewolf(),  roles.prototype.getGuardian(), roles.prototype.getJugger(), roles.prototype.getPira(), roles.prototype.getPlague()]
+
+let covenevil = [roles.prototype.getCovenlead(), roles.prototype.getHexmas(), roles.prototype.getMedusa(), roles.prototype.getNecro(), roles.prototype.getPoiso(), roles.prototype.getPotion()]
 
 
 let anyrole = [roles.prototype.getInvest(),roles.prototype.getLoukout(), roles.prototype.getSheriff(), roles.prototype.getAgent(), roles.prototype.getSpy(), roles.prototype.getBg(), 
@@ -53,499 +68,704 @@ let customgm = []
 
 let listerandom = []
 
+var shuffle = function (array) {
+  var m = array.length, t, i;
+    
+  // While there remain elements to shuffle…
+  while (m) {
+    
+  // Pick a remaining element…
+  i = Math.floor(Math.random() * m--);
+       
+  // And swap it with the current element.
+  t = array[m];
+  array[m] = array[i];
+  array[i] = t;
+  }
+        
+  return array;
+}
+
 class commands{
-    start(partie, players) {
-        customgm = partie.persoGm
-        gameroles = []
-        currentgamemode = partie.gamemode.list
-        currentgamemode.forEach(role => {
-            if(role == "Jailor") {
-                this.getJailor()
-            }else if(role == "Docteur") {
-                this.getDoctor()
-            }else if(role == "Investigateur") {
-                this.getInvestigateur()
-            }else if(role == "Town investigative") {
-                this.getTownInvest()
-            }else if(role == "Town support") {
-                this.getTownSupport()
-            }else if(role == "Town killing") {
-                this.getTownKilling()
-            }else if(role == "Town protective") {
-                this.getTownProtect()
-            }else if(role == "Random town") {
-                this.getRandomTown()
-            }else if(role == "Mafia deception") {
-                this.getMafiaDeception()
-            }else if(role == "Mafia support") {
-                this.getMafiaSupport()
-            }else if(role == "Mafia killing") {
-                this.getMafiaKilling()
-            }else if(role == "Neutral benin") {
-                this.getNeutralBenin()
-            }else if(role == "Neutral chaos") {
-                this.getNeutralChaos()
-            }else if(role == "Random neutral") {
-                this.getRandomNeutral()
-            }else if(role == "Vampire-hunter") {
-                this.getVampireHunter()
-            }else if(role == "Godfather") {
-                this.getGodfather()
-            }else if(role == "Mafioso") {
-                this.getMafioso()
-            }else if(role == "Random mafia") {
-                this.getRandomMafia()
-            }else if(role == "Vampire") {
-                this.getVampire()
-            }else if(role == "Neutral killing") {
-                this.getNeutralKilling()
-            }else if(role == "Neutral evil") {
-                this.getNeutralEvil()
-            }else if(role == "Any") {
-              if (Partie.prototype.coven == true) {
-                this.getAnyCoven()
-              }else{
-                this.getAny()
-              }
-            }else if(role == "Lookout") {
-                this.getLoukout()
-            }else if(role == "Sherrif") {
-                this.getSheriff()
-            }else if(role == "Agent") {
-                this.getAgent()
-            }else if(role == "Spy") {
-                this.getSpy()
-            }else if(role == "Bodyguard") {
-                this.getBodyguard()
-            }else if(role == "Escort") {
-                this.getEscort()
-            }else if(role == "Maire") {
-                this.getMaire()
-            }else if(role == "Retributionist") {
-                this.getRetri()
-            }else if(role == "Transporteur") {
-                this.getTrans()
-            }else if(role == "Vigilante") {
-                this.getVig()
-            }else if(role == "Veteran") {
-                this.getVet()
-            }else if(role == "Loup-garou") {
-                this.getLoup()
-            }else if(role == "Disguiser") {
-                this.getDisg()
-            }else if(role == "Forger") {
-                this.getForger()
-            }else if(role == "Framer") {
-                this.getFramer()
-            }else if(role == "Consierge") {
-                this.getConsierg()
-            }else if(role == "Hypnotiseur") {
-                this.getHypno()
-            }else if(role == "Blackmailer") {
-                this.getBlackmailer()
-            }else if(role == "conseiller") {
-                this.getConseiller()
-            }else if(role == "Consort") {
-                this.getConsort()
-            }else if(role == "Ambusher") {
-                this.getAmbusher()
-            }else if(role == "Amnesiac") {
-                this.getAmnesiac()
-            }else if(role == "Survivant") {
-                this.getSurvivant()
-            }else if(role == "Arsonist") {
-                this.getArsonist()
-            }else if(role == "Serial-killer") {
-                this.getSerialkiller()
-            }else if(role == "Executionner") {
-                this.getExecutionner()
-            }else if(role == "Jester") {
-                this.getJester()
-            }else if(role == "Sorcière") {
-                this.getWitch()
-            }else if(role == "Coven-leader") {/////////////////
-                this.getCovenlead()
-            }else if(role == "Hex-master") {
-                this.getHexmas()
-            }else if(role == "Meduse") {
-                this.getMedusa()
-            }else if(role == "Necromane") {
-                this.getNecro()
-            }else if(role == "Poisoner") {
-                this.getPoiso()
-            }else if(role == "Potion-master") {
-                this.getPotion()
-            }else if(role == "Guardian-angel") {
-                this.getGuardian()
-            }else if(role == "Juggernaut") {
-                this.getJugger()
-            }else if(role == "Pirate") {
-              this.getPirate()
-            }else if(role == "Plaguebearer") {
-              this.getPlague()
-            }else if(role == "Crusader") {
-              this.getCrusa()
-            }else if(role == "Psychic") {
-              this.getPsy()
-            }else if(role == "Tracker") {
-              this.getTracker()
-            }else if(role == "Trapper") {
-              this.getTrapper()
-            }else return
-        })
+  start(partie, players) {
+    customgm = partie.persoGm
+    gameroles = []
+    currentgamemode = partie.gamemode.list
+    currentgamemode.forEach(role => {
+    if(role == "Jailor") {
+      this.getJailor()
+    }else if(role == "Docteur") {
+      this.getDoctor()
+    }else if(role == "Investigateur") {
+      this.getInvestigateur()
+    }else if(role == "Town investigative") {
+      if(partie.coven == true) {
+        this.getTownInvestCoven()
+      }else{
+        this.getTownInvest()
+      }
+    }else if(role == "Town support") {
+      this.getTownSupport()
+    }else if(role == "Town killing") {
+      this.getTownKilling()
+    }else if(role == "Town protective") {
+      if(partie.coven == true) {
+        this.getTownProtectCoven()
+      }else{
+        this.getTownProtect()
+      }
+    }else if(role == "Random town") {
+      if(partie.coven == true) {
+        this.getRandomTownCoven()
+      }else{
+        this.getRandomTown()
+      }
+    }else if(role == "Mafia deception") {
+      this.getMafiaDeception()
+    }else if(role == "Mafia support") {
+      this.getMafiaSupport()
+    }else if(role == "Mafia killing") {
+        this.getMafiaKilling()
+    }else if(role == "Neutral benin") {
+      if(partie.coven == true) {
+        this.getNeutralBeninCoven()
+      }else{
+        this.getNeutralBenin() 
+      }
+    }else if(role == "Neutral chaos") {
+      if(partie.coven == true) {
+        this.getNeutralChaosCoven()
+      }else{
+        this.getNeutralChaos()
+      }
+    }else if(role == "Random neutral") {
+      if(partie.coven == true) {
+        this.getRandomNeutralCoven()
+      }else{
+        this.getRandomNeutral()
+      }
+    }else if(role == "Vampire-hunter") {
+    this.getVampireHunter()
+    }else if(role == "Godfather") {
+      this.getGodfather()
+    }else if(role == "Mafioso") {
+      this.getMafioso()
+    }else if(role == "Random mafia") {
+    this.getRandomMafia()
+    }else if(role == "Vampire") {
+      this.getVampire()
+    }else if(role == "Neutral killing") {
+      if(partie.coven == true) {
+        this.getNeutralKillingCoven()
+      }else{
+        this.getNeutralKilling()
+      }
+    }else if(role == "Neutral evil") {
+      this.getNeutralEvil()
+    }else if(role == "Coven evil") {
+      this.getCovenEvil()
+    }else if(role == "Any") {
+      if (partie.coven == true) {
+        this.getAnyCoven()
+      }else{
+        this.getAny()
+      }
+    }else if(role == "Lookout") {
+      this.getLoukout()
+    }else if(role == "Sherrif") {
+      this.getSheriff()
+    }else if(role == "Agent") {
+      this.getAgent()
+    }else if(role == "Spy") {
+      this.getSpy()
+    }else if(role == "Bodyguard") {
+      this.getBodyguard()
+    }else if(role == "Escort") {
+      this.getEscort()
+    }else if(role == "Maire") {
+      this.getMaire()
+    }else if(role == "Retributionist") {
+      this.getRetri()
+    }else if(role == "Transporteur") {
+      this.getTrans()
+    }else if(role == "Vigilante") {
+      this.getVig()
+    }else if(role == "Veteran") {
+      this.getVet()
+    }else if(role == "Loup-garou") {
+      this.getLoup()
+    }else if(role == "Disguiser") {
+      this.getDisg()
+    }else if(role == "Forger") {
+      this.getForger()
+    }else if(role == "Framer") {
+      this.getFramer()
+    }else if(role == "Consierge") {
+      this.getConsierg()
+    }else if(role == "Hypnotiseur") {
+      this.getHypno()
+    }else if(role == "Blackmailer") {
+      this.getBlackmailer()
+    }else if(role == "conseiller") {
+      this.getConseiller()
+    }else if(role == "Consort") {
+      this.getConsort()
+    }else if(role == "Ambusher") {
+      this.getAmbusher()
+    }else if(role == "Amnesiac") {
+      this.getAmnesiac()
+    }else if(role == "Survivant") {
+      this.getSurvivant()
+    }else if(role == "Arsonist") {
+      this.getArsonist()
+    }else if(role == "Serial-killer") {
+      this.getSerialkiller()
+    }else if(role == "Executionner") {
+      this.getExecutionner()
+    }else if(role == "Jester") {
+      this.getJester()
+    }else if(role == "Sorcière") {
+      this.getWitch()
+    }else if(role == "Coven-leader") {
+      this.getCovenlead()
+    }else if(role == "Hex-master") {
+      this.getHexmas()
+    }else if(role == "Meduse") {
+      this.getMedusa()
+    }else if(role == "Necromane") {
+      this.getNecro()
+    }else if(role == "Poisoner") {
+      this.getPoiso()
+    }else if(role == "Potion-master") {
+      this.getPotion()
+    }else if(role == "Guardian-angel") {
+      his.getGuardian()
+    }else if(role == "Juggernaut") {
+      this.getJugger()
+    }else if(role == "Pirate") {
+      this.getPirate()
+    }else if(role == "Plaguebearer") {
+      this.getPlague()
+    }else if(role == "Crusader") {
+      this.getCrusa()
+    }else if(role == "Psychic") {
+      this.getPsy()
+    }else if(role == "Tracker") {
+      this.getTracker()
+    }else if(role == "Trapper") {
+      this.getTrapper()
+    }else return
+  })
 
-        partie.listeroles = gameroles
-        function shuffle(array) {
-            var m = array.length, t, i;
-          
-            // While there remain elements to shuffle…
-            while (m) {
-          
-              // Pick a remaining element…
-              i = Math.floor(Math.random() * m--);
-          
-              // And swap it with the current element.
-              t = array[m];
-              array[m] = array[i];
-              array[i] = t;
-            }
-          
-            return array;
-          }
-        listerandom = shuffle(players)
-        for (let index = 0; index < listerandom.length; index++) {
-            listerandom[index].role = gameroles[index]
-        }
-    }
+    partie.listeroles = gameroles
 
-    getTownInvest(){
-        let good = false
-        let randomtowninvest = null
-        do{
-            randomtowninvest = towninvest[Math.floor(Math.random() * towninvest.length)]
-            if(!(randomtowninvest.isUnique && gameroles.some(role => role.name === randomtowninvest.name))) {
-                good = true
-            }
-        }while (!good)
-        gameroles.push(randomtowninvest)
+    listerandom = shuffle(players)
+    for (let index = 0; index < listerandom.length; index++) {
+      listerandom[index].role = gameroles[index]
     }
+  }
 
-    getTownProtect(){
-        gameroles.push(townprotec[Math.floor(Math.random() * townprotec.length)])
-    }
+  getTownInvest(){
+    let good = false
+    let randomtowninvest = null
+    do{
+      randomtowninvest = shuffle(towninvest)[Math.floor(Math.random() * towninvest.length)]
+      if(!(randomtowninvest.isUnique && gameroles.some(role => role.name === randomtowninvest.name))) {
+        good = true
+      }
+    }while (!good)
+    gameroles.push(randomtowninvest)
+  }
 
-    getTownKilling(){
-        let good = false
-        let randomtownkill = null
-        do{
-            randomtownkill = townkilling[Math.floor(Math.random() * townkilling.length)]
-            if(!(randomtownkill.isUnique && gameroles.some(role => role.name === randomtownkill.name))) {
-                good = true
-            }
-        }while (!good)
-        gameroles.push(randomtownkill)
-    }
+  getTownInvestCoven(){
+    let good = false
+    let randomtowninvestCoven = null
+    do{
+      randomtowninvestCoven = shuffle(towninvestCoven)[Math.floor(Math.random() * towninvestCoven.length)]
+      if(!(randomtowninvestCoven.isUnique && gameroles.some(role => role.name === randomtowninvestCoven.name))) {
+        good = true
+      }
+    }while (!good)
+    gameroles.push(randomtowninvestCoven)
+  }
 
-    getTownSupport(){
-        let good = false
-        let randomtownsupport = null
-        do{
-            randomtownsupport = townsupport[Math.floor(Math.random() * townsupport.length)]
-            if(!(randomtownsupport.isUnique && gameroles.some(role => role.name === randomtownsupport.name))) {
-                good = true
-            }
-        }while (!good)
-        gameroles.push(randomtownsupport)
-    }
+  getTownProtect(){
+    gameroles.push(shuffle(townprotec)[Math.floor(Math.random() * townprotec.length)])
+  }
 
-    getRandomTown(){
-        let good = false
-        let randomtownrole = null
-        do{
-            randomtownrole = randomtown[Math.floor(Math.random() * randomtown.length)]
-            if(!(randomtownrole.isUnique && gameroles.some(role => role.name === randomtownrole.name)))
-            {
-                good = true
-            }
-        }while (!good)
-        gameroles.push(randomtownrole)
-    }
+  getTownProtectCoven(){
+    gameroles.push(shuffle(townprotecCoven)[Math.floor(Math.random() * townprotecCoven.length)])
+  }
 
-    getMafiaDeception(){
-        gameroles.push(mafiadeception[Math.floor(Math.random() * mafiadeception.length)])
-    }
+  getTownKilling(){
+    let good = false
+    let randomtownkill = null
+    do{
+      randomtownkill = shuffle(townkilling)[Math.floor(Math.random() * townkilling.length)]
+      if(!(randomtownkill.isUnique && gameroles.some(role => role.name === randomtownkill.name))) {
+        good = true
+      }
+    }while (!good)
+    gameroles.push(randomtownkill)
+  }
 
-    getMafiaSupport(){
-        gameroles.push(mafiasupport[Math.floor(Math.random() * mafiasupport.length)])
-    }
+  getTownSupport(){
+    let good = false
+    let randomtownsupport = null
+    do{
+      randomtownsupport = shuffle(townsupport)[Math.floor(Math.random() * townsupport.length)]
+      if(!(randomtownsupport.isUnique && gameroles.some(role => role.name === randomtownsupport.name))) {
+          good = true
+      }
+    }while (!good)
+    gameroles.push(randomtownsupport)
+  }
 
-    getMafiaKilling(){
-        let good = false
-        let randommafiakill = null
-        do{
-            randommafiakill = mafiakilling[Math.floor(Math.random() * mafiakilling.length)]
-            if(!(randommafiakill.isUnique && gameroles.some(role => role.name === randommafiakill.name))) {
-                good = true
-            }
-        }while (!good)
-        gameroles.push(randommafiakill)
-    }
+  getRandomTown(){
+    let good = false
+    let randomtownrole = null
+    do{
+      randomtownrole = shuffle(randomtown)[Math.floor(Math.random() * randomtown.length)]
+      if(!(randomtownrole.isUnique && gameroles.some(role => role.name === randomtownrole.name)))
+      {
+          good = true
+      }
+    }while (!good)
+    gameroles.push(randomtownrole)
+  }
 
-    getRandomMafia(){
-        let good = false
-        let randommafiarole = null
-        do{
-            randommafiarole = randommafia[Math.floor(Math.random() * randommafia.length)]
-            if(!(randommafiarole.isUnique && gameroles.some(role => role.name === randommafiarole.name))) {
-                good = true
-            }
-        }while (!good)
-        gameroles.push(randommafiarole)
-    }
+  getRandomTownCoven(){
+    let good = false
+    let randomtownrole = null
+    do{
+      randomtownrole = shuffle(randomtownCoven)[Math.floor(Math.random() * randomtownCoven.length)]
+      if(!(randomtownrole.isUnique && gameroles.some(role => role.name === randomtownrole.name)))
+      {
+          good = true
+      }
+    }while (!good)
+    gameroles.push(randomtownrole)
+  }
 
-    getNeutralEvil(){
-        gameroles.push(neutralevil[Math.floor(Math.random() * neutralevil.length)])
-    }
+  getMafiaDeception(){
+    gameroles.push(shuffle(mafiadeception)[Math.floor(Math.random() * mafiadeception.length)])
+  }
 
-    getNeutralKilling(){
-        let good = false
-        let randomneutralkill = null
-        do{
-            randomneutralkill = neutralkilling[Math.floor(Math.random() * neutralkilling.length)]
-            if(!(randomneutralkill.isUnique && gameroles.some(role => role.name === randomneutralkill.name))) {
-                good = true
-            }
-        }while (!good)
-        gameroles.push(randomneutralkill)
-    }
+  getMafiaSupport(){
+    gameroles.push(shuffle(mafiasupport)[Math.floor(Math.random() * mafiasupport.length)])
+  }
 
-    getNeutralChaos(){
-        let good = false
-        let randomneutralchaos = null
-        do{
-            randomneutralchaos = neutralchaos[Math.floor(Math.random() * neutralchaos.length)]
-            if(!(randomneutralchaos.isUnique && gameroles.some(role => role.name === randomneutralchaos.name))) {
-                good = true
-            }
-        }while (!good)
-        gameroles.push(randomneutralchaos)
-    }
+  getMafiaKilling(){
+    let good = false
+    let randommafiakill = null
+    do{
+      randommafiakill = shuffle(mafiakilling)[Math.floor(Math.random() * mafiakilling.length)]
+      if(!(randommafiakill.isUnique && gameroles.some(role => role.name === randommafiakill.name))) {
+        good = true
+      }
+    }while (!good)
+    gameroles.push(randommafiakill)
+  }
 
-    getNeutralBenin(){
-        gameroles.push(neutralbening[Math.floor(Math.random() * neutralbening.length)])
-    }
+  getRandomMafia(){
+    let good = false
+    let randommafiarole = null
+    do{
+      randommafiarole = shuffle(randommafia)[Math.floor(Math.random() * randommafia.length)]
+      if(!(randommafiarole.isUnique && gameroles.some(role => role.name === randommafiarole.name))) {
+        good = true
+      }
+    }while (!good)
+    gameroles.push(randommafiarole)
+  }
 
-    getRandomNeutral(){
-        let good = false
-        let neutral = null
-        do{
-            neutral = randomneutral[Math.floor(Math.random() * randomneutral.length)]
-            if(!(neutral.isUnique && gameroles.some(role => role.name === neutral.name))) {
-                good = true
-            }
-        }while (!good)
-        gameroles.push(neutral)
-    }
+  getNeutralEvil(){
+    gameroles.push(shuffle(neutralevil)[Math.floor(Math.random() * neutralevil.length)])
+  }
 
-    getAny(){
-        let good = false
-        let any = null
-        do{
-            any = anyrole[Math.floor(Math.random() * anyrole.length)]
-            if(!(any.isUnique && gameroles.some(role => role.name === any.name))) {
-               good = true
-            }
-        }while (!good)
-        gameroles.push(any)
-    }
+  getCovenEvil(){
+    let good = false
+    let randomCovenEvil = null
+    do{
+      randomCovenEvil = shuffle(covenevil)[Math.floor(Math.random() * covenevil.length)]
+      if(!(randomCovenEvil.isUnique && gameroles.some(role => role.name === randomCovenEvil.name))) {
+        good = true
+      }
+    }while (!good)
+    gameroles.push(randomCovenEvil)
+  }
 
-    getAnyCoven(){
-        let good = false
-        let any = null
-        do{
-            any = anycoven[Math.floor(Math.random() * anycoven.length)]
-            if(!(any.isUnique && gameroles.some(role => role.name === any.name))) {
-               good = true
-            }
-        }while (!good)
-        gameroles.push(any)
-    }
+  getNeutralKilling(){
+    let good = false
+    let randomneutralkill = null
+    do{
+      randomneutralkill = shuffle(neutralkilling)[Math.floor(Math.random() * neutralkilling.length)]
+      if(!(randomneutralkill.isUnique && gameroles.some(role => role.name === randomneutralkill.name))) {
+        good = true
+      }
+    }while (!good)
+    gameroles.push(randomneutralkill)
+  }
 
-    getJailor(){
-        if(gameroles.some(role => role.name == "Jailor")) {
-            this.getRandomTown()
-        }else{
-            gameroles.push(roles.prototype.getJailor())
-        }
-    }
+  getNeutralKillingCoven(){
+    let good = false
+    let randomneutralkill = null
+    do{
+      randomneutralkill = shuffle(neutralkillingCoven)[Math.floor(Math.random() * neutralkillingCoven.length)]
+      if(!(randomneutralkill.isUnique && gameroles.some(role => role.name === randomneutralkill.name))) {
+        good = true
+      }
+    }while (!good)
+    gameroles.push(randomneutralkill)
+  }
 
-    getGodfather(){
-        if(gameroles.some(role => role.name == "Godfather")) {
-            this.getRandomMafia()
-        }else{
-            gameroles.push(roles.prototype.getGodfather())
-        }
-    }
+  getNeutralChaos(){
+    let good = false
+    let randomneutralchaos = null
+    do{
+      randomneutralchaos = shuffle(neutralchaos)[Math.floor(Math.random() * neutralchaos.length)]
+      if(!(randomneutralchaos.isUnique && gameroles.some(role => role.name === randomneutralchaos.name))) {
+        good = true
+      }
+    }while (!good)
+    gameroles.push(randomneutralchaos)
+  }
 
-    getMafioso(){
-        if(gameroles.some(role => role.name == "Mafioso")) {
-            this.getRandomMafia()
-        }else {
-            gameroles.push(roles.prototype.getMafioso())   
-        }
-    }
+  getNeutralChaosCoven(){
+    let good = false
+    let randomneutralchaos = null
+    do{
+      randomneutralchaos = shuffle(neutralchaosCoven)[Math.floor(Math.random() * neutralchaosCoven.length)]
+      if(!(randomneutralchaos.isUnique && gameroles.some(role => role.name === randomneutralchaos.name))) {
+        good = true
+      }
+    }while (!good)
+    gameroles.push(randomneutralchaos)
+  }
 
-    getDoctor(){
-        gameroles.push(roles.prototype.getDoc())
-    }
+  getNeutralBenin(){
+    gameroles.push(shuffle(neutralbening)[Math.floor(Math.random() * neutralbening.length)])
+  }
 
-    getInvestigateur(){
-        gameroles.push(roles.prototype.getInvest())
-    }
+  getNeutralBeninCoven(){
+    gameroles.push(shuffle(neutralbeninCoven)[Math.floor(Math.random() * neutralbeninCoven.length)])
+  }
 
-    getVampireHunter(){
-        gameroles.push(roles.prototype.getVampHunter())
-    }
+  getRandomNeutral(){
+    let good = false
+    let neutral = null
+    do{
+      neutral = shuffle(randomneutral)[Math.floor(Math.random() * randomneutral.length)]
+      if(!(neutral.isUnique && gameroles.some(role => role.name === neutral.name))) {
+        good = true
+      }
+    }while (!good)
+    gameroles.push(neutral)
+  }
 
-    getVampire(){
-        gameroles.push(roles.prototype.getVamp())
-    }
+  getRandomNeutralCoven(){
+    let good = false
+    let neutral = null
+    do{
+      neutral = shuffle(randomneutralCoven)[Math.floor(Math.random() * randomneutralCoven.length)]
+      if(!(neutral.isUnique && gameroles.some(role => role.name === neutral.name))) {
+        good = true
+      }
+    }while (!good)
+    gameroles.push(neutral)
+  }
 
-    getLoukout(){
-        gameroles.push(roles.prototype.getLoukout())
-    }
+  getAny(){
+    let good = false
+    let any = null
+    do{
+      any = shuffle(anyrole)[Math.floor(Math.random() * anyrole.length)]
+      if(!(any.isUnique && gameroles.some(role => role.name === any.name))) {
+        good = true
+      }
+    }while (!good)
+    gameroles.push(any)
+  }
 
-    getSheriff(){
-        gameroles.push(roles.prototype.getSheriff())
-    }
+  getAnyCoven(){
+    let good = false
+    let Any = null
+    do{
+      Any = shuffle(anycoven)[Math.floor(Math.random() * anycoven.length)]
+      if(!(Any.isUnique && gameroles.some(role => role.name === Any.name))) {
+        good = true
+      }
+    }while (!good)
+    gameroles.push(Any)
+  }
 
-    getAgent(){
-        if(gameroles.some(role => role.name == "Agent infiltré")) {
-            this.getRandomTown()
-        }else{
-            gameroles.push(roles.prototype.getAgent())
-        }
+  getJailor(){
+    if(gameroles.some(role => role.name == "Jailor")) {
+      this.getRandomTown()
+    }else{
+      gameroles.push(roles.prototype.getJailor())
     }
+  }
 
-    getSpy(){
-        gameroles.push(roles.prototype.getSpy())
+  getGodfather(){
+    if(gameroles.some(role => role.name == "Godfather")) {
+      this.getRandomMafia()
+    }else{
+      gameroles.push(roles.prototype.getGodfather())
     }
+  }
 
-    getBodyguard(){
-        gameroles.push(roles.prototype.getBg())
+  getMafioso(){
+    if(gameroles.some(role => role.name == "Mafioso")) {
+      this.getRandomMafia()
+    }else {
+      gameroles.push(roles.prototype.getMafioso())   
     }
+  }
 
-    getEscort(){
-        gameroles.push(roles.prototype.getEscort())
-    }
+  getDoctor(){
+    gameroles.push(roles.prototype.getDoc())
+  }
 
-    getMaire(){
-        if(gameroles.some(role => role.name == "Maire")) {
-            this.getRandomTown()
-        }else{
-            gameroles.push(roles.prototype.getMaire())
-        }
-    }
+  getInvestigateur(){
+    gameroles.push(roles.prototype.getInvest())
+  }
 
-    getRetri(){
-        if(gameroles.some(role => role.name == "Retributionist")) {
-            this.getRandomTown()
-        }else{
-            gameroles.push(roles.prototype.getRetri())
-        }
-    }
+  getVampireHunter(){
+    gameroles.push(roles.prototype.getVampHunter())
+  }
 
-    getTrans(){
-        gameroles.push(roles.prototype.getTrans())
-    }
+  getVampire(){
+    gameroles.push(roles.prototype.getVamp())
+  }
 
-    getVig(){
-        gameroles.push(roles.prototype.getVig())
-    }
+  getLoukout(){
+    gameroles.push(roles.prototype.getLoukout())
+  }
 
-    getVet(){
-        if(gameroles.some(role => role.name == "Vétéran")) {
-            this.getRandomTown()
-        }else{
-            gameroles.push(roles.prototype.getVet())
-        }
-    }
+  getSheriff(){
+    gameroles.push(roles.prototype.getSheriff())
+  }
 
-    getLoup(){
-        if(ggameroles.some(role => role.name == "Loup-garou")) {
-            this.getRandomNeutral()
-        }else{
-            gameroles.push(roles.prototype.getWerewolf())
-        }
+  getAgent(){
+    if(gameroles.some(role => role.name == "Agent infiltré")) {
+      this.getRandomTown()
+    }else{
+      gameroles.push(roles.prototype.getAgent())
     }
+  }
 
-    getDisg(){
-        gameroles.push(roles.prototype.getDisg())
-    }
+  getSpy(){
+    gameroles.push(roles.prototype.getSpy())
+  }
 
-    getForger(){
-        gameroles.push(roles.prototype.getForger())
-    }
+  getBodyguard(){
+    gameroles.push(roles.prototype.getBg())
+  }
 
-    getFramer(){
-        gameroles.push(roles.prototype.getFramer())
-    }
+  getEscort(){
+    gameroles.push(roles.prototype.getEscort())
+  }
 
-    getConsierg(){
-        gameroles.push(roles.prototype.getJani())
+  getMaire(){
+    if(gameroles.some(role => role.name == "Maire")) {
+      this.getRandomTown()
+    }else{
+      gameroles.push(roles.prototype.getMaire())
     }
+  }
 
-    getHypno(){
-        gameroles.push(roles.prototype.getHypno())
+  getRetri(){
+    if(gameroles.some(role => role.name == "Retributionist")) {
+      this.getRandomTown()
+    }else{
+      gameroles.push(roles.prototype.getRetri())
     }
+  }
 
-    getBlackmailer(){
-        gameroles.push(roles.prototype.getBlackmail())
-    }
+  getTrans(){
+    gameroles.push(roles.prototype.getTrans())
+  }
 
-    getConseiller(){
-        gameroles.push(roles.prototype.getConsig())
-    }
+  getVig(){
+    gameroles.push(roles.prototype.getVig())
+  }
 
-    getConsort(){
-        gameroles.push(roles.prototype.getConsort())
+  getVet(){
+    if(gameroles.some(role => role.name == "Vétéran")) {
+      this.getRandomTown()
+    }else{
+      gameroles.push(roles.prototype.getVet())
     }
+  }
 
-    getAmbusher(){
-        if(gameroles.some(role => role.name == "Ambusher")) {
-            this.getRandomMafia()
-        }else{
-            gameroles.push(roles.prototype.getAmb())
-        }
+  getLoup(){
+    if(ggameroles.some(role => role.name == "Loup-garou")) {
+      this.getRandomNeutral()
+    }else{
+      gameroles.push(roles.prototype.getWerewolf())
     }
+  }
 
-    getAmnesiac(){
-        gameroles.push(roles.prototype.getAmne())
-    }
+  getDisg(){
+    gameroles.push(roles.prototype.getDisg())
+  }
 
-    getSurvivant(){
-        gameroles.push(roles.prototype.getSurv())
-    }
+  getForger(){
+    gameroles.push(roles.prototype.getForger())
+  }
 
-    getArsonist(){
-        gameroles.push(roles.prototype.getArso())
-    }
+  getFramer(){
+    gameroles.push(roles.prototype.getFramer())
+  }
 
-    getSerialkiller(){
-        gameroles.push(roles.prototype.getSerialk())
-    }
+  getConsierg(){
+    gameroles.push(roles.prototype.getJani())
+  }
 
-    getExecutionner(){
-        gameroles.push(roles.prototype.getExec())
-    }
+  getHypno(){
+    gameroles.push(roles.prototype.getHypno())
+  }
 
-    getJester(){
-        gameroles.push(roles.prototype.getJester())
-    }
+  getBlackmailer(){
+    gameroles.push(roles.prototype.getBlackmail())
+  }
 
-    getWitch(){
-        gameroles.push(roles.prototype.getWitch())
+  getConseiller(){
+    gameroles.push(roles.prototype.getConsig())
+  }
+
+  getConsort(){
+    gameroles.push(roles.prototype.getConsort())
+  }
+
+  getAmbusher(){
+    if(gameroles.some(role => role.name == "Ambusher")) {
+      this.getRandomMafia()
+    }else{
+      gameroles.push(roles.prototype.getAmb())
     }
+  }
+
+  getAmnesiac(){
+    gameroles.push(roles.prototype.getAmne())
+  }
+
+  getSurvivant(){
+    gameroles.push(roles.prototype.getSurv())
+  }
+
+  getArsonist(){
+    gameroles.push(roles.prototype.getArso())
+  }
+
+  getSerialkiller(){
+    gameroles.push(roles.prototype.getSerialk())
+  }
+
+  getExecutionner(){
+    gameroles.push(roles.prototype.getExec())
+  }
+
+  getJester(){
+    gameroles.push(roles.prototype.getJester())
+  }
+
+  getWitch(){
+    gameroles.push(roles.prototype.getWitch())
+  }
+
+  getCovenlead(){
+    if(gameroles.some(role => role.name == "Coven Leader")) {
+      this.getCovenEvil()
+    }else{
+      gameroles.push(roles.prototype.getCovenlead())
+    }
+  }
+
+  getHexmas(){
+    if(gameroles.some(role => role.name == "Hex Master")) {
+      this.getCovenEvil()
+    }else{
+      gameroles.push(roles.prototype.getHexmas())
+    }
+  }
+
+  getMedusa(){
+    if(gameroles.some(role => role.name == "Meduse")) {
+      this.getCovenEvil()
+    }else{
+      gameroles.push(roles.prototype.getMedusa())
+    }
+  }
+
+  getNecro(){
+    if(gameroles.some(role => role.name == "Necromane")) {
+      this.getCovenEvil()
+    }else{
+      gameroles.push(roles.prototype.getNecro())
+    }
+  }
+
+  getPoiso(){
+    if(gameroles.some(role => role.name == "Poisoner")) {
+      this.getCovenEvil()
+    }else{
+      gameroles.push(roles.prototype.getPoiso())
+    }
+  }
+
+  getPotion(){
+    if(gameroles.some(role => role.name == "Potion Master")) {
+      this.getCovenEvil()
+    }else{
+      gameroles.push(roles.prototype.getPotion())
+    }
+  }
+
+  getGuardian(){
+    gameroles.push(roles.prototype.getGuardian())
+  }
+
+  getJugger(){
+    if(gameroles.some(role => role.name == "Juggernaut")) {
+      this.getNeutralKillingCoven()
+    }else{
+      gameroles.push(roles.prototype.getJugger())
+    }
+  }
+
+  getPirate(){
+    if(gameroles.some(role => role.name == "Pirate")) {
+      this.getNeutralChaosCoven()
+    }else{
+      gameroles.push(roles.prototype.getPira())
+    }
+  }
+
+  getPlague(){
+    if(gameroles.some(role => role.name == "Plaguebearer")) {
+      this.getNeutralChaosCoven()
+    }else{
+      gameroles.push(roles.prototype.getPlague())
+    }
+  }
+
+  getCrusa(){
+    gameroles.push(roles.prototype.getCrusa())
+  }
+
+  getPsy(){
+    gameroles.push(roles.prototype.getPsy())
+  }
+
+  getTracker(){
+    gameroles.push(roles.prototype.getTracker())
+  }
+
+  getTrapper(){
+    gameroles.push(roles.prototype.getTrapper())
+  }
 }
 
 module.exports = commands

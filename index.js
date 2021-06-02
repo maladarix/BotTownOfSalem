@@ -39,6 +39,7 @@ let jail = /*"824728100645896314"*/           "830240173727547424"
 let vampirechat = /*"839977061384978492"*/    "839977899581767700"
 let observatoire = /*"839977410966847539"*/   "839977922328526858"
 let mafiaChat = /*"824731087863021588"*/      "830240221584687104"
+let covenid = /*""                    */      "849541121846935592"
 let panchanid = /*"824727128758943795"*/      "829269425290215463"
 let dmchanid = /*"824726760808513606"*/       "829216633205424128"
 let villageid = /*"824727077366005800"*/      "837575217907105813"
@@ -59,14 +60,17 @@ let commencer = false
 
 let rolesEtAlig = ["Investigateur", "Lookout", "Sherif", "Spy", "Agent", "Jailor", "Vampire-hunter", "Veteran", "Vigilante", "Bodyguard", "Docteur", "Escorte"
 , "Maire", "Medium", "Retributionist", "Transporter", "Disguiser", "Forger", "Framer", "Hypnotiseur", "Consierge", "Ambusher", "Godfather", "Mafioso", "Blackmailer"
-, "Conseiller", "Consort", "Amnesiac", "Survivant", "Vampire", "Executionner", "Jester", "Sorcière", "Arsonist", "Serial-killer", "Loup-garou", "ti" ,"tp", "ts", "tk", "md", "ms", "mk"
-, "nb", "nk", "ne", "nc", "rt", "rm", "rn", "any"]
+, "Conseiller", "Consort", "Amnesiac", "Survivant", "Vampire", "Executionner", "Jester", "Sorcière", "Arsonist", "Serial-killer", "Loup-garou", "Coven-leader", "Hex-master",
+"Meduse", "Necromane", "Poisoner", "Potion-master", "Guardian-angel", "Juggernaut", "Pirate", "Plaguebearer", "Crusader", "Psychic", "Tracker", "Trapper",
+"ti" ,"tp", "ts", "tk", "md", "ms", "mk", "nb", "nk", "ne", "nc", "rt", "rm", "rn", "ce", "any"]
 
 let roles = ["Investigateur", "Lookout", "Sherif", "Spy", "Agent", "Jailor", "Vampire-hunter", "Veteran", "Vigilante", "Bodyguard", "Docteur", "Escorte"
 , "Maire", "Medium", "Retributionist", "Transporter", "Disguiser", "Forger", "Framer", "Hypnotiseur", "Consierge", "Ambusher", "Godfather", "Mafioso", "Blackmailer"
-, "Conseiller", "Consort", "Amnesiac", "Survivant", "Vampire", "Executionner", "Jester", "Sorcière", "Arsonist", "Serial-killer", "Loup-garou"]
+, "Conseiller", "Consort", "Amnesiac", "Survivant", "Vampire", "Executionner", "Jester", "Sorcière", "Arsonist", "Serial-killer", "Loup-garou", "Coven-leader", "Hex-master",
+"Meduse", "Necromane", "Poisoner", "Potion-master", "Guardian-angel", "Juggernaut", "Pirate", "Plaguebearer", "Crusader", "Psychic", "Tracker", "Trapper"]
 
-let rolesunique = ["Jailor", "Maire", "Retributionist", "Veteran", "Godfather", "Mafioso", "Ambusher" ,"Loup-garou"]
+let rolesunique = ["Jailor", "Maire", "Retributionist", "Veteran", "Godfather", "Mafioso", "Ambusher", "Loup-garou", "Coven-leader", "hex-master", "Meduse", "Necromane", "Poisoner", 
+"posion-master", "Juggernaut", "Pirate", "Plaguebearer"]
 
 let classique15 = ["Jailor", "Town investigative", "Town investigative", "Town protective", "Town killing", "Town support", "Random town", "Random town", "Godfather", "Mafioso", 
 "Random mafia", "Random mafia", "Neutral evil", "Neutral killing", "Any"]
@@ -76,7 +80,10 @@ let Allanyballenced15 = ["Random town", "Random town", "Random town", "Any", "An
 let classique20 = ["Jailor", "Doctor", "Investigateur", "Town investigative", "Town investigative", "Town support", "Town killing", "Random town", "Random town", "Random town",
 "Vampire-hunter", "Godfather", "Mafioso", "Random mafia", "Random mafia", "Vampire", "Neutral killing", "Neutral evil", "Any", "Any"]
 
-let listeGm = [{name : "classique15", list : classique15}, {name : "allanyballanced15", list : Allanyballenced15}, {name : "classique20", list : classique20}]
+let classique15Coven = ["Jailor", "Town investigative", "Town investigative", "Town support", "Town protective", "Town killing", "Random town", "Random town", "Random town", "Coven-leader",
+"Meduse", "Coven evil", "Coven evil", "Neutral killing", "Neutral evil"]
+
+let listeGm = [{name : "classique15", list : classique15}, {name : "allanyballanced15", list : Allanyballenced15}, {name : "classique20", list : classique20}, {name : "classique15coven", list : classique15Coven}]
 
 let color = "#f0b71a";
 let prefix = "!";
@@ -139,6 +146,7 @@ bot.on("message", (message) => {
   let vampirechan = message.guild.channels.cache.get(vampirechat)
   let observatoirechan = message.guild.channels.cache.get(observatoire)
   let mafiaChan = message.guild.channels.cache.get(mafiaChat)
+  let covenchan = message.guild.channels.cache.get(covenid)
   let graveyardChan = message.guild.channels.cache.get(graveyard)
   let adminchannel = message.guild.channels.cache.get(adminchat)
   let villagechan = message.guild.channels.cache.get(villageid)
@@ -1121,6 +1129,11 @@ bot.on("message", (message) => {
           player.id,
           {VIEW_CHANNEL: true, SEND_MESSAGES: true}
         )
+      }else if(player.role.alignement == "Coven Evil") {
+        covenchan.updateOverwrite(
+          player.id,
+          {VIEW_CHANNEL: true, SEND_MESSAGES: true}
+        )
       }
       
       if(player.role.name == "Executionner") {
@@ -1383,6 +1396,9 @@ bot.on("message", (message) => {
           }else if(arguments == "any") {
             nouvgmliste.push("Any")
             checkunique.push("any")
+          }else if(arguments == "ce") {
+            nouvgmliste.push("Coven Evil")
+            checkunique.push("ce")
           }else{
             nouvgmliste.push(arguments)
             checkunique.push(arguments)
@@ -1507,7 +1523,8 @@ bot.on("message", (message) => {
     nc: Neutral chaos
     rt: Random town
     rm: Random mafia
-    rn: Random neutral`)
+    rn: Random neutral
+    ce: Coven evil`)
     .setColor(color))
   }
 
@@ -1552,6 +1569,7 @@ bot.on("message", (message) => {
     let helpcommandsgod = new Discord.MessageEmbed()
       .setTitle("**Commandes God**")
       .addField("!swhisp [nbWhisp]", "Mettre la limite de whisp par jour")
+      .addField("!coven", "Toggle le mode coven")
       .addField("!gamemode [gamemode]", "Choisie le gamemode de la partie")
       .addField("!jour (message)", "Permet de mettre le jour")
       .addField("!nuit (message)", "Permet de mettre la nuit")
