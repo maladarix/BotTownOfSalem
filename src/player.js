@@ -22,6 +22,7 @@ class Player {
         this.isAlert = false
         this.guarded = null
         this.healed = null
+        this.blackmailed = false
         this.ambushed = null
         this.ambushDone = false
         this.isframed = false
@@ -30,6 +31,7 @@ class Player {
         this.mvp = 0
         this.inac = 0
         this.scroll = null
+        this.scrollrecu = null
         this.number = null
     }
 }

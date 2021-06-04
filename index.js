@@ -83,7 +83,7 @@ let classique20 = ["Jailor", "Doctor", "Investigateur", "Town investigative", "T
 let classique15Coven = ["Jailor", "Town investigative", "Town investigative", "Town support", "Town protective", "Town killing", "Random town", "Random town", "Random town", "Coven-leader",
 "Meduse", "Coven evil", "Coven evil", "Neutral killing", "Neutral evil"]
 
-let listeGm = [{name : "classique15", list : classique15}, {name : "allanyballanced15", list : Allanyballenced15}, {name : "classique20", list : classique20}, {name : "classique15coven", list : classique15Coven}]
+let listeGm = [{name : "classique15", list : classique15, coven : false}, {name : "allanyballanced15", list : Allanyballenced15, coven : false}, {name : "classique20", list : classique20, coven : false}, {name : "classique15coven", list : classique15Cove, coven : true}]
 
 let color = "#f0b71a";
 let prefix = "!";
@@ -121,6 +121,10 @@ let pasVivant = new Discord.MessageEmbed()
 let tpasvivant = new Discord.MessageEmbed()
 .setDescription("Tu n'est pas vivant")
 .setColor(color)
+
+let nuitembed = new Discord.MessageEmbed()
+.setDescription("C'est la nuit! Regarde l'heure!")
+.setColor(color);
 
 let alive = function (){
   let alive = new Array()
@@ -704,6 +708,7 @@ bot.on("message", (message) => {
 
   else if(cmd == "speak") {
     if(partie.isStarted == false) return message.channel.send(pascomme)
+    if(partie.time == "nuit") return message.channel.send(nuitembed)
     if(!message.member.roles._roles.has(vivant)) return message.channel.send(tpasvivant)
     villagechan.send(`<@${author.id}>: Je suis blackmailed`)
   }
@@ -718,37 +723,14 @@ bot.on("message", (message) => {
   }
 
   else if(cmd == "scroll") {
-
-    if(author.scroll != null) {
-      message.channel.send(new Discord.MessageEmbed()
-      .setDescription("Tu as déja utiliser ton scroll")
-      .setColor(color))
-    }
-
-    if(!args[0]) return message.channel.send(new Discord.MessageEmbed()
-    .setDescription("Quel rôle que tu voudrais jouer?")
+    if(!god && !dev) return message.channel.send(pasGod)
+    if(!taggedUser) return message.channel.send(qui)
+    if(!roles.includes(args[1])) return message.channel.send(new Discord.MessageEmbed()
+    .setDescription("Je ne trouve pas ce rôle")
     .setColor(color))
-
-    if(roles.includes(args[0]))
-      message.channel.send(new Discord.MessageEmbed()
-      .setDescription("Je ne trouve pas ce rôle")
-      .setColor(color))
-
-    if(author.mvp == 0){
-      message.channel.send(new Discord.MessageEmbed()
-      .setDescription("Tu n'as pas été MVP!")
-      .setColor(color))
-    }else if(author.inac >= 1) {
-      message.channel.send(new Discord.MessageEmbed()
-      .setDescription("Tu as été inactif dans les 2 dernières game!")
-      .setColor(color))
-    }else{
-      author.scroll == args[0]
-      message.channel.send(new Discord.MessageEmbed()
-      .setDescription(`Parfait, ton scroll à été utilisé! Tu as plus de chance d'être **${args[0]}**`)
-      .setColor(color))
-      author.mvp --
-    }
+    let listescrolls = []
+    tagged.scroll = args[1]
+    listescrolls.push({role: tagged.scroll, player: tagged})
   }
 
   else if(cmd == "info") {
@@ -1015,15 +997,11 @@ bot.on("message", (message) => {
     let maxwhisp = new Discord.MessageEmbed()
       .setDescription(`Il y a un maximum de **${nbWhispJour}** whisp par jour`)
       .setColor(color);
-
-    let nuitwhisp = new Discord.MessageEmbed()
-      .setDescription("C'est la nuit! Regarde l'heure!")
-      .setColor(color);
     
     if(partie.isStarted == false) return message.channel.send(pascomme)
     if(!message.member.roles._roles.has(vivant)) return message.channel.send(tpasvivant)
     if(message.channel.name != dmChan.name) return message.channel.send(demWhisp)
-    if(partie.time == "nuit") return message.channel.send(nuitwhisp)
+    if(partie.time == "nuit") return message.channel.send(nuitembed)
     if(!args[0]) return message.channel.send(qui)
     if(!taggedUser) return message.channel.send(trouvePas)
     if(message.mentions.members.first().id == message.author.id) return message.channel.send(pastoi)
@@ -1086,6 +1064,7 @@ bot.on("message", (message) => {
     if(commencer == true) return message.channel.send(new Discord.MessageEmbed()
     .setDescription("La partie est déja commencée!")
     .setColor(color))
+    Commands.prototype.start(partie, alive())
     commencer = true
     let joueuretnum = []
     let roles = partie.listeroles
@@ -1135,8 +1114,33 @@ bot.on("message", (message) => {
           {VIEW_CHANNEL: true, SEND_MESSAGES: true}
         )
       }
-      
-      if(player.role.name == "Executionner") {
+
+      if(player.role.name == "Guardian Angel") {
+        let cible = null
+        let good = false
+        do{
+          cible = alive()[Math.floor(Math.random() * alive().length)]
+          if(cible.name != player.name) {
+            if(!(cible.role.name == "Executionner") || (cible.role.name == "Jester") || (cible.role.name == "Guardian Angel")) {
+              good = true 
+            }
+          }
+        }while (!good)
+        let interfacechan =  message.guild.channels.cache.get(player.interface)
+        interfacechan.send(new Discord.MessageEmbed()
+        .setTitle("**Ton rôle**")
+        .setDescription("**Voici des infos sur ton rôle**")
+        .addField("**Ton rôle**", player.role.name)
+        .addField("**Allignement**", player.role.alignement)
+        .addField("**Description**", player.role.description)
+        .addField("**Habiletée**", player.role.hab)
+        .addField("**Ta cible**" , cible.displayname)
+        .addField("**Gagnez avec**", player.role.winwith)
+        .addField("**Plus d'info sur ton wiki**", player.role.wikiLink)
+        .setColor(color))
+        joueurroles.push(player.displayname + ", " + player.role.name)
+        
+      }else if(player.role.name == "Executionner") {
         let cible = null
         let good = false
         do{
@@ -1144,7 +1148,7 @@ bot.on("message", (message) => {
           if(cible.name != player.name) {
             if(!(cible.role.name == "Jailor") || (cible.role.name == "Maire")) {
               if(cible.role.alignement == "Town Investigative" || (cible.role.alignement == "Town Protective") || (cible.role.alignement == "Town Support") || (cible.role.alignement == "Town Killing")) {
-              good = true 
+                good = true 
               }
             }
           }
@@ -1300,8 +1304,11 @@ bot.on("message", (message) => {
     if(!args[0]) return message.channel.send(mdjsvp)
 
     listeGm.forEach(gm => {
-      if(args[0] == gm.name)
-      {
+      if(args[0] == gm.name) {
+        if(gm.coven == true && partie.coven == false) return message.channel.send(new Discord.MessageEmbed()
+        .setDescription("Active le coven! -> !coven")
+        .setColor(color))
+
         message.channel.send(new Discord.MessageEmbed()
         .setDescription(`Mode de jeu **${gm.name}** choisi!`)
         .setColor(color))
@@ -1310,7 +1317,7 @@ bot.on("message", (message) => {
         found = true
       }
     });
-    if(!found){
+    if(!found) {
       message.channel.send(new Discord.MessageEmbed()
       .setDescription("Je ne trouve pas ce **gamemode**!")
       .setColor(color))
@@ -2290,7 +2297,6 @@ bot.on("messageReactionAdd", async (reaction, user) => {
             })
 
           if(alive().length == nbrJoueurMax){
-            Commands.prototype.start(partie, alive())
             partie.isStarted = true
             adminchannel.send(new Discord.MessageEmbed()
             .setDescription("Vous pouvez maintenant distribuer les rôles!")
