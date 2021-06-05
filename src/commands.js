@@ -89,6 +89,40 @@ class commands{
     currentgamemode = partie.gamemode.list
     gameroles = []
 
+    let scrolls = []
+    players.forEach(x =>{
+      if(x.scroll != null){
+        scrolls.push({player : x, role : x.scroll, position : null})
+      }
+    })
+    
+    scrolls.forEach(x => {
+      let found = null
+      for(let i = 0; i < currentgamemode.length && found == null ; i++){
+        if (x.role.name == currentgamemode[i]) {
+          found = i
+        }
+      }
+      for(let i = 0; i < currentgamemode.length && found == null ; i++){
+        if (x.role.alignement == currentgamemode[i]) {
+          found = i
+        }
+      }
+      for(let i = 0; i < currentgamemode.length && found == null ; i++){
+        let faction = x.role.alignement.split(" ")
+        if ("Random" + faction[0] == currentgamemode[i]) {
+          found = i
+        }
+      }
+      for(let i = 0; i < currentgamemode.length && found == null ; i++){
+        if ("any" == currentgamemode[i]) {
+          found = i
+        }
+      }
+      currentgamemode[found] = x.role.name
+      x.position = found
+    })
+
     currentgamemode.forEach(role => {
     if(role == "Jailor") {
       this.getJailor()
@@ -256,10 +290,31 @@ class commands{
   })
 
     partie.listeroles = gameroles
-
     listerandom = shuffle(players)
+
+    scrolls.forEach( x => {
+        let pos = null
+        for(let i = 0; i < listerandom.length && pos == null; i++){
+          if (x.player == listerandom)
+          {
+            pos = i
+          }
+        }
+
+        t = array[pos];
+        array[pos] = array[x.position];
+        array[x.position] = t;
+    })
+
+
+    this.distributeRoles()
+    
+  }
+
+  distributeRoles(){
+    
     for (let index = 0; index < listerandom.length; index++) {
-      listerandom[index].role = gameroles[index]
+      listerandom[index].role = partie.listeroles[index]
     }
   }
 

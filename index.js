@@ -4,6 +4,7 @@ const Player = require('./src/player.js');
 const Partie = require('./src/game.js');
 const dis = require('./src/Roles/mafia/dis.js');
 const medu = require('./src/Roles/coven/medusa.js');
+const commands = require('./src/commands.js');
 const bot = new Discord.Client();
 require("dotenv").config()
 var nbrJoueurMax = 0
@@ -1863,6 +1864,7 @@ bot.on('message', async (message) => {
     }
 
   }
+
 
   else if(cmd == "p") {
     let pendrChan = new Discord.MessageEmbed()
