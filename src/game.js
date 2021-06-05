@@ -14,7 +14,6 @@ class Partie{
         this.time = "nuit"
         this.fullmoon = false
         this.coven = false
-        this.scrolls = []
     }
 }
 
