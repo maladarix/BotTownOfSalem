@@ -724,13 +724,13 @@ bot.on("message", (message) => {
 
   else if(cmd == "scroll") {
     if(!god && !dev) return message.channel.send(pasGod)
-    if(!taggedUser) return message.channel.send(qui)
+    if(!tagged) return message.channel.send(qui)
     if(!roles.includes(args[1])) return message.channel.send(new Discord.MessageEmbed()
     .setDescription("Je ne trouve pas ce rôle")
     .setColor(color))
-    let listescrolls = []
     tagged.scroll = args[1]
     partie.scrolls.push(tagged)
+    message.react("👍")
   }
 
   else if(cmd == "info") {

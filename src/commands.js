@@ -65,7 +65,27 @@ let anycoven = [roles.prototype.getInvest(),roles.prototype.getLoukout(), roles.
 let currentgamemode = []
 let scrolls = []
 let gameroles = []
-let customgm = []
+
+let scrollJailor = []
+let scrollMayor = []
+let scrollRetri = []
+let scrollVet = []
+let scrollGF = []
+let scrollMafi = []
+let scrollAmbu = []
+let scrollJugger = []
+let scrollPlague = []
+let scrollPesti = []
+let scrollPirate = []
+let scrollWW = []
+let scrollCoven = []
+let scrollNecro = []
+let scrollMedu = []
+let scrollPoiso = []
+let scrollHex = []
+let scrollPotion = []
+let listescrolls = []
+let scrolloffi = []
 
 let listerandom = []
 
@@ -89,25 +109,84 @@ var shuffle = function (array) {
 
 class commands{
   start(partie, players) {
-    /*crolls = partie.scrolls
-    scrolls.forEach(scrol => {
-      console.log(scrol.scroll)
-    })
-    let rolesUnique = ["jailor", "witch"]
-    let personnesQuiVeulentLeRole = []
-    rolesUnique.forEach(role =>{
-      scrolls.forEach(scrol => {
-        if(scrol.scroll == role){
-          personnesQuiVeulentLeRole.push(scrol)
-          //add to array de personnes qui veulent le role
-        }
-        //si plus qu'une personne, random
-      })
-    })*/
-    
-    customgm = partie.persoGm
-    gameroles = []
     currentgamemode = partie.gamemode.list
+    scrolls = partie.scrolls
+    scrolls.forEach(demande => {
+      if(demande.scroll == "Jailor") {
+        scrollJailor.push({player : demande, allignement : "Town Killing", faction : "Town"})
+      }else if(demande.scroll == "Maire") {
+        scrollMayor.push(demande)
+      }else if(demande.scroll == "Retributionist") {
+        scrollRetri.push(demande)
+      }else if(demande.scroll == "Vétéran") {
+        scrollVet.push(demande)
+      }else if(demande.scroll == "Godfather") {
+        scrollGF.push(demande)
+      }else if(demande.scroll == "Mafioso") {
+        scrollMafi.push(demande)
+      }else if(demande.scroll == "Ambusher") {
+        scrollAmbu.push(demande)
+      }else if(demande.scroll == "Juggernaut") {
+        scrollJugger.push(demande)
+      }else if(demande.scroll == "Plaguebearer") {
+        scrollPlague.push(demande)
+      }else if(demande.scroll == "Pestilence") {
+        scrollPesti.push(demande)
+      }else if(demande.scroll == "Pirate") {
+        scrollPirate.push(demande)
+      }else if(demande.scroll == "Loup-garou") {
+        scrollWW.push(demande)
+      }else if(demande.scroll == "Coven-Leader") {
+        scrollCoven.push(demande)
+      }else if(demande.scroll == "Necromane") {
+        scrollNecro.push(demande)
+      }else if(demande.scroll == "Meduse") {
+        scrollMedu.push(demande)
+      }else if(demande.scroll == "Poisoner") {
+        scrollPoiso.push(demande)
+      }else if(demande.scroll == "Hex-Master") {
+        scrollHex.push(demande)
+      }else if(demande.scroll == "Potion-Master") {
+        scrollPotion.push(demande)
+      }else{
+        
+      }
+    })
+    listescrolls.push(scrollJailor, scrollMayor, scrollRetri, scrollVet, scrollGF, scrollMafi, scrollAmbu, scrollJugger, scrollPlague, scrollPesti, scrollPirate, scrollWW, scrollCoven, scrollNecro, scrollMedu, scrollPoiso, scrollHex, scrollPotion)
+    listescrolls.forEach(scroll => {
+      if(scroll.length > 1) {
+        let joueurchoisi = scroll.player[Math.floor(Math.random() * scroll.length)]
+        joueurchoisi.scrollrecu = joueurchoisi.scroll
+        scrolloffi.push(joueurchoisi)
+      }else if(scroll.length == 0) return
+      else{
+        scroll[0].player.scrollrecu = scroll[0].player.scroll
+        scrolloffi.push(scroll)
+        console.log(scroll[0])
+      }
+      if(currentgamemode.includes("Any")) {
+        console.log(currentgamemode)
+        console.log(scroll.allignement)
+        if(scroll.faction == "Town") {
+          console.log("allo")
+          if(currentgamemode.includes("Random town")) {
+            console.log("oui")
+          }
+        }else if(scroll.faction == "Mafia") {
+          if(currentgamemode.includes("Random mafia")) {
+
+          }
+        }else if(scroll.faction == "Neutral") {
+          if(currentgamemode.includes("Random neutral")) {
+
+          }
+        }else if(scroll.faction == "Coven") {
+
+        }
+      }
+    })
+
+    gameroles = []
 
     currentgamemode.forEach(role => {
     if(role == "Jailor") {
