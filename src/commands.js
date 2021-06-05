@@ -63,6 +63,7 @@ let anycoven = [roles.prototype.getInvest(),roles.prototype.getLoukout(), roles.
 
 //roles unique coven: pirate plaguebearer juggernaut (tout coven)
 let currentgamemode = []
+let scrolls = []
 let gameroles = []
 let customgm = []
 
@@ -88,9 +89,26 @@ var shuffle = function (array) {
 
 class commands{
   start(partie, players) {
+    /*crolls = partie.scrolls
+    scrolls.forEach(scrol => {
+      console.log(scrol.scroll)
+    })
+    let rolesUnique = ["jailor", "witch"]
+    let personnesQuiVeulentLeRole = []
+    rolesUnique.forEach(role =>{
+      scrolls.forEach(scrol => {
+        if(scrol.scroll == role){
+          personnesQuiVeulentLeRole.push(scrol)
+          //add to array de personnes qui veulent le role
+        }
+        //si plus qu'une personne, random
+      })
+    })*/
+    
     customgm = partie.persoGm
     gameroles = []
     currentgamemode = partie.gamemode.list
+
     currentgamemode.forEach(role => {
     if(role == "Jailor") {
       this.getJailor()

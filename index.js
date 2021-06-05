@@ -83,7 +83,7 @@ let classique20 = ["Jailor", "Doctor", "Investigateur", "Town investigative", "T
 let classique15Coven = ["Jailor", "Town investigative", "Town investigative", "Town support", "Town protective", "Town killing", "Random town", "Random town", "Random town", "Coven-leader",
 "Meduse", "Coven evil", "Coven evil", "Neutral killing", "Neutral evil"]
 
-let listeGm = [{name : "classique15", list : classique15, coven : false}, {name : "allanyballanced15", list : Allanyballenced15, coven : false}, {name : "classique20", list : classique20, coven : false}, {name : "classique15coven", list : classique15Cove, coven : true}]
+let listeGm = [{name : "classique15", list : classique15, coven : false}, {name : "allanyballanced15", list : Allanyballenced15, coven : false}, {name : "classique20", list : classique20, coven : false}, {name : "classique15coven", list : classique15Coven, coven : true}]
 
 let color = "#f0b71a";
 let prefix = "!";
@@ -730,7 +730,7 @@ bot.on("message", (message) => {
     .setColor(color))
     let listescrolls = []
     tagged.scroll = args[1]
-    listescrolls.push({role: tagged.scroll, player: tagged})
+    partie.scrolls.push(tagged)
   }
 
   else if(cmd == "info") {
