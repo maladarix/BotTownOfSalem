@@ -730,11 +730,11 @@ bot.on("message", (message) => {
     if(!roles.includes(args[1])) return message.channel.send(new Discord.MessageEmbed()
     .setDescription("Je ne trouve pas ce rôle")
     .setColor(color))
-    if(args[1] == "Jailor") tagged.scroll = Roles.prototype.getJailor()
-    if(args[1] == "Agent-Infiltré") tagged.scroll = Roles.prototype.getAgent()
-    if(args[1] == "Crusader") tagged.scroll = Roles.prototype.getCrusa()
-    if(args[1] == "Docteur") tagged.scroll = Roles.prototype.getDoc()
-    if(args[1] == "Escort") tagged.scroll = Roles.prototype.getEscort()
+    commands.prototype.getAllRoles().forEach(role => {
+    if(role.name == args[1]){
+      tagged.scroll = role
+    }
+  });
     message.react("👍")
   }
 

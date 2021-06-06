@@ -291,32 +291,30 @@ class commands{
 
   partie.listeroles = gameroles
   listerandom = shuffle(players)
-  
   scrolls.forEach(x => {
     let t = null
     let pos = null
     for(let i = 0; i < listerandom.length && pos == null; i++){
-      if (x.player == listerandom)
-      {
+      if (x.player == listerandom[i]) {
         pos = i
       }
     }
-
+    console.log(pos)
+    console.log(x.position)
     t = listerandom[pos];
     listerandom[pos] = listerandom[x.position];
     listerandom[x.position] = t;
   })
 
-
   this.distributeRoles(partie)
-    
+  
   }
 
   distributeRoles(partie){
-    console.log(listerandom.length - 1)
-    for (let index = 0; index < listerandom.length - 1; index++) {
-      console.log(listerandom)
-      console.log(index)
+    //console.log(listerandom)
+    for (let index = 0; index < listerandom.length; index++) {
+      //console.log(listerandom)
+      //console.log(index)
       listerandom[index].role = partie.listeroles[index]
     }
   }
@@ -822,6 +820,11 @@ class commands{
   getTrapper(){
     gameroles.push(roles.prototype.getTrapper())
   }
+  
+  getAllRoles(){
+    return anycoven
+  }
 }
+
 
 module.exports = commands
