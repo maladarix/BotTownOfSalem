@@ -90,9 +90,9 @@ class commands{
     gameroles = []
 
     let scrolls = []
-    players.forEach(x =>{
-      if(x.scroll != null){
-        scrolls.push({player : x, role : x.scroll, position : null})
+    players.forEach(player =>{
+      if(player.scroll != null){
+        scrolls.push({player : player, role : player.scroll, position : null})
       }
     })
     
@@ -115,7 +115,7 @@ class commands{
         }
       }
       for(let i = 0; i < currentgamemode.length && found == null ; i++){
-        if ("any" == currentgamemode[i]) {
+        if ("Any" == currentgamemode[i]) {
           found = i
         }
       }
@@ -130,17 +130,17 @@ class commands{
       this.getDoctor()
     }else if(role == "Investigateur") {
       this.getInvestigateur()
-    }else if(role == "Town investigative") {
+    }else if(role == "Town Investigative") {
       if(partie.coven == true) {
         this.getTownInvestCoven()
       }else{
         this.getTownInvest()
       }
-    }else if(role == "Town support") {
+    }else if(role == "Town Support") {
       this.getTownSupport()
-    }else if(role == "Town killing") {
+    }else if(role == "Town Killing") {
       this.getTownKilling()
-    }else if(role == "Town protective") {
+    }else if(role == "Town Protective") {
       if(partie.coven == true) {
         this.getTownProtectCoven()
       }else{
@@ -152,31 +152,31 @@ class commands{
       }else{
         this.getRandomTown()
       }
-    }else if(role == "Mafia deception") {
+    }else if(role == "Mafia Deception") {
       this.getMafiaDeception()
-    }else if(role == "Mafia support") {
+    }else if(role == "Mafia Support") {
       this.getMafiaSupport()
-    }else if(role == "Mafia killing") {
+    }else if(role == "Mafia Killing") {
         this.getMafiaKilling()
-    }else if(role == "Neutral benin") {
+    }else if(role == "Neutral Benin") {
       if(partie.coven == true) {
         this.getNeutralBeninCoven()
       }else{
         this.getNeutralBenin() 
       }
-    }else if(role == "Neutral chaos") {
+    }else if(role == "Neutral Chaos") {
       if(partie.coven == true) {
         this.getNeutralChaosCoven()
       }else{
         this.getNeutralChaos()
       }
-    }else if(role == "Random neutral") {
+    }else if(role == "Random Neutral") {
       if(partie.coven == true) {
         this.getRandomNeutralCoven()
       }else{
         this.getRandomNeutral()
       }
-    }else if(role == "Vampire-hunter") {
+    }else if(role == "Vampire-Hunter") {
     this.getVampireHunter()
     }else if(role == "Godfather") {
       this.getGodfather()
@@ -186,15 +186,15 @@ class commands{
     this.getRandomMafia()
     }else if(role == "Vampire") {
       this.getVampire()
-    }else if(role == "Neutral killing") {
+    }else if(role == "Neutral Killing") {
       if(partie.coven == true) {
         this.getNeutralKillingCoven()
       }else{
         this.getNeutralKilling()
       }
-    }else if(role == "Neutral evil") {
+    }else if(role == "Neutral Evil") {
       this.getNeutralEvil()
-    }else if(role == "Coven evil") {
+    }else if(role == "Coven Evil") {
       this.getCovenEvil()
     }else if(role == "Any") {
       if (partie.coven == true) {
@@ -206,7 +206,7 @@ class commands{
       this.getLoukout()
     }else if(role == "Sherrif") {
       this.getSheriff()
-    }else if(role == "Agent") {
+    }else if(role == "Agent-Infiltré") {
       this.getAgent()
     }else if(role == "Spy") {
       this.getSpy()
@@ -250,7 +250,7 @@ class commands{
       this.getSurvivant()
     }else if(role == "Arsonist") {
       this.getArsonist()
-    }else if(role == "Serial-killer") {
+    }else if(role == "Serial-Killer") {
       this.getSerialkiller()
     }else if(role == "Executionner") {
       this.getExecutionner()
@@ -258,9 +258,9 @@ class commands{
       this.getJester()
     }else if(role == "Sorcière") {
       this.getWitch()
-    }else if(role == "Coven-leader") {
+    }else if(role == "Coven-Leader") {
       this.getCovenlead()
-    }else if(role == "Hex-master") {
+    }else if(role == "Hex-Master") {
       this.getHexmas()
     }else if(role == "Meduse") {
       this.getMedusa()
@@ -268,9 +268,9 @@ class commands{
       this.getNecro()
     }else if(role == "Poisoner") {
       this.getPoiso()
-    }else if(role == "Potion-master") {
+    }else if(role == "Potion-Master") {
       this.getPotion()
-    }else if(role == "Guardian-angel") {
+    }else if(role == "Guardian-Angel") {
       his.getGuardian()
     }else if(role == "Juggernaut") {
       this.getJugger()
@@ -289,31 +289,34 @@ class commands{
     }else return
   })
 
-    partie.listeroles = gameroles
-    listerandom = shuffle(players)
+  partie.listeroles = gameroles
+  listerandom = shuffle(players)
+  
+  scrolls.forEach(x => {
+    let t = null
+    let pos = null
+    for(let i = 0; i < listerandom.length && pos == null; i++){
+      if (x.player == listerandom)
+      {
+        pos = i
+      }
+    }
 
-    scrolls.forEach( x => {
-        let pos = null
-        for(let i = 0; i < listerandom.length && pos == null; i++){
-          if (x.player == listerandom)
-          {
-            pos = i
-          }
-        }
-
-        t = array[pos];
-        array[pos] = array[x.position];
-        array[x.position] = t;
-    })
+    t = listerandom[pos];
+    listerandom[pos] = listerandom[x.position];
+    listerandom[x.position] = t;
+  })
 
 
-    this.distributeRoles()
+  this.distributeRoles(partie)
     
   }
 
-  distributeRoles(){
-    
-    for (let index = 0; index < listerandom.length; index++) {
+  distributeRoles(partie){
+    console.log(listerandom.length - 1)
+    for (let index = 0; index < listerandom.length - 1; index++) {
+      console.log(listerandom)
+      console.log(index)
       listerandom[index].role = partie.listeroles[index]
     }
   }

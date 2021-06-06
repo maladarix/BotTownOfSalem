@@ -2,7 +2,7 @@ const Action = require('../../action')
 
 class hexMas {
   constructor(){
-    this.name = "Hex Master"
+    this.name = "Hex-Master"
     this.description = "Vous êtes un lanceur de sorts avec une maîtrise des sorts et des malédictions."
     this.isUnique = true
     this.needsTwoTargets = false

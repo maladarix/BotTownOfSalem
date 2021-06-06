@@ -2,7 +2,7 @@ const Action = require('../../action')
 
 class potion {
   constructor(){
-    this.name = "Potion Master"
+    this.name = "Potion-Master"
     this.description = "Vous êtes un alchimiste expérimenté avec de puissantes recettes de potions."
     this.isUnique = true
     this.needsTwoTargets = false

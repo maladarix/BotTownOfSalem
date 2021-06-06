@@ -2,7 +2,7 @@ const Action = require('../../action')
 
 class covlead {
   constructor(){
-    this.name = "Coven Leader"
+    this.name = "Coven-Leader"
     this.description = "Vous êtes un maître vaudou qui peut contrôler les actions des autres."
     this.isUnique = true
     this.needsTwoTargets = false

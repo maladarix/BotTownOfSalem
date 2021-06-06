@@ -5,6 +5,7 @@ const Partie = require('./src/game.js');
 const dis = require('./src/Roles/mafia/dis.js');
 const medu = require('./src/Roles/coven/medusa.js');
 const commands = require('./src/commands.js');
+const Roles = require('./src/Roles/roles.js');
 const bot = new Discord.Client();
 require("dotenv").config()
 var nbrJoueurMax = 0
@@ -59,13 +60,13 @@ let numNuit = 0
 var nbWhispJour = 1
 let commencer = false
 
-let rolesEtAlig = ["Investigateur", "Lookout", "Sherif", "Spy", "Agent", "Jailor", "Vampire-hunter", "Veteran", "Vigilante", "Bodyguard", "Docteur", "Escorte"
+let rolesEtAlig = ["Investigateur", "Lookout", "Sherif", "Spy", "Agent-Infiltré", "Jailor", "Vampire-hunter", "Veteran", "Vigilante", "Bodyguard", "Docteur", "Escorte"
 , "Maire", "Medium", "Retributionist", "Transporter", "Disguiser", "Forger", "Framer", "Hypnotiseur", "Consierge", "Ambusher", "Godfather", "Mafioso", "Blackmailer"
 , "Conseiller", "Consort", "Amnesiac", "Survivant", "Vampire", "Executionner", "Jester", "Sorcière", "Arsonist", "Serial-killer", "Loup-garou", "Coven-leader", "Hex-master",
 "Meduse", "Necromane", "Poisoner", "Potion-master", "Guardian-angel", "Juggernaut", "Pirate", "Plaguebearer", "Crusader", "Psychic", "Tracker", "Trapper",
 "ti" ,"tp", "ts", "tk", "md", "ms", "mk", "nb", "nk", "ne", "nc", "rt", "rm", "rn", "ce", "any"]
 
-let roles = ["Investigateur", "Lookout", "Sherif", "Spy", "Agent", "Jailor", "Vampire-hunter", "Veteran", "Vigilante", "Bodyguard", "Docteur", "Escorte"
+let roles = ["Investigateur", "Lookout", "Sherif", "Spy", "Agent-Infiltré", "Jailor", "Vampire-hunter", "Veteran", "Vigilante", "Bodyguard", "Docteur", "Escorte"
 , "Maire", "Medium", "Retributionist", "Transporter", "Disguiser", "Forger", "Framer", "Hypnotiseur", "Consierge", "Ambusher", "Godfather", "Mafioso", "Blackmailer"
 , "Conseiller", "Consort", "Amnesiac", "Survivant", "Vampire", "Executionner", "Jester", "Sorcière", "Arsonist", "Serial-killer", "Loup-garou", "Coven-leader", "Hex-master",
 "Meduse", "Necromane", "Poisoner", "Potion-master", "Guardian-angel", "Juggernaut", "Pirate", "Plaguebearer", "Crusader", "Psychic", "Tracker", "Trapper"]
@@ -73,16 +74,16 @@ let roles = ["Investigateur", "Lookout", "Sherif", "Spy", "Agent", "Jailor", "Va
 let rolesunique = ["Jailor", "Maire", "Retributionist", "Veteran", "Godfather", "Mafioso", "Ambusher", "Loup-garou", "Coven-leader", "hex-master", "Meduse", "Necromane", "Poisoner", 
 "posion-master", "Juggernaut", "Pirate", "Plaguebearer"]
 
-let classique15 = ["Jailor", "Town investigative", "Town investigative", "Town protective", "Town killing", "Town support", "Random town", "Random town", "Godfather", "Mafioso", 
+let classique15 = ["Jailor", "Town Investigative", "Town Investigative", "Town Protective", "Town Killing", "Town Support", "Random Town", "Random Town", "Godfather", "Mafioso", 
 "Random mafia", "Random mafia", "Neutral evil", "Neutral killing", "Any"]
 
-let Allanyballenced15 = ["Random town", "Random town", "Random town", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any"]
+let Allanyballenced15 = ["Random Town", "Random Town", "Random Town", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any"]
 
-let classique20 = ["Jailor", "Doctor", "Investigateur", "Town investigative", "Town investigative", "Town support", "Town killing", "Random town", "Random town", "Random town",
-"Vampire-hunter", "Godfather", "Mafioso", "Random mafia", "Random mafia", "Vampire", "Neutral killing", "Neutral evil", "Any", "Any"]
+let classique20 = ["Jailor", "Doctor", "Investigateur", "Town Investigative", "Town Investigative", "Town Support", "Town Killing", "Random Town", "Random Town", "Random Town",
+"Vampire-hunter", "Godfather", "Mafioso", "Random Mafia", "Random Mafia", "Vampire", "Neutral Killing", "Neutral Evil", "Any", "Any"]
 
-let classique15Coven = ["Jailor", "Town investigative", "Town investigative", "Town support", "Town protective", "Town killing", "Random town", "Random town", "Random town", "Coven-leader",
-"Meduse", "Coven evil", "Coven evil", "Neutral killing", "Neutral evil"]
+let classique15Coven = ["Jailor", "Town Investigative", "Town Investigative", "Town Support", "Town Protective", "Town Killing", "Random Town", "Random Town", "Random Town", "Coven-leader",
+"Meduse", "Coven Evil", "Coven Evil", "Neutral Killing", "Neutral Evil"]
 
 let listeGm = [{name : "classique15", list : classique15, coven : false}, {name : "allanyballanced15", list : Allanyballenced15, coven : false}, {name : "classique20", list : classique20, coven : false}, {name : "classique15coven", list : classique15Coven, coven : true}]
 
@@ -729,8 +730,11 @@ bot.on("message", (message) => {
     if(!roles.includes(args[1])) return message.channel.send(new Discord.MessageEmbed()
     .setDescription("Je ne trouve pas ce rôle")
     .setColor(color))
-    tagged.scroll = args[1]
-    partie.scrolls.push(tagged)
+    if(args[1] == "Jailor") tagged.scroll = Roles.prototype.getJailor()
+    if(args[1] == "Agent-Infiltré") tagged.scroll = Roles.prototype.getAgent()
+    if(args[1] == "Crusader") tagged.scroll = Roles.prototype.getCrusa()
+    if(args[1] == "Docteur") tagged.scroll = Roles.prototype.getDoc()
+    if(args[1] == "Escort") tagged.scroll = Roles.prototype.getEscort()
     message.react("👍")
   }
 
