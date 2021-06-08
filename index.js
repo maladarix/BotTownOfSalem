@@ -83,7 +83,7 @@ let classique20 = ["Jailor", "Doctor", "Investigateur", "Town Investigative", "T
 "Vampire-hunter", "Godfather", "Mafioso", "Random Mafia", "Random Mafia", "Vampire", "Neutral Killing", "Neutral Evil", "Any", "Any"]
 
 let classique15Coven = ["Jailor", "Town Investigative", "Town Investigative", "Town Support", "Town Protective", "Town Killing", "Random Town", "Random Town", "Random Town", "Coven-leader",
-"Meduse", "Coven Evil", "Coven Evil", "Neutral Killing", "Neutral Evil"]
+"Meduse", "Coven Evil", "Neutral Killing", "Neutral Evil", "Any"]
 
 let listeGm = [{name : "classique15", list : classique15, coven : false}, {name : "allanyballanced15", list : Allanyballenced15, coven : false}, {name : "classique20", list : classique20, coven : false}, {name : "classique15coven", list : classique15Coven, coven : true}]
 
@@ -141,7 +141,7 @@ let alive = function (){
 bot.on('ready', () => {
   console.log("bot online")
   console.log(new Date().toLocaleString())
-  bot.user.setActivity('Phil pcq stun traitre', { type: 'WATCHING' })
+  bot.user.setActivity('Phil pcq y pue', { type: 'WATCHING' })
 })
 
 bot.on("message", (message) => {
@@ -177,7 +177,7 @@ bot.on("message", (message) => {
   }
 
   if(message.content.includes("bot")) message.channel.send("Pourquoi tu parle de moi?")
-  if(message.content.includes("bot" && "merde")) message.channel.send("michan agrou")
+  if(message.content.includes("bot" && "merde")) message.channel.send("agrou michan")
 
   if(!message.content.startsWith(prefix)) return
 
@@ -730,11 +730,14 @@ bot.on("message", (message) => {
     if(!roles.includes(args[1])) return message.channel.send(new Discord.MessageEmbed()
     .setDescription("Je ne trouve pas ce rôle")
     .setColor(color))
-    commands.prototype.getAllRoles().forEach(role => {
-    if(role.name == args[1]){
-      tagged.scroll = role
+    let number = Math.random() * 1 
+    if(number >= 0.5) {
+      commands.prototype.getAllRoles().forEach(role => {
+        if(role.name == args[1]){
+          tagged.scroll = role
+        }
+      });  
     }
-  });
     message.react("👍")
   }
 
@@ -1364,46 +1367,46 @@ bot.on("message", (message) => {
         }
         if(good == true) {
           if(arguments == "ti") {
-            nouvgmliste.push("Town investigative")
+            nouvgmliste.push("Town Investigative")
             checkunique.push("ti")
           }else if(arguments == "tp") {
-            nouvgmliste.push("Town protective")
+            nouvgmliste.push("Town Protective")
             checkunique.push("tp")
           }else if(arguments == "ts") {
-            nouvgmliste.push("Town support")
+            nouvgmliste.push("Town Support")
             checkunique.push("ts")
           }else if(arguments == "tk") {
-            nouvgmliste.push("Town killing")
+            nouvgmliste.push("Town Killing")
             checkunique.push("tk")
           }else if(arguments == "md") {
-            nouvgmliste.push("Mafia deception")
+            nouvgmliste.push("Mafia Deception")
             checkunique.push("md")
           }else if(arguments == "ms") {
-            nouvgmliste.push("Mafia support")
+            nouvgmliste.push("Mafia Support")
             checkunique.push("ms")
           }else if(arguments == "mk") {
-            nouvgmliste.push("Mafia killing")
+            nouvgmliste.push("Mafia Killing")
             checkunique.push("mk")
           }else if(arguments == "nb") {
-            nouvgmliste.push("Neutral benin")
+            nouvgmliste.push("Neutral Benin")
             checkunique.push("nb")
           }else if(arguments == "nk") {
-            nouvgmliste.push("Neutral killing")
+            nouvgmliste.push("Neutral Killing")
             checkunique.push("nk")
           }else if(arguments == "ne") {
-            nouvgmliste.push("Neutral evil")
+            nouvgmliste.push("Neutral Evil")
             checkunique.push("ne")
           }else if(arguments == "nc") {
-            nouvgmliste.push("Neutral chaos")
+            nouvgmliste.push("Neutral Chaos")
             checkunique.push("nc")
           }else if(arguments == "rt") {
-            nouvgmliste.push("Random town")
+            nouvgmliste.push("Random Town")
             checkunique.push("rt")
           }else if(arguments == "rm") {
-            nouvgmliste.push("Random mafia")
+            nouvgmliste.push("Random Mafia")
             checkunique.push("rm")
           }else if(arguments == "rn") {
-            nouvgmliste.push("Random neutral")
+            nouvgmliste.push("Random Neutral")
             checkunique.push("rn")
           }else if(arguments == "any") {
             nouvgmliste.push("Any")

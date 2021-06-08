@@ -51,7 +51,7 @@ let anyrole = [roles.prototype.getInvest(),roles.prototype.getLoukout(), roles.p
     roles.prototype.getConsort(), roles.prototype.getGodfather(), roles.prototype.getMafioso(), roles.prototype.getAmb(), roles.prototype.getAmne(), roles.prototype.getSurv(), 
     roles.prototype.getArso(), roles.prototype.getSerialk(), roles.prototype.getExec(), roles.prototype.getJester(), roles.prototype.getWitch()]
 
-let anycoven = [roles.prototype.getInvest(),roles.prototype.getLoukout(), roles.prototype.getSheriff(), roles.prototype.getAgent(), roles.prototype.getSpy(), roles.prototype.getBg(), 
+let anycoven = [roles.prototype.getInvest(), roles.prototype.getLoukout(), roles.prototype.getSheriff(), roles.prototype.getAgent(), roles.prototype.getSpy(), roles.prototype.getBg(), 
     roles.prototype.getDoc(), roles.prototype.getEscort(), roles.prototype.getMaire(), roles.prototype.getRetri(), roles.prototype.getTrans(), 
     roles.prototype.getVig(), roles.prototype.getVet(), roles.prototype.getWerewolf(), roles.prototype.getJailor(), roles.prototype.getDisg(), 
     roles.prototype.getForger(), roles.prototype.getFramer(), roles.prototype.getJani(), roles.prototype.getHypno(), roles.prototype.getBlackmail(), roles.prototype.getConsig(), 
@@ -299,8 +299,6 @@ class commands{
         pos = i
       }
     }
-    console.log(pos)
-    console.log(x.position)
     t = listerandom[pos];
     listerandom[pos] = listerandom[x.position];
     listerandom[x.position] = t;
@@ -311,10 +309,7 @@ class commands{
   }
 
   distributeRoles(partie){
-    //console.log(listerandom)
     for (let index = 0; index < listerandom.length; index++) {
-      //console.log(listerandom)
-      //console.log(index)
       listerandom[index].role = partie.listeroles[index]
     }
   }
