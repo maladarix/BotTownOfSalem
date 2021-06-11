@@ -24,6 +24,7 @@ let joueurroles = []
 let votelist = []
 let username = []
 let actions = []
+let joueurCoven = []
 let reactions = ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"]
 
 
@@ -41,7 +42,7 @@ let jail = /*"824728100645896314"*/           "830240173727547424"
 let vampirechat = /*"839977061384978492"*/    "839977899581767700"
 let observatoire = /*"839977410966847539"*/   "839977922328526858"
 let mafiaChat = /*"824731087863021588"*/      "830240221584687104"
-let covenid = /*""                    */      "849541121846935592"
+let covenid = /*"850422940646506617"*/        "849541121846935592"
 let panchanid = /*"824727128758943795"*/      "829269425290215463"
 let dmchanid = /*"824726760808513606"*/       "829216633205424128"
 let villageid = /*"824727077366005800"*/      "837575217907105813"
@@ -60,16 +61,16 @@ let numNuit = 0
 var nbWhispJour = 1
 let commencer = false
 
-let rolesEtAlig = ["Investigateur", "Lookout", "Sherif", "Spy", "Agent-Infiltré", "Jailor", "Vampire-hunter", "Veteran", "Vigilante", "Bodyguard", "Docteur", "Escorte"
+let rolesEtAlig = ["Investigateur", "Lookout", "Sherif", "Spy", "Agent-Infiltré", "Jailor", "Vampire-Hunter", "Veteran", "Vigilante", "Bodyguard", "Docteur", "Escorte"
 , "Maire", "Medium", "Retributionist", "Transporter", "Disguiser", "Forger", "Framer", "Hypnotiseur", "Consierge", "Ambusher", "Godfather", "Mafioso", "Blackmailer"
-, "Conseiller", "Consort", "Amnesiac", "Survivant", "Vampire", "Executionner", "Jester", "Sorcière", "Arsonist", "Serial-killer", "Loup-garou", "Coven-leader", "Hex-master",
-"Meduse", "Necromane", "Poisoner", "Potion-master", "Guardian-angel", "Juggernaut", "Pirate", "Plaguebearer", "Crusader", "Psychic", "Tracker", "Trapper",
+, "Conseiller", "Consort", "Amnesiac", "Survivant", "Vampire", "Executionner", "Jester", "Sorcière", "Arsonist", "Serial-Killer", "Loup-garou", "Coven-Leader", "Hex-Master",
+"Meduse", "Necromane", "Poisoner", "Potion-Master", "Guardian-Angel", "Juggernaut", "Pirate", "Plaguebearer", "Crusader", "Psychic", "Tracker", "Trapper",
 "ti" ,"tp", "ts", "tk", "md", "ms", "mk", "nb", "nk", "ne", "nc", "rt", "rm", "rn", "ce", "any"]
 
-let roles = ["Investigateur", "Lookout", "Sherif", "Spy", "Agent-Infiltré", "Jailor", "Vampire-hunter", "Veteran", "Vigilante", "Bodyguard", "Docteur", "Escorte"
+let roles = ["Investigateur", "Lookout", "Sherif", "Spy", "Agent-Infiltré", "Jailor", "Vampire-Hunter", "Veteran", "Vigilante", "Bodyguard", "Docteur", "Escorte"
 , "Maire", "Medium", "Retributionist", "Transporter", "Disguiser", "Forger", "Framer", "Hypnotiseur", "Consierge", "Ambusher", "Godfather", "Mafioso", "Blackmailer"
-, "Conseiller", "Consort", "Amnesiac", "Survivant", "Vampire", "Executionner", "Jester", "Sorcière", "Arsonist", "Serial-killer", "Loup-garou", "Coven-leader", "Hex-master",
-"Meduse", "Necromane", "Poisoner", "Potion-master", "Guardian-angel", "Juggernaut", "Pirate", "Plaguebearer", "Crusader", "Psychic", "Tracker", "Trapper"]
+, "Conseiller", "Consort", "Amnesiac", "Survivant", "Vampire", "Executionner", "Jester", "Sorcière", "Arsonist", "Serial-Killer", "Loup-garou", "Coven-Leader", "Hex-Master",
+"Meduse", "Necromane", "Poisoner", "Potion-Master", "Guardian-Angel", "Juggernaut", "Pirate", "Plaguebearer", "Crusader", "Psychic", "Tracker", "Trapper"]
 
 let rolesunique = ["Jailor", "Maire", "Retributionist", "Veteran", "Godfather", "Mafioso", "Ambusher", "Loup-garou", "Coven-leader", "hex-master", "Meduse", "Necromane", "Poisoner", 
 "posion-master", "Juggernaut", "Pirate", "Plaguebearer"]
@@ -82,7 +83,7 @@ let Allanyballenced15 = ["Random Town", "Random Town", "Random Town", "Any", "An
 let classique20 = ["Jailor", "Doctor", "Investigateur", "Town Investigative", "Town Investigative", "Town Support", "Town Killing", "Random Town", "Random Town", "Random Town",
 "Vampire-hunter", "Godfather", "Mafioso", "Random Mafia", "Random Mafia", "Vampire", "Neutral Killing", "Neutral Evil", "Any", "Any"]
 
-let classique15Coven = ["Jailor", "Town Investigative", "Town Investigative", "Town Support", "Town Protective", "Town Killing", "Random Town", "Random Town", "Random Town", "Coven-leader",
+let classique15Coven = ["Jailor", "Town Investigative", "Town Investigative", "Town Support", "Town Protective", "Town Killing", "Random Town", "Random Town", "Random Town", "Coven-Leader",
 "Meduse", "Coven Evil", "Neutral Killing", "Neutral Evil", "Any"]
 
 let listeGm = [{name : "classique15", list : classique15, coven : false}, {name : "allanyballanced15", list : Allanyballenced15, coven : false}, {name : "classique20", list : classique20, coven : false}, {name : "classique15coven", list : classique15Coven, coven : true}]
@@ -177,7 +178,8 @@ bot.on("message", (message) => {
   }
 
   if(message.content.includes("bot")) message.channel.send("Pourquoi tu parle de moi?")
-  if(message.content.includes("bot" && "merde")) message.channel.send("agrou michan")
+  if(message.content.includes("bot de merde")) message.channel.send("agrou michan")
+  if(message.content.includes("bitch")) message.channel.send("bitch")
 
   if(!message.content.startsWith(prefix)) return
 
@@ -219,6 +221,15 @@ bot.on("message", (message) => {
       graveyardChan.send(graveyardmot)      
     }
 
+    if(died.role.alignement == "Coven Evil") {
+      for( var i = 0; i < joueurCoven.length; i++){ 
+        if ( joueurCoven[i] === died) { 
+          joueurCoven.splice(i, 1); 
+        }
+      }
+    }
+
+    died.necro = false
     died.user.roles.add(mort)
     died.user.roles.add(spec)
     died.user.roles.remove(vivant)
@@ -556,6 +567,22 @@ bot.on("message", (message) => {
         deny: ['VIEW_CHANNEL'],
       }
     ])
+    covenchan.overwritePermissions([
+      {
+        id: message.guild.id,
+        deny: ['VIEW_CHANNEL'],
+      },{
+        id: vivant,
+        deny: ['VIEW_CHANNEL'],
+      },{
+        id: spec,
+        allow: ['VIEW_CHANNEL'],
+        deny: ['SEND_MESSAGES'],
+      },{
+        id: mort,
+        deny: ['VIEW_CHANNEL'],
+      }
+    ])
 
     whispersChannels.forEach(whisper => {
       message.guild.channels.cache.get(whisper).delete();
@@ -638,6 +665,43 @@ bot.on("message", (message) => {
     }
   }
 
+  else if(cmd == "note") {
+    if(partie.isStarted == false) return message.channel.send(pascomme)
+    if(!message.member.roles._roles.has(vivant)) return message.channel.send(tpasvivant)
+    var messageNote = "" 
+    if(args.length >= 1 && taggedUser == null) {
+      args.forEach(mot => {
+      messageNote += mot + " "
+    });
+    author.note = messageNote
+    message.react("👍")
+
+    }else if(author.note == null || "") {
+  
+      let pasNote = new Discord.MessageEmbed()
+      .setDescription("Tu n'as pas encore de Note")
+      .setColor(color)
+  
+      message.channel.send(pasNote)
+    }else if(taggedUser == null){
+  
+      let note = new Discord.MessageEmbed()
+      .setDescription(author.note)
+      .setColor(color)
+  
+      message.channel.send(note)
+    }else if(taggedUser != null && !god) {
+      message.channel.send(pasGod)
+
+    }else if(taggedUser != null) {
+      let Notetagged = new Discord.MessageEmbed()
+      .setDescription(tagged.note)
+      .setColor(color)
+
+      message.channel.send(Notetagged)
+    }
+  }
+
   else if(cmd == "forger") {
     if(partie.isStarted == false) return message.channel.send(pascomme)
     if(!god && !dev) return message.channel.send(pasGod)
@@ -687,7 +751,28 @@ bot.on("message", (message) => {
     if(partie.isStarted == false) return message.channel.send(pascomme)
     if(!args[0]) return message.channel.send(qui)
     if(!taggedUser.roles.cache.has(vivant)) return message.channel.send(pasVivant)
-    kill(tagged)
+    if(!args[1]) return kill(tagged)
+    if(args[1] == "stoned" || "cleaned") {
+      if(args[1] == "stoned") {
+        tagged.roleappear = "Stoned"
+        tagged.lastwillappear = null
+        kill(tagged)
+      }else if(args[1] == "cleaned") {
+        alive().forEach(player => {
+          if(player.role.name == "Consierge") {
+            message.guild.channels.cache.get(tagged.interface).send(new Discord.MessageEmbed()
+            .setDescription(`Le rôle de **${tagged.displayname}** était: **${tagged.role.name}**`)
+            .addField(`Son **lastwill** était: ${tagged.lastwill}`)
+            .setColor(color))
+          }
+        });
+        tagged.roleappear = "Cleaned"
+        tagged.lastwillappear = null
+        kill(tagged)
+      }
+    }else{
+      message.channel.send("stoned ou cleaned?")
+    }
   }
 
   else if(cmd == "listeactions") {
@@ -731,7 +816,7 @@ bot.on("message", (message) => {
     .setDescription("Je ne trouve pas ce rôle")
     .setColor(color))
     let number = Math.random() * 1 
-    if(number >= 0.5) {
+    if(number >= 0.3) {
       commands.prototype.getAllRoles().forEach(role => {
         if(role.name == args[1]){
           tagged.scroll = role
@@ -922,19 +1007,25 @@ bot.on("message", (message) => {
       if(player.role.alignement == (("Mafia Support") || ("Mafia Killing") || ("Mafia Deception"))) {
         mafiaChan.updateOverwrite(
           player.id,
-          {"VIEW_CHANNEL": true}
+          {"VIEW_CHANNEL": false}
         )
       }else if(player.role.name == "Vampire") {
         vampirechan.updateOverwrite(
           player.id,
-          {"VIEW_CHANNEL": true}
+          {"VIEW_CHANNEL": false}
         )
       }else if(player.role.name == "Vampire-Hunter") {
         observatoirechan.updateOverwrite(
           player.id,
-          {"VIEW_CHANNEL": true}
+          {"VIEW_CHANNEL": false}
         )
+      }else if(player.role.alignement == "Coven Evil") {
+        covenchan.updateOverwrite(
+          player.id,
+          {"VIEW_CHANNEL" : false}
+        )  
       }
+      
     });
   }
 
@@ -955,23 +1046,84 @@ bot.on("message", (message) => {
     partie.time = "nuit"
     numNuit = numNuit + 1
 
-    if(numNuit == (1) || (3)) {
+    villagechan.send(`<@&${vivant}>, Nuit **${numNuit}**`)
+    adminchannel.send(new Discord.MessageEmbed()
+    .setDescription(`Nuit **${numNuit}**`)
+    .setColor(color))
+
+    if(numNuit == 1 || numNuit == 3) {
       partie.fullmoon = false
     }else{
       partie.fullmoon = true
       villagechan.send("Cette nuit est une nuit de **pleine lune**!")
     }
-    
-    villagechan.send(`<@&${vivant}>, Nuit **${numNuit}**`)
-    adminchannel.send(new Discord.MessageEmbed()
-    .setDescription(`Nuit **${numNuit}**`)
-    .setColor(color))
+
+    if(partie.coven == true) {
+      if(numNuit == 1) {
+        villagechan.send("2 nuits avant que les coven aient le **Necronomicon**")
+      }else if(numNuit == 2) {
+        villagechan.send("1 nuit avant que les coven aient le **Necronomicon**")
+      }else if(numNuit == 3) {
+        villagechan.send("Les coven ont maintenant le **Necronomicon**")
+        alive().forEach(player => {
+
+          if(player.necro == true) {
+            covenchan.send(`${player.displayname} à le necronomicon`)
+
+          }else if(player.role.name == "Coven-Leader") {
+            covenchan.send(`**${player.displayname}** a le necronomicon.`)
+            player.necro = true
+
+          }else if(joueurCoven.length > 1) {
+            let good = false
+            let joueurChoisi = null
+            do {
+              joueurChoisi = joueurCoven[Math.floor(Math.random) * joueurCoven.length]
+              if(joueurChoisi.serverRoles.includes(vivant)) {
+                if(joueurChoisi.role.name == "Meduse") {
+                  good = false
+                }else{
+                  good = true
+                }  
+              }
+            } while (good);
+            covenchan.send(`**${joueurChoisi.displayname}** a le necronomicon.`)
+            joueurChoisi.necro = true
+            
+          }else {
+            covenchan.send(`**${joueurCoven[0].displayname}** a le necronomicon.`) 
+          }
+        });
+      }
+    }
 
     alive().forEach(player => {
       player.user.roles.remove(jour)
       player.user.roles.add(nuit)
       player.votesFor = 0
       player.whispRemaining = null
+
+      if(player.role.alignement == (("Mafia Support") || ("Mafia Killing") || ("Mafia Deception"))) {
+        mafiaChan.updateOverwrite(
+          player.id,
+          {"VIEW_CHANNEL": true}
+        )
+      }else if(player.role.name == "Vampire") {
+        vampirechan.updateOverwrite(
+          player.id,
+          {"VIEW_CHANNEL": true}
+        )
+      }else if(player.role.name == "Vampire-Hunter") {
+        observatoirechan.updateOverwrite(
+          player.id,
+          {"VIEW_CHANNEL": true}
+        )
+      }else if(player.role.alignement == "Coven Evil") {
+        covenchan.updateOverwrite(
+          player.id,
+          {"VIEW_CHANNEL" : true}
+        )  
+      }
     });
 
     whispersChannels.forEach(whisper => {
@@ -1072,6 +1224,12 @@ bot.on("message", (message) => {
     if(commencer == true) return message.channel.send(new Discord.MessageEmbed()
     .setDescription("La partie est déja commencée!")
     .setColor(color))
+
+    listerolechan.send(new Discord.MessageEmbed()
+    .setTitle(`**Partie en cour: ${partie.gamemode.name}**`)
+    .setDescription(partie.gamemode.list)
+    .setColor(color))
+
     Commands.prototype.start(partie, alive())
     commencer = true
     let joueuretnum = []
@@ -1123,7 +1281,7 @@ bot.on("message", (message) => {
         )
       }
 
-      if(player.role.name == "Guardian Angel") {
+      if(player.role.name == "Guardian-Angel") {
         let cible = null
         let good = false
         do{
@@ -1190,6 +1348,10 @@ bot.on("message", (message) => {
         joueurroles.push(player.displayname + ", " + player.role.name)
       }
 
+      if(player.role.alignement == "Coven Evil") {
+        joueurCoven.push(player)
+      }
+
       player.roleappear = player.role.name
       
     });
@@ -1208,11 +1370,6 @@ bot.on("message", (message) => {
     adminchannel.send(new Discord.MessageEmbed()
     .setTitle(`Liste de rôle: **(${partie.gamemode.name})**`)
     .setDescription(listeroles)
-    .setColor(color))
-
-    listerolechan.send(new Discord.MessageEmbed()
-    .setTitle(`**Partie en cour: ${partie.gamemode.name}**`)
-    .setDescription(partie.gamemode.list)
     .setColor(color))
 
     listerolechan.send(new Discord.MessageEmbed()
@@ -1598,13 +1755,15 @@ bot.on("message", (message) => {
       .addField("!jail @[User]", "Pour mettre quelqu'un en prison")
       .addField("!nouvgm [Nom] [liste roles]", "Permet de créé un gamemode personnalisé")
       .addField("!delgm [gamemode]", "Pour supprimé un gamemode")
-      .addField("!kill @[User]", "Pour tuer quelqu'un")
+      .addField("!kill @[User]", "Pour tuer quelqu'un. Si il est stoned ou cleaned, écrit !kill @[User] stone/cleaned")
       .addField("!vote [User] [nbvotes]", "Pour mettre un joueur à un nombre de vote,")
       .addField("!god [User]", "Pour mettre le rôle de GOD à quelqu'un.")
       .addField("!ungod [User]", "Pour enlever le rôle GOD à quelqu'un.")
       .addField("!lastwill", "Écrit ton last will ici. Tu peux aussi voir ton last will comme ça: !lastwill")
       .addField("!lastwill [User]", "Pour voir le lastwill d'un joueur")
+      .addField("!note", "Écrit une note ici. Tu peut aussi voir ta note comme ça: !note ")
       .addField("!vivants", "Pour afficher la liste des joueurs vivants.")
+      .addField("!speak", "Permet de parler dans le village si tu est blackmailed")
       .addField("!w @[User]", "Whisper quelqu'un")
       .addField("!p @[User]", "Pendre quelqu'un")
       .addField("!help", "Avoir de l'aide")
@@ -1615,8 +1774,10 @@ bot.on("message", (message) => {
       .addField("!w @[User]", "Whisper quelqu'un")
       .addField("!p @[User]", "Pendre quelqu'un")
       .addField("!lastwill", "Écrit ton last will ici. Tu peut aussi voir ton last will comme ça: !lastwill")
+      .addField("!note", "Écrit une note ici. Tu peut aussi voir ta note comme ça: !note ")
       .addField("!jail @[User]", "Seulement le jailor peut faire cette commande")
       .addField("!vivants", "Pour afficher la liste des joueurs vivants.")
+      .addField("!speak", "Permet de parler dans le village si tu est blackmailed")
       .addField("!help", "Pour avoir de l'aide")
       .addField("@Bilou", "Pour summon un être tout puissant qui viendra vous aider")
       .setColor(color);
@@ -1886,6 +2047,9 @@ bot.on('message', async (message) => {
     if(message.channel.name != pendChan.name) return message.channel.send(pendrChan)
     if(!args[0]) return message.channel.send(qui)
     if(!taggedUser[0]) return message.channel.send(trouvePas)
+    if(message.mentions.members.first().id == message.author.id) return message.channel.send(new Discord.MessageEmbed()
+    .setDescription("Tu ne peut pas voter pour toi même")
+    .setColor(color))
     if(!taggedUser[0].roles.cache.has(vivant)) return message.channel.send(pasVivant)
     
     if(author.role.name == "Maire") {

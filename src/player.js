@@ -16,6 +16,7 @@ class Player {
         this.votesFor = 0
         this.registeredVote = null
         this.lastwill = null
+        this.note = null
         this.actiondone = false
         this.isroleblocked = false
         this.isjailed = false
@@ -32,6 +33,7 @@ class Player {
         this.inac = 0
         this.scroll = null
         this.number = null
+        this.necro = false
     }
 }
 
