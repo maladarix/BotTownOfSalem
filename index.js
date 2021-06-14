@@ -83,8 +83,8 @@ let Allanyballenced15 = ["Random Town", "Random Town", "Random Town", "Any", "An
 let classique20 = ["Jailor", "Doctor", "Investigateur", "Town Investigative", "Town Investigative", "Town Support", "Town Killing", "Random Town", "Random Town", "Random Town",
 "Vampire-hunter", "Godfather", "Mafioso", "Random Mafia", "Random Mafia", "Vampire", "Neutral Killing", "Neutral Evil", "Any", "Any"]
 
-let classique15Coven = ["Jailor", "Town Investigative", "Town Investigative", "Town Support", "Town Protective", "Town Killing", "Random Town", "Random Town", "Random Town", "Coven-Leader",
-"Meduse", "Coven Evil", "Neutral Killing", "Neutral Evil", "Any"]
+let classique15Coven = ["Jailor", "Town Investigative", "Town Support", "Town Protective", "Town Killing", "Random Town", "Random Town", "Random Town", "Random Town",  "Coven-Leader",
+"Coven Evil", "Coven Evil", "Neutral Killing", "Neutral Benin", "Any"]
 
 let listeGm = [{name : "classique15", list : classique15, coven : false}, {name : "allanyballanced15", list : Allanyballenced15, coven : false}, {name : "classique20", list : classique20, coven : false}, {name : "classique15coven", list : classique15Coven, coven : true}]
 
@@ -180,6 +180,7 @@ bot.on("message", (message) => {
   if(message.content.includes("bot")) message.channel.send("Pourquoi tu parle de moi?")
   if(message.content.includes("bot de merde")) message.channel.send("agrou michan")
   if(message.content.includes("bitch")) message.channel.send("bitch")
+  if(message.content.includes("charles")) message.channel.send("lowkey jtau dag")
 
   if(!message.content.startsWith(prefix)) return
 
@@ -651,6 +652,12 @@ bot.on("message", (message) => {
       let LW = new Discord.MessageEmbed()
       .setDescription(author.lastwill)
       .setColor(color)
+
+      if(message.channel == jailedChan) {
+        jailChan.send(LW)
+      }else if(message.channel == jailChan) {
+        jailedChan.send(LW)
+      }
   
       message.channel.send(LW)
     }else if(taggedUser != null && !god) {
@@ -979,10 +986,6 @@ bot.on("message", (message) => {
     .setDescription(`Jour **${numJour}**`)
     .setColor(color))
 
-    pendChan.send(new Discord.MessageEmbed()
-    .setDescription(`**${Math.floor((alive().length + votemaire) / 2) + 1}** votes sont nécéssaire pour pendre aujourd'hui.`)
-    .setColor(color))
-
     alive().forEach(player => {
       player.user.roles.add(jour)
       player.user.roles.remove(nuit)
@@ -998,7 +1001,6 @@ bot.on("message", (message) => {
           votemaire = 2
         }
       }
-
 
       jailedChan.updateOverwrite(
         player.id,
@@ -1027,6 +1029,10 @@ bot.on("message", (message) => {
       }
       
     });
+
+    pendChan.send(new Discord.MessageEmbed()
+    .setDescription(`**${Math.floor((alive().length + votemaire) / 2) + 1}** votes sont nécéssaire pour pendre aujourd'hui.`)
+    .setColor(color))
   }
 
   else if(cmd == "nuit") {
