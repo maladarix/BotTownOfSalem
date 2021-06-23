@@ -17,6 +17,7 @@ class Player {
         this.registeredVote = null
         this.lastwill = null
         this.note = null
+        this.action = null
         this.actiondone = false
         this.isroleblocked = false
         this.isjailed = false

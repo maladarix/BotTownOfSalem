@@ -6,7 +6,6 @@ const invest = require('./town/invest')
 const jailor = require('./town/jailor')
 const lookout = require('./town/lookout')
 const maire = require('./town/mayor')
-const medium = require('./town/medium')
 const retri = require('./town/retri')
 const sherif = require('./town/sherif')
 const spy = require('./town/spy')
@@ -86,10 +85,6 @@ class Roles{
 
   getMaire(){
     return new maire()
-  }
-
-  getMedium(){
-    return new medium()
   }
 
   getRetri(){

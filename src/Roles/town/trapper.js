@@ -10,6 +10,7 @@ class trapper {
         this.alignement = "Town Protective"
         this.command = "guard"
         this.priority = 1
+        this.use = 0
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Trapper"
         this.winwith = "Town, Survivants."
         this.hab = "Les pièges prennent une journée à construire. Les pièges peuvent être détruits en vous sélectionnant la nuit. Vous ne pouvez avoir qu'un seul Trap à la fois."

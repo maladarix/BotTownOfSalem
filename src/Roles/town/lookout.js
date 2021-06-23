@@ -9,6 +9,7 @@ class Lookout {
         this.alignement = "Town Investigative"
         this.command = "lookout"
         this.priority = 6
+        this.use = 0
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/lookout"
         this.winwith = "Town, Survivants."
         this.hab = "Surveiller une personne chaque nuit afin de voir qui la visite"

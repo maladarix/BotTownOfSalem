@@ -8,6 +8,7 @@ class Sherif {
         this.alignement = "Town Investigative"
         this.command = "investigate"
         this.priority = 4
+        this.use = 0
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Sheriff"
         this.winwith = "Town, Survivants."
         this.hab = "Enquêter sur une personne chaque nuit, à la recherche d’activité suspicieuse"

@@ -8,6 +8,7 @@ class Spy {
         this.alignement = "Town Investigative"
         this.command = "bug"
         this.priority = 6
+        this.use = 0
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Spy"
         this.winwith = "Town, Survivants."
         this.hab = "Vous pouvez “bug” la maison d’un joueur pour voir ce qui lui arrive cette nuit-là."

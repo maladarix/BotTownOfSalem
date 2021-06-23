@@ -9,7 +9,7 @@ class Bg {
         this.alignement = "Town Protective"
         this.command = "guard"
         this.priority = 3
-        this.use = 1
+        this.use = 2
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Bodyguard"
         this.winwith = "Town, Survivants."
         this.hab = "Protéger quelqu’un chaque nuit. Si cette personne est attaquée, vous tuerez l’assaillant, mais vous mourrez dans le combat vous aussi."

@@ -9,6 +9,7 @@ class track {
         this.alignement = "Town Investigative"
         this.command = "guard"
         this.priority = 3
+        this.use = 0
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Tracker"
         this.winwith = "Town, Survivants."
         this.hab = "Suivez une personne la nuit pour voir à qui elle rend visite."

@@ -9,6 +9,7 @@ class Invest {
         this.alignement = "Town Investigative"
         this.command = "invest"
         this.priority = 4
+        this.use = 0
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Investigator"
         this.winwith = "Town et Survivants."
         this.hab = "Enquête sur une personne chaque nuit afin d’avoir un indice sur son rôle."

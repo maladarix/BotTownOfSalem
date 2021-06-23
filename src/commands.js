@@ -1,7 +1,6 @@
 const Partie = require('./game');
 const index = require('../index');
 const roles = require('./Roles/roles');
-const gardian = require('./Roles/neutral/ga');
 
 let towninvest = [roles.prototype.getInvest(), roles.prototype.getLoukout(), roles.prototype.getSheriff(), roles.prototype.getAgent(), roles.prototype.getSpy()]
 let towninvestCoven = [roles.prototype.getInvest(), roles.prototype.getLoukout(), roles.prototype.getSheriff(), roles.prototype.getAgent(), roles.prototype.getSpy(), roles.prototype.getPsy(), roles.prototype.getTracker()]

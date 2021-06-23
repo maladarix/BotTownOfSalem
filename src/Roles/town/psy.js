@@ -9,6 +9,7 @@ class psyc {
         this.alignement = "Town Investigative"
         this.command = "guard"
         this.priority = 4
+        this.use = 0
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Psychic"
         this.winwith = "Town, Survivants."
         this.hab = "Les nuits impaires, vous aurez une vision de trois joueurs, au moins un sera maléfique. Les nuits paires, vous aurez une vision de deux joueurs, au moins un sera bon"

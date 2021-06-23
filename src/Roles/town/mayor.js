@@ -9,6 +9,7 @@ class Mayor {
         this.alignement = "Town Support"
         this.command = "reveal"
         this.priority = 0
+        this.use = 0
         this.isreveal = false
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/mayor"
         this.winwith = "Town, Survivants."

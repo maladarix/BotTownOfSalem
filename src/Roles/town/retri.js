@@ -8,6 +8,7 @@ class Retri {
         this.alignement = "Town Support"
         this.command = "retribute"
         this.priority = 1
+        this.use = 0
         this.wikiLink = "https://town-of-salem.fandom.com/wiki/Retributionist"
         this.winwith = "Town, Survivants."
         this.hab = "Chaque nuit, vous pouvez utiliser le corps d’un mort et effectuer son action à sa place. Vous ne pouvez utiliser chaque corps qu’une seule fois."
