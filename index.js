@@ -3,7 +3,6 @@ const Commands = require('./src/commands.js');
 const Player = require('./src/player.js');
 const Partie = require('./src/game.js');
 const commands = require('./src/commands.js');
-const mongoose = require('./database/mongoose')
 const bot = new Discord.Client();
 require("dotenv").config()
 
@@ -136,8 +135,7 @@ let alive = function (){
   })
   return alive
 }
-d
-mongoose.init()
+
 bot.on('ready', () => {
   console.log("bot online")
   console.log(new Date().toLocaleString())
@@ -824,7 +822,6 @@ bot.on("message", (message) => {
     if(!god && !dev) return message.channel.send(pasGod)
     if(!args[0]) return message.channel.send(qui)
     tagged.mvp ++
-    fs.writeFile('storage.json', mvp.push(tagged), 'utf8', callback)
     gameannoncchan.send(new Discord.MessageEmbed()
     .setDescription(`**${tagged.displayname}** est le **MVP** de la game!`)
     .setColor(color))
@@ -2444,64 +2441,74 @@ bot.on("messageReactionAdd", async (reaction, user) => {
     });
     if(reaction.emoji.id == turtleId){
       if(!reactor.serverRoles.includes(vivant)) {
-        if(alive().length < nbrJoueurMax) {
-          reactor.user.roles.add(vivant)
-          reactor.serverRoles.push(vivant)
-          reactor.user.roles.remove(spec)
-          reactor.number = numjoueur + 1
-          numjoueur ++
+        if(!reactor.serverRoles.includes(godId)) {
+          if(alive().length < nbrJoueurMax) {
+            reactor.user.roles.add(vivant)
+            reactor.serverRoles.push(vivant)
+            reactor.user.roles.remove(spec)
+            reactor.number = numjoueur + 1
+            numjoueur ++
 
-          let messainter = new Discord.MessageEmbed()
-          .setDescription(`Salut <@${reactor.id}>! Ceci est ton interface avec le jeu. Je m'explique. Ici tu auras la description de ton rôle, et tu pourras écrire tes ` + 
-          "actions que tu veux effectuer dans la nuit. De plus, tu pourras poser toutes tes questions par rapport au fonctionnement du jeu. Finalement, " + 
-          "tu peux écrire ici un last will qui sera révélé à tout le monde lors de ta mort. Ce channel sera vidé chaque jour à l'exception de ce message, " +
-          "de ta description de rôle, ainsi que de ton last will.")
-          .setColor(color)
+            let messainter = new Discord.MessageEmbed()
+            .setDescription(`Salut <@${reactor.id}>! Ceci est ton interface avec le jeu. Je m'explique. Ici tu auras la description de ton rôle, et tu pourras écrire tes ` + 
+            "actions que tu veux effectuer dans la nuit. De plus, tu pourras poser toutes tes questions par rapport au fonctionnement du jeu. Finalement, " + 
+            "tu peux écrire ici un last will qui sera révélé à tout le monde lors de ta mort. Ce channel sera vidé chaque jour à l'exception de ce message, " +
+            "de ta description de rôle, ainsi que de ton last will.")
+            .setColor(color)
 
-          let interface = reactor.user.displayName
-          reaction.message.guild.channels.create(interface + " Interface",{type:"text",})
-          .then((channel) => {
-            channel.setParent(parentInterface)
-            channel.overwritePermissions([
-            {
-              id: channel.guild.id,
-              deny: ['VIEW_CHANNEL'],
-            },
-            {
-              id: vivant,
-              deny: ['VIEW_CHANNEL'],
-            },{
-              id: reactor.id,
-              allow: ['VIEW_CHANNEL'],
-            },{
-              id: spec,
-              allow: ['VIEW_CHANNEL'],
-              deny: ['SEND_MESSAGES'],
-            }
-            ])
-            .then(setTimeout(() => {
-              channel.send(messainter)
-            }, 1500))
-            reactor.interface = channel.id
-            interfaces.push(channel.id)
-            channel.setTopic(`<@&${godId}> pour avoir de l'aide direct`)
-            })
+            let interface = reactor.user.displayName
+            reaction.message.guild.channels.create(interface + " Interface",{type:"text",})
+            .then((channel) => {
+              channel.setParent(parentInterface)
+              channel.overwritePermissions([
+              {
+                id: channel.guild.id,
+                deny: ['VIEW_CHANNEL'],
+              },
+              {
+                id: vivant,
+                deny: ['VIEW_CHANNEL'],
+              },{
+                id: reactor.id,
+                allow: ['VIEW_CHANNEL'],
+              },{
+                id: spec,
+                allow: ['VIEW_CHANNEL'],
+                deny: ['SEND_MESSAGES'],
+              }
+              ])
+              .then(setTimeout(() => {
+                channel.send(messainter)
+              }, 1500))
+              reactor.interface = channel.id
+              interfaces.push(channel.id)
+              channel.setTopic(`<@&${godId}> pour avoir de l'aide direct`)
+              })
 
-          if(alive().length == nbrJoueurMax){
-            partie.isStarted = true
-            adminchannel.send(new Discord.MessageEmbed()
-            .setDescription("Vous pouvez maintenant distribuer les rôles!")
-            .setColor(color))
-          } 
+            if(alive().length == nbrJoueurMax){
+              partie.isStarted = true
+              adminchannel.send(new Discord.MessageEmbed()
+              .setDescription("Vous pouvez maintenant distribuer les rôles!")
+              .setColor(color))
+            } 
+          }else{
+            reaction.message.channel.send(new Discord.MessageEmbed()
+            .setDescription(`<@${reactor.id}>, la partie est déjà commencée, vous pouvez tout de même **spectate** avec des **yeux**`)
+            .setColor(color)).then((sent) => {
+              setTimeout(function () {
+                sent.delete();
+              }, 5000);
+            });
+          }  
         }else{
           reaction.message.channel.send(new Discord.MessageEmbed()
-          .setDescription(`<@${reactor.id}>, la partie est déjà commencée, vous pouvez tout de même **spectate** avec des **yeux**`)
+          .setDescription(`<@${reactor.id}>, tu es god.`)
           .setColor(color)).then((sent) => {
             setTimeout(function () {
               sent.delete();
             }, 5000);
           });
-        }
+        } 
       }else{
         reaction.message.channel.send(new Discord.MessageEmbed()
           .setDescription(`<@${reactor.id}>, vous faites déjà partie de la partie!`)
