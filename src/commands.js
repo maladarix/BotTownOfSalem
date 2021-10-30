@@ -56,7 +56,7 @@ let anycoven = [roles.prototype.getInvest(), roles.prototype.getLoukout(), roles
     roles.prototype.getArso(), roles.prototype.getSerialk(), roles.prototype.getExec(), roles.prototype.getJester(), roles.prototype.getWitch(), roles.prototype.getCovenlead(),
     roles.prototype.getHexmas(), roles.prototype.getMedusa(), roles.prototype.getNecro(), roles.prototype.getPoiso(), roles.prototype.getPotion(), roles.prototype.getGuardian(),
     roles.prototype.getJugger(), roles.prototype.getPira(), roles.prototype.getPlague(), roles.prototype.getCrusa(), roles.prototype.getPsy(), roles.prototype.getTracker(),
-    roles.prototype.getTrapper()]
+    roles.prototype.getTrapper(),roles.prototype.getAgent()]
 
 //roles unique coven: pirate plaguebearer juggernaut (tout coven)
 let currentgamemode = []
@@ -106,7 +106,7 @@ class commands{
       }
       for(let i = 0; i < currentgamemode.length && found == null ; i++){
         let faction = x.role.alignement.split(" ")
-        if ("Random " + faction[0] == currentgamemode[i]) {
+        if ("Random" + faction[0] == currentgamemode[i]) {
           found = i
         }
       }
@@ -118,7 +118,7 @@ class commands{
       currentgamemode[found] = x.role.name
       x.position = found
     })
-
+    console.log(currentgamemode)
     currentgamemode.forEach(role => {
     if(role == "Jailor") {
       this.getJailor()
@@ -200,9 +200,9 @@ class commands{
       }
     }else if(role == "Lookout") {
       this.getLoukout()
-    }else if(role == "Sherrif") {
+    }else if(role == "Sherriff") {
       this.getSheriff()
-    }else if(role == "Agent-Infiltré") {
+    }else if(role == "Agent-Infiltre") {
       this.getAgent()
     }else if(role == "Spy") {
       this.getSpy()
@@ -218,7 +218,7 @@ class commands{
       this.getTrans()
     }else if(role == "Vigilante") {
       this.getVig()
-    }else if(role == "Vétéran") {
+    }else if(role == "Veteran") {
       this.getVet()
     }else if(role == "Loup-garou") {
       this.getLoup()
@@ -252,7 +252,7 @@ class commands{
       this.getExecutionner()
     }else if(role == "Jester") {
       this.getJester()
-    }else if(role == "Sorcière") {
+    }else if(role == "Sorciere") {
       this.getWitch()
     }else if(role == "Coven-Leader") {
       this.getCovenlead()
@@ -299,7 +299,7 @@ class commands{
     listerandom[pos] = listerandom[x.position];
     listerandom[x.position] = t;
   })
-  console.log(partie.listeroles)
+  
   this.distributeRoles(partie)
   
   }
@@ -594,7 +594,7 @@ class commands{
   }
 
   getAgent(){
-    if(gameroles.some(role => role.name == "Agent-Infiltré")) {
+    if(gameroles.some(role => role.name == "Agent-Infiltre")) {
       this.getRandomTown()
     }else{
       gameroles.push(roles.prototype.getAgent())
@@ -638,7 +638,7 @@ class commands{
   }
 
   getVet(){
-    if(gameroles.some(role => role.name == "Vétéran")) {
+    if(gameroles.some(role => role.name == "Veteran")) {
       this.getRandomTown()
     }else{
       gameroles.push(roles.prototype.getVet())
@@ -722,7 +722,7 @@ class commands{
   }
 
   getCovenlead(){
-    if(gameroles.some(role => role.name == "Coven Leader")) {
+    if(gameroles.some(role => role.name == "Coven-Leader")) {
       this.getCovenEvil()
     }else{
       gameroles.push(roles.prototype.getCovenlead())
@@ -730,7 +730,7 @@ class commands{
   }
 
   getHexmas(){
-    if(gameroles.some(role => role.name == "Hex Master")) {
+    if(gameroles.some(role => role.name == "Hex-Master")) {
       this.getCovenEvil()
     }else{
       gameroles.push(roles.prototype.getHexmas())
@@ -762,7 +762,7 @@ class commands{
   }
 
   getPotion(){
-    if(gameroles.some(role => role.name == "Potion Master")) {
+    if(gameroles.some(role => role.name == "Potion-Master")) {
       this.getCovenEvil()
     }else{
       gameroles.push(roles.prototype.getPotion())

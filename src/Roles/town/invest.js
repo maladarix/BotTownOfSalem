@@ -2,7 +2,7 @@ const Action = require('../../action')
 
 class Invest {
     constructor(){
-        this.name = "Investigator"
+        this.name = "Investigateur"
         this.description = "Vous êtes un enquêteur privé qui collecte de l’information en secret."
         this.isUnique = false
         this.needsTwoTargets = false

@@ -27,46 +27,46 @@ let reactions = ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣
 
 //const game
 //           id serv officiel                   id serv test
-let mort = /*"824726156141658132"           */"829832421825708064"
-let jour = /*"825029496305614927"           */"829254726495240214"
-let nuit = /*"824749359118811187"           */"829254687630557185"
-let vivant = /*"824725851198849075"         */"829205364444364800"
-let spec = /*"824726635902271518"           */"829250418244321280"
+let mort = "824726156141658132"           //"829832421825708064"
+let jour = "825029496305614927"           //"829254726495240214"
+let nuit = "824749359118811187"           //"829254687630557185"
+let vivant = "824725851198849075"         //"829205364444364800"
+let spec = "824726635902271518"           //"829250418244321280"
 let devid = "830253971637665832"
-let quiVeutJouer = /*"824725623346954271"   */"829873265194303498"
-let jailedid = /*"824761075387727912"       */"830240201111896135"
-let jail = /*"824728100645896314"           */"830240173727547424"
-let vampirechat = /*"839977061384978492     */"839977899581767700"
-let observatoire = /*"839977410966847539"   */"839977922328526858"
-let mafiaChat = /*"824731087863021588"      */"830240221584687104"
-let covenid = /*"850422940646506617"        */"849541121846935592"
-let panchanid = /*"824727128758943795"      */"829269425290215463"
-let dmchanid = /*"824726760808513606"       */"829216633205424128"
-let villageid = /*"824727077366005800"      */"837575217907105813"
-let gameannoncid = /*"824732131678617600"   */"837499365835669536"
-let spyHideout = /*"824762348396216401"     */"830240252248850433"
-let turtleId = /*"830113799763525642"       */"830121244208267334"
-let eyesId = /*"830114000448258058"         */"830121185885945880"
-let godId = /*"824725152692174879"          */"829228486660063262"
-let graveyard = /*"825868136782757918"      */"835014782594711593"    
-let parentwhisp = /*"824726713605947403"    */"829239671925637150"
-let parentInterface=/*"832301102236958770"  */"829239671925637150"
-let adminchat = /*"829870229470838814"      */"833229701190385676"
-let listeroleid = /*"824731870628413480"    */"833229701190385676"
+let quiVeutJouer = "824725623346954271"   //"829873265194303498"
+let jailedid = "824761075387727912"       //"830240201111896135"
+let jail = "824728100645896314"           //"830240173727547424"
+let vampirechat = "839977061384978492"    //"839977899581767700"
+let observatoire = "839977410966847539"   //"839977922328526858"
+let mafiaChat = "824731087863021588"      //"830240221584687104"
+let covenid = "850422940646506617"        //"849541121846935592"
+let panchanid = "824727128758943795"      //"829269425290215463"
+let dmchanid = "824726760808513606"       //"829216633205424128"
+let villageid = "824727077366005800"      //"837575217907105813"
+let gameannoncid = "824732131678617600"   //"837499365835669536"
+let spyHideout = "824762348396216401"     //"830240252248850433"
+let turtleId = "830113799763525642"       //"830121244208267334"
+let eyesId = "830114000448258058"         //"830121185885945880"
+let godId = "824725152692174879"          //"829228486660063262"
+let graveyard = "825868136782757918"      //"835014782594711593"    
+let parentwhisp = "824726713605947403"    //"829239671925637150"
+let parentInterface="832301102236958770"  //"829239671925637150"
+let adminchat = "829870229470838814"      //"833229701190385676"
+let listeroleid = "824731870628413480"    //"833229701190385676"
 let numJour = -1
 let numNuit = 0
 var nbWhispJour = 1
 let commencer = false
 
-let rolesEtAlig = ["Investigateur", "Lookout", "Sherif", "Spy", "Agent-Infiltré", "Jailor", "Vampire-Hunter", "Veteran", "Vigilante", "Bodyguard", "Docteur", "Escorte"
-, "Maire", "Medium", "Retributionist", "Transporter", "Disguiser", "Forger", "Framer", "Hypnotiseur", "Consierge", "Ambusher", "Godfather", "Mafioso", "Blackmailer"
+let rolesEtAlig = ["Investigateur", "Lookout", "Sheriff", "Spy", "Agent-Infiltre", "Jailor", "Vampire-Hunter", "Veteran", "Vigilante", "Bodyguard", "Docteur", "Escorte"
+, "Maire", "Retributionist", "Transporteur", "Disguiser", "Forger", "Framer", "Hypnotiseur", "Consierge", "Ambusher", "Godfather", "Mafioso", "Blackmailer"
 , "Conseiller", "Consort", "Amnesiac", "Survivant", "Vampire", "Executionner", "Jester", "Sorcière", "Arsonist", "Serial-Killer", "Loup-garou", "Coven-Leader", "Hex-Master",
 "Meduse", "Necromane", "Poisoner", "Potion-Master", "Guardian-Angel", "Juggernaut", "Pirate", "Plaguebearer", "Crusader", "Psychic", "Tracker", "Trapper",
 "ti" ,"tp", "ts", "tk", "md", "ms", "mk", "nb", "nk", "ne", "nc", "rt", "rm", "rn", "ce", "any"]
 
-let roles = ["Investigateur", "Lookout", "Sherif", "Spy", "Agent-Infiltré", "Jailor", "Vampire-Hunter", "Veteran", "Vigilante", "Bodyguard", "Docteur", "Escorte"
-, "Maire", "Medium", "Retributionist", "Transporter", "Disguiser", "Forger", "Framer", "Hypnotiseur", "Consierge", "Ambusher", "Godfather", "Mafioso", "Blackmailer"
-, "Conseiller", "Consort", "Amnesiac", "Survivant", "Vampire", "Executionner", "Jester", "Sorcière", "Arsonist", "Serial-Killer", "Loup-garou", "Coven-Leader", "Hex-Master",
+let roles = ["Investigateur", "Lookout", "Sherif", "Spy", "Agent-Infiltre", "Jailor", "Vampire-Hunter", "Veteran", "Vigilante", "Bodyguard", "Docteur", "Escorte"
+, "Maire", "Retributionist", "Transporteur", "Disguiser", "Forger", "Framer", "Hypnotiseur", "Consierge", "Ambusher", "Godfather", "Mafioso", "Blackmailer"
+, "Conseiller", "Consort", "Amnésiac", "Survivant", "Vampire", "Executionner", "Jester", "Sorcière", "Arsonist", "Serial-Killer", "Loup-garou", "Coven-Leader", "Hex-Master",
 "Meduse", "Necromane", "Poisoner", "Potion-Master", "Guardian-Angel", "Juggernaut", "Pirate", "Plaguebearer", "Crusader", "Psychic", "Tracker", "Trapper"]
 
 let rolesunique = ["Jailor", "Maire", "Retributionist", "Veteran", "Godfather", "Mafioso", "Ambusher", "Loup-garou", "Coven-leader", "hex-master", "Meduse", "Necromane", "Poisoner", 
@@ -833,14 +833,17 @@ bot.on("message", (message) => {
     if(!roles.includes(args[1])) return message.channel.send(new Discord.MessageEmbed()
     .setDescription("Je ne trouve pas ce rôle")
     .setColor(color))
-    let number = Math.random() * 1 
-    //if(number >= 0.3) {
+    let number = Math.random() * 1
+    if(number >= 0.3) {
+      console.log(args[1])
       commands.prototype.getAllRoles().forEach(role => {
+        console.log(role.name)
         if(role.name == args[1]){
           tagged.scroll = role
+          console.log(tagged)
         }
       });  
-    //}
+    }
     message.react("👍")
   }
 
@@ -2441,7 +2444,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
     });
     if(reaction.emoji.id == turtleId){
       if(!reactor.serverRoles.includes(vivant)) {
-        //if(!reactor.serverRoles.includes(godId)) {
+        if(!reactor.serverRoles.includes(godId)) {
           if(alive().length < nbrJoueurMax) {
             reactor.user.roles.add(vivant)
             reactor.serverRoles.push(vivant)
@@ -2500,7 +2503,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
               }, 5000);
             });
           }  
-        /*}else{
+        }else{
           reaction.message.channel.send(new Discord.MessageEmbed()
           .setDescription(`<@${reactor.id}>, tu es god.`)
           .setColor(color)).then((sent) => {
@@ -2508,7 +2511,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
               sent.delete();
             }, 5000);
           });
-        }*/ 
+        } 
       }else{
         reaction.message.channel.send(new Discord.MessageEmbed()
           .setDescription(`<@${reactor.id}>, vous faites déjà partie de la partie!`)

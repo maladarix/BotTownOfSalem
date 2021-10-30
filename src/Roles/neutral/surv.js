@@ -2,7 +2,7 @@ const Action = require('../../action')
 
 class surv {
     constructor(){
-        this.name = "Survivor"
+        this.name = "Survivant"
         this.description = "Vous êtes une personne totalement neutre qui a pour seul but sa propre survie."
         this.isUnique = false
         this.needsTwoTargets = false

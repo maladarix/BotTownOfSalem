@@ -1,7 +1,7 @@
 const Action = require('../../action')
 class agent {
     constructor(){
-        this.name = "Agent-Infiltré"
+        this.name = "Agent-Infiltre"
         this.description = "Vous êtes un habitant du village qui à gagné accès à des conversations entre mafieux."
         this.isUnique = true
         this.needsTwoTargets = null
