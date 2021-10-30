@@ -189,7 +189,7 @@ class commands{
       this.getGodfather()
     }else if(role == "Mafioso") {
       this.getMafioso()
-    }else if(role == "Random mafia") {
+    }else if(role == "Random Mafia") {
     this.getRandomMafia()
     }else if(role == "Vampire") {
       this.getVampire()
@@ -231,7 +231,7 @@ class commands{
       this.getVig()
     }else if(role == "Veteran") {
       this.getVet()
-    }else if(role == "Loup-garou") {
+    }else if(role == "Loup-Garou") {
       this.getLoup()
     }else if(role == "Disguiser") {
       this.getDisg()
@@ -310,15 +310,15 @@ class commands{
     listerandom[pos] = listerandom[x.position];
     listerandom[x.position] = t;
   })
-  
+  console.log(listerandom.length)
   this.distributeRoles(partie)
   
   }
-
+  
   distributeRoles(partie){
     for (let index = 0; index < listerandom.length; index++) {
       listerandom[index].role = partie.listeroles[index]
-      console.log(listerandom[index].name + partie.listeroles[index].name)      
+      console.log(listerandom[index].name +  " " + partie.listeroles[index].name)      
     }
   }
 
@@ -438,6 +438,7 @@ class commands{
 
   getNeutralEvil(){
     gameroles.push(shuffle(neutralevil)[Math.floor(Math.random() * neutralevil.length)])
+    console.log(gameroles)
   }
 
   getCovenEvil(){
@@ -462,6 +463,7 @@ class commands{
       }
     }while (!good)
     gameroles.push(randomneutralkill)
+    console.log(gameroles)
   }
 
   getNeutralKillingCoven(){
@@ -657,7 +659,7 @@ class commands{
   }
 
   getLoup(){
-    if(ggameroles.some(role => role.name == "Loup-garou")) {
+    if(ggameroles.some(role => role.name == "Loup-Garou")) {
       this.getRandomNeutral()
     }else{
       gameroles.push(roles.prototype.getWerewolf())

@@ -27,32 +27,32 @@ let reactions = ["0️⃣", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣
 
 //const game
 //           id serv officiel                   id serv test
-let mort = /*"824726156141658132"           */"829832421825708064"
-let jour = /*"825029496305614927"           */"829254726495240214"
-let nuit = /*"824749359118811187"           */"829254687630557185"
-let vivant = /*"824725851198849075"         */"829205364444364800"
-let spec = /*"824726635902271518"           */"829250418244321280"
+let mort = "824726156141658132"           //"829832421825708064"
+let jour = "825029496305614927"           //"829254726495240214"
+let nuit = "824749359118811187"           //"829254687630557185"
+let vivant = "824725851198849075"         //"829205364444364800"
+let spec = "824726635902271518"           //"829250418244321280"
 let devid = "830253971637665832"
-let quiVeutJouer = /*"824725623346954271"   */"829873265194303498"
-let jailedid = /*"824761075387727912"       */"830240201111896135"
-let jail = /*"824728100645896314"           */"830240173727547424"
-let vampirechat = /*"839977061384978492"    */"839977899581767700"
-let observatoire = /*"839977410966847539"   */"839977922328526858"
-let mafiaChat = /*"824731087863021588"      */"830240221584687104"
-let covenid = /*"850422940646506617"        */"849541121846935592"
-let panchanid = /*"824727128758943795"      */"829269425290215463"
-let dmchanid = /*"824726760808513606"       */"829216633205424128"
-let villageid = /*"824727077366005800"      */"837575217907105813"
-let gameannoncid = /*"824732131678617600"   */"837499365835669536"
-let spyHideout = /*"824762348396216401"     */"830240252248850433"
-let turtleId = /*"830113799763525642"       */"830121244208267334"
-let eyesId = /*"830114000448258058"         */"830121185885945880"
-let godId = /*"824725152692174879"          */"829228486660063262"
-let graveyard = /*"825868136782757918"      */"835014782594711593"    
-let parentwhisp = /*"824726713605947403"    */"829239671925637150"
-let parentInterface=/*"832301102236958770"  */"829239671925637150"
-let adminchat = /*"829870229470838814"      */"833229701190385676"
-let listeroleid = /*"824731870628413480"    */"833229701190385676"
+let quiVeutJouer = "824725623346954271"   //"829873265194303498"
+let jailedid = "824761075387727912"       //"830240201111896135"
+let jail = "824728100645896314"           //"830240173727547424"
+let vampirechat = "839977061384978492"    //"839977899581767700"
+let observatoire = "839977410966847539"   //"839977922328526858"
+let mafiaChat = "824731087863021588"      //"830240221584687104"
+let covenid = "850422940646506617"        //"849541121846935592"
+let panchanid = "824727128758943795"      //"829269425290215463"
+let dmchanid = "824726760808513606"       //"829216633205424128"
+let villageid = "824727077366005800"      //"837575217907105813"
+let gameannoncid = "824732131678617600"   //"837499365835669536"
+let spyHideout = "824762348396216401"     //"830240252248850433"
+let turtleId = "830113799763525642"       //"830121244208267334"
+let eyesId = "830114000448258058"         //"830121185885945880"
+let godId = "824725152692174879"          //"829228486660063262"
+let graveyard = "825868136782757918"      //"835014782594711593"    
+let parentwhisp = "824726713605947403"    //"829239671925637150"
+let parentInterface="832301102236958770"  //"829239671925637150"
+let adminchat = "829870229470838814"      //"833229701190385676"
+let listeroleid = "824731870628413480"    //"833229701190385676"
 let numJour = -1
 let numNuit = 0
 var nbWhispJour = 1
@@ -60,25 +60,25 @@ let commencer = false
 
 let rolesEtAlig = ["Investigateur", "Lookout", "Sheriff", "Spy", "Agent-Infiltre", "Jailor", "Vampire-Hunter", "Veteran", "Vigilante", "Bodyguard", "Docteur", "Escorte"
 , "Maire", "Retributionist", "Transporteur", "Disguiser", "Forger", "Framer", "Hypnotiseur", "Consierge", "Ambusher", "Godfather", "Mafioso", "Blackmailer"
-, "Conseiller", "Consort", "Amnesiac", "Survivant", "Vampire", "Executionner", "Jester", "Sorciere", "Arsonist", "Serial-Killer", "Loup-garou", "Coven-Leader", "Hex-Master",
+, "Conseiller", "Consort", "Amnesiac", "Survivant", "Vampire", "Executionner", "Jester", "Sorciere", "Arsonist", "Serial-Killer", "Loup-Garou", "Coven-Leader", "Hex-Master",
 "Meduse", "Necromane", "Poisoner", "Potion-Master", "Guardian-Angel", "Juggernaut", "Pirate", "Plaguebearer", "Crusader", "Psychic", "Tracker", "Trapper",
 "ti" ,"tp", "ts", "tk", "md", "ms", "mk", "nb", "nk", "ne", "nc", "rt", "rm", "rn", "ce", "any"]
 
 let roles = ["Investigateur", "Lookout", "Sherif", "Spy", "Agent-Infiltre", "Jailor", "Vampire-Hunter", "Veteran", "Vigilante", "Bodyguard", "Docteur", "Escorte"
 , "Maire", "Retributionist", "Transporteur", "Disguiser", "Forger", "Framer", "Hypnotiseur", "Consierge", "Ambusher", "Godfather", "Mafioso", "Blackmailer"
-, "Conseiller", "Consort", "Amnesiac", "Survivant", "Vampire", "Executionner", "Jester", "Sorciere", "Arsonist", "Serial-Killer", "Loup-garou", "Coven-Leader", "Hex-Master",
+, "Conseiller", "Consort", "Amnesiac", "Survivant", "Vampire", "Executionner", "Jester", "Sorciere", "Arsonist", "Serial-Killer", "Loup-Garou", "Coven-Leader", "Hex-Master",
 "Meduse", "Necromane", "Poisoner", "Potion-Master", "Guardian-Angel", "Juggernaut", "Pirate", "Plaguebearer", "Crusader", "Psychic", "Tracker", "Trapper"]
 
-let rolesunique = ["Jailor", "Maire", "Retributionist", "Veteran", "Godfather", "Mafioso", "Ambusher", "Loup-garou", "Coven-leader", "hex-master", "Meduse", "Necromane", "Poisoner", 
+let rolesunique = ["Jailor", "Maire", "Retributionist", "Veteran", "Godfather", "Mafioso", "Ambusher", "Loup-Garou", "Coven-leader", "hex-master", "Meduse", "Necromane", "Poisoner", 
 "posion-master", "Juggernaut", "Pirate", "Plaguebearer"]
 
 let classique15 = ["Jailor", "Town Investigative", "Town Investigative", "Town Protective", "Town Killing", "Town Support", "Random Town", "Random Town", "Godfather", "Mafioso", 
-"Random mafia", "Random mafia", "Neutral evil", "Neutral killing", "Any"]
+"Random Mafia", "Random Mafia", "Neutral Evil", "Neutral Killing", "Any"]
 
 let Allanyballenced15 = ["Random Town", "Random Town", "Random Town", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any", "Any"]
 
 let classique20 = ["Jailor", "Doctor", "Investigateur", "Town Investigative", "Town Investigative", "Town Support", "Town Killing", "Random Town", "Random Town", "Random Town",
-"Vampire-hunter", "Godfather", "Mafioso", "Random Mafia", "Random Mafia", "Vampire", "Neutral Killing", "Neutral Evil", "Any", "Any"]
+"Vampire-Hunter", "Godfather", "Mafioso", "Random Mafia", "Random Mafia", "Vampire", "Neutral Killing", "Neutral Evil", "Any", "Any"]
 
 let classique15Coven = ["Jailor", "Town Investigative", "Town Support", "Town Protective", "Town Killing", "Random Town", "Random Town", "Random Town", "Random Town",  "Coven-Leader",
 "Coven Evil", "Coven Evil", "Neutral Killing", "Neutral Benin", "Any"]
@@ -913,12 +913,11 @@ bot.on("message", (message) => {
             })
             
             if(alive().length == nbrJoueurMax){
-            Commands.prototype.start(partie, alive())
-            partie.isStarted = true
-            adminchannel.send(new Discord.MessageEmbed()
-            .setDescription("Vous pouvez maintenant distribuer les rôles!")
-            .setColor(color))
-          }
+              partie.isStarted = true
+              adminchannel.send(new Discord.MessageEmbed()
+              .setDescription("Vous pouvez maintenant distribuer les rôles!")
+              .setColor(color))
+            } 
         }else{
           message.channel.send(new Discord.MessageEmbed()
           .setDescription("Ce joueur est déja dans la partie!")

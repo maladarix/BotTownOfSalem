@@ -2,7 +2,7 @@ const Action = require('../../action')
 
 class werewolf {
     constructor(){
-        this.name = "Loup-garou"
+        this.name = "Loup-Garou"
         this.description = "Vous ressemblez à un villageois normal mais quand la pleine lune arrive vous vous transformez."
         this.isUnique = true
         this.needsTwoTargets = false
