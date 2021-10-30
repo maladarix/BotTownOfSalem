@@ -2,7 +2,7 @@ const Action = require('../../action')
 
 class witch {
     constructor(){
-        this.name = "Sorcière"
+        this.name = "Sorciere"
         this.description = "Vous êtes une sorcière qui contrôle les actions des autres."
         this.isUnique = false
         this.needsTwoTargets = true

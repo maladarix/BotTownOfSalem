@@ -1,7 +1,7 @@
 const Action = require('../../action')
 class Transporteur {
     constructor(){
-        this.name = "Transporter"
+        this.name = "Transporteur"
         this.description = "Vous êtes quelqu’un qui déplace des personnes sans poser des questions."
         this.isUnique = false
         this.needsTwoTargets = true

@@ -90,6 +90,7 @@ class commands{
     players.forEach(player =>{
       if(player.scroll != null){
         scrolls.push({player : player, role : player.scroll, position : null})
+        console.log(scrolls[0].role)
       }
     })
     scrolls.forEach(x => {
@@ -106,7 +107,7 @@ class commands{
       }
       for(let i = 0; i < currentgamemode.length && found == null ; i++){
         let faction = x.role.alignement.split(" ")
-        if ("Random" + faction[0] == currentgamemode[i]) {
+        if ("Random " + faction[0] == currentgamemode[i]) {
           found = i
         }
       }
@@ -200,7 +201,7 @@ class commands{
       }
     }else if(role == "Lookout") {
       this.getLoukout()
-    }else if(role == "Sherriff") {
+    }else if(role == "Sheriff") {
       this.getSheriff()
     }else if(role == "Agent-Infiltre") {
       this.getAgent()
@@ -208,13 +209,13 @@ class commands{
       this.getSpy()
     }else if(role == "Bodyguard") {
       this.getBodyguard()
-    }else if(role == "Escort") {
+    }else if(role == "Escorte") {
       this.getEscort()
     }else if(role == "Maire") {
       this.getMaire()
     }else if(role == "Retributionist") {
       this.getRetri()
-    }else if(role == "Transporter") {
+    }else if(role == "Transporteur") {
       this.getTrans()
     }else if(role == "Vigilante") {
       this.getVig()
@@ -234,7 +235,7 @@ class commands{
       this.getHypno()
     }else if(role == "Blackmailer") {
       this.getBlackmailer()
-    }else if(role == "conseiller") {
+    }else if(role == "Conseiller") {
       this.getConseiller()
     }else if(role == "Consort") {
       this.getConsort()
@@ -307,7 +308,7 @@ class commands{
   distributeRoles(partie){
     for (let index = 0; index < listerandom.length; index++) {
       listerandom[index].role = partie.listeroles[index]
-      
+      console.log(listerandom[index].name + partie.listeroles[index].name)      
     }
   }
 
