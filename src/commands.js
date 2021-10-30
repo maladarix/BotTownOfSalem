@@ -92,7 +92,6 @@ class commands{
         scrolls.push({player : player, role : player.scroll, position : null})
       }
     })
-    
     scrolls.forEach(x => {
       let found = null
       for(let i = 0; i < currentgamemode.length && found == null ; i++){
@@ -107,7 +106,7 @@ class commands{
       }
       for(let i = 0; i < currentgamemode.length && found == null ; i++){
         let faction = x.role.alignement.split(" ")
-        if ("Random" + faction[0] == currentgamemode[i]) {
+        if ("Random " + faction[0] == currentgamemode[i]) {
           found = i
         }
       }
@@ -215,11 +214,11 @@ class commands{
       this.getMaire()
     }else if(role == "Retributionist") {
       this.getRetri()
-    }else if(role == "Transporteur") {
+    }else if(role == "Transporter") {
       this.getTrans()
     }else if(role == "Vigilante") {
       this.getVig()
-    }else if(role == "Veteran") {
+    }else if(role == "Vétéran") {
       this.getVet()
     }else if(role == "Loup-garou") {
       this.getLoup()
@@ -300,7 +299,7 @@ class commands{
     listerandom[pos] = listerandom[x.position];
     listerandom[x.position] = t;
   })
-
+  console.log(partie.listeroles)
   this.distributeRoles(partie)
   
   }
@@ -308,6 +307,7 @@ class commands{
   distributeRoles(partie){
     for (let index = 0; index < listerandom.length; index++) {
       listerandom[index].role = partie.listeroles[index]
+      
     }
   }
 
@@ -594,7 +594,7 @@ class commands{
   }
 
   getAgent(){
-    if(gameroles.some(role => role.name == "Agent infiltré")) {
+    if(gameroles.some(role => role.name == "Agent-Infiltré")) {
       this.getRandomTown()
     }else{
       gameroles.push(roles.prototype.getAgent())

@@ -834,13 +834,13 @@ bot.on("message", (message) => {
     .setDescription("Je ne trouve pas ce rôle")
     .setColor(color))
     let number = Math.random() * 1 
-    if(number >= 0.3) {
+    //if(number >= 0.3) {
       commands.prototype.getAllRoles().forEach(role => {
         if(role.name == args[1]){
           tagged.scroll = role
         }
       });  
-    }
+    //}
     message.react("👍")
   }
 
@@ -2441,7 +2441,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
     });
     if(reaction.emoji.id == turtleId){
       if(!reactor.serverRoles.includes(vivant)) {
-        if(!reactor.serverRoles.includes(godId)) {
+        //if(!reactor.serverRoles.includes(godId)) {
           if(alive().length < nbrJoueurMax) {
             reactor.user.roles.add(vivant)
             reactor.serverRoles.push(vivant)
@@ -2500,7 +2500,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
               }, 5000);
             });
           }  
-        }else{
+        /*}else{
           reaction.message.channel.send(new Discord.MessageEmbed()
           .setDescription(`<@${reactor.id}>, tu es god.`)
           .setColor(color)).then((sent) => {
@@ -2508,7 +2508,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
               sent.delete();
             }, 5000);
           });
-        } 
+        }*/ 
       }else{
         reaction.message.channel.send(new Discord.MessageEmbed()
           .setDescription(`<@${reactor.id}>, vous faites déjà partie de la partie!`)
