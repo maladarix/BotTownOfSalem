@@ -17,7 +17,7 @@ class werewolf {
     }
 
     action(author, target){
-        return new Action("attack", author, target)
+        return new Action("maul", author, target)
     }
 }
 

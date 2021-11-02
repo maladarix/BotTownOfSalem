@@ -16,7 +16,10 @@ class arso {
     }
 
     action(author, target){
-        return new Action("Guard", author, target)
+        if(author.id == target.id)
+            return new Action("ignite", author, target)
+        else
+            return new Action("douse", author, target)
     }
 }
 

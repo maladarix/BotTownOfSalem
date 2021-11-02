@@ -17,7 +17,7 @@ class serialk {
     }
 
     action(author, target){
-        return new Action("attack", author, target)
+        return new Action("serialkill", author, target)
     }
 }
 

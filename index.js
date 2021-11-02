@@ -371,58 +371,57 @@ bot.on("message", (message) => {
         }
         else if (element.target1.role.name == "Veteran" && element.target1.role.isAlert)
         {
-          kill(element.author)
-          //Envoyer un message ici
-        }
-        else if (element.target1.ambushed != null)
-        {
-          if(!element.target1.ambushDone)
+          let healed = false
+          actions.forEach(heal => {
+            if (heal.type == "heal" && heal.target1 == element.target1){
+              healed = true
+            }
+          })
+          if(healed)
           {
-            let healed = false
-            actions.forEach(heal => {
-              if (heal.type == "heal" && heal.target1 == element.target1){
-                healed = true
-              }
-            })
-            if(healed)
-            {
-              //Envoyer un message ici
-            }
-            else
-            {
-            kill(element.author)
-            ambushDone = true
-            }
+            //Envoyer un message ici
           }
-          //Envoyer un message ici
+          else
+          {
+          kill(element.author)
+          }
         }
-        else{
-          element.target1.isroleblocked = true
-          //Message de confirmation d'action
+        else { 
+          if (element.target1.ambushed != null)
+          {
+            if(!element.target1.ambushDone)
+            {
+              let healed = false
+              actions.forEach(heal => {
+                if (heal.type == "heal" && heal.target1 == element.target1){
+                  healed = true
+                }
+              })
+              if(healed)
+              {
+                //Envoyer un message ici
+              }
+              else
+              {
+              kill(element.author)
+              ambushDone = true
+              }
+            }
+            //Envoyer un message ici
+          }
+          if(element.author.serverRoles.has(vivant))
+          {
+            element.target1.isroleblocked = true
+            //Message de confirmation d'action
+          }
+          
         }
+         
+        
       }
     });
 
-        /*
-    inv : 4
-    LO : 6
-    Sher : 4
-    Spy : 6
-    Jail : 5
-    VH : 5
-    Vig : 5
-
-    Hypnotist à réviser...
-    GF : 5
-    Maf : 5
-    Consig : 4
-
-    Amnesiac : 6
-    vamp : 5
-    Arso : 3 (5 if self)
-    sk : 5
-    ww : 5
-    */
+        
 
     //Priorité 3
     actions.forEach(element => {
@@ -449,58 +448,259 @@ bot.on("message", (message) => {
           kill(element.author)
           //Envoyer un message ici
         }
-        else if (element.target1.ambushed != null)
-        {
-          if(!element.target1.ambushDone)
+        else{
+          if (element.target1.ambushed != null)
           {
-            let healed = false
-            actions.forEach(heal => {
-              if (heal.type == "heal" && heal.target1 == element.target1){
-                healed = true
+            if(!element.target1.ambushDone)
+            {
+              let healed = false
+              actions.forEach(heal => {
+                if (heal.type == "heal" && heal.target1 == element.target1){
+                  healed = true
+                }
+              })
+              if(healed)
+              {
+                //Envoyer un message ici
               }
-            })
-            if(healed)
-            {
-              //Envoyer un message ici
+              else
+              {
+              kill(element.author)
+              ambushDone = true
+              }
             }
-            else
-            {
-            kill(element.author)
-            ambushDone = true
+            //Envoyer un message ici
+          }
+          if(element.author.serverRoles.has(vivant))
+          {
+            switch(element.type){
+              case "guard" :
+                element.target1.guarded = element.author
+                //Message de confirmation d'action
+                break;
+              case "heal" :
+                element.target1.healed = element.author
+                //Message de confirmation d'action
+                break;
+              case "disguise" :
+                break;
+              case "rewrite" :
+                break;
+              case "frame" :
+                break;
+              case "clean" :
+                break;
+              case "blackmail" :
+                break;
+              case "vest" :
+                break;
+              case "douse" :
+                break;
             }
           }
+        }
+      }
+    });
+
+    //priorité 4
+    actions.forEach(element => {
+      if(element.author.role.priority == 4)
+      {
+        if(element.target1.isjailed)
+        {
+          message.guild.channels.cache.get(element.author.interface).send("Votre action a échoué! Votre cible était en prison.")
+        }
+        else if(element.author.isjailed)
+        {
+          message.guild.channels.cache.get(element.author.interface).send("Votre action a échoué! Vous étiez en prison.")
+        }
+        else if(element.author.witch != null)
+        {
+          //Envoyer un message ici
+        }
+        else if(element.author.isroleblocked)
+        {
+          //Envoyer un message ici
+        }
+        else if (element.target1.role.name == "Veteran" && element.target1.role.isAlert)
+        {
+          kill(element.author)
           //Envoyer un message ici
         }
         else{
-          element.target1.isroleblocked = true
-          //Message de confirmation d'action
+          if (element.target1.ambushed != null)
+          {
+            if(!element.target1.ambushDone)
+            {
+              let healed = false
+              actions.forEach(heal => {
+                if (heal.type == "heal" && heal.target1 == element.target1){
+                  healed = true
+                }
+              })
+              if(healed)
+              {
+                //Envoyer un message ici
+              }
+              else
+              {
+              kill(element.author)
+              ambushDone = true
+              }
+            }
+            //Envoyer un message ici
+          }
+          if(element.author.serverRoles.has(vivant))
+          {
+            switch(element.type){
+              case "invest" :
+                break;
+              case "sheriff" :
+                break;
+              case "investigate" :
+                break;
+            }
+          }
         }
       }
-      else{
-        switch(element.type){
-          case "guard" :
-            element.target1.guarded = element.author
-            //Message de confirmation d'action
-            break;
-          case "heal" :
-            element.target1.healed = element.author
-            //Message de confirmation d'action
-            break;
-          case "disguise" :
-            break;
-          case "rewrite" :
-            break;
-          case "frame" :
-            break;
-          case "clean" :
-            break;
-          case "blackmail" :
-            break;
-          case "vest" :
-            break;
-         }
+    });
+
+    //priorité 5
+    actions.forEach(element => {
+      if(element.author.role.priority == 5 || element.type == ignite)
+      {
+        if(element.target1.isjailed)
+        {
+          message.guild.channels.cache.get(element.author.interface).send("Votre action a échoué! Votre cible était en prison.")
+        }
+        else if(element.author.isjailed)
+        {
+          message.guild.channels.cache.get(element.author.interface).send("Votre action a échoué! Vous étiez en prison.")
+        }
+        else if(element.author.witch != null)
+        {
+          //Envoyer un message ici
+        }
+        else if(element.author.isroleblocked)
+        {
+          //Envoyer un message ici
+        }
+        else if (element.target1.role.name == "Veteran" && element.target1.role.isAlert)
+        {
+          kill(element.author)
+          //Envoyer un message ici
+        }
+        else{
+          if (element.target1.ambushed != null)
+          {
+            if(!element.target1.ambushDone)
+            {
+              let healed = false
+              actions.forEach(heal => {
+                if (heal.type == "heal" && heal.target1 == element.target1){
+                  healed = true
+                }
+              })
+              if(healed)
+              {
+                //Envoyer un message ici
+              }
+              else
+              {
+              kill(element.author)
+              ambushDone = true
+              }
+            }
+            //Envoyer un message ici
+          }
+          if(element.author.serverRoles.has(vivant))
+          {
+            switch(element.type){
+              case "execute" :
+                break;
+              case "huntvamp" :
+                break;
+              case "vigkill" :
+                break;
+              case "attack" :
+                break;
+              case "convert" :
+                break;
+              case "ignite" :
+                break;
+              case "serialkill" :
+                break;
+              case "maul" :
+                break;
+            }
+          }
+        }
       }
     });
+
+    //priorité 6
+    actions.forEach(element => {
+      if(element.author.role.priority == 6)
+      {
+        if(element.target1.isjailed)
+        {
+          message.guild.channels.cache.get(element.author.interface).send("Votre action a échoué! Votre cible était en prison.")
+        }
+        else if(element.author.isjailed)
+        {
+          message.guild.channels.cache.get(element.author.interface).send("Votre action a échoué! Vous étiez en prison.")
+        }
+        else if(element.author.witch != null)
+        {
+          //Envoyer un message ici
+        }
+        else if(element.author.isroleblocked)
+        {
+          //Envoyer un message ici
+        }
+        else if (element.target1.role.name == "Veteran" && element.target1.role.isAlert)
+        {
+          kill(element.author)
+          //Envoyer un message ici
+        }
+        else{
+          if (element.target1.ambushed != null)
+          {
+            if(!element.target1.ambushDone)
+            {
+              let healed = false
+              actions.forEach(heal => {
+                if (heal.type == "heal" && heal.target1 == element.target1){
+                  healed = true
+                }
+              })
+              if(healed)
+              {
+                //Envoyer un message ici
+              }
+              else
+              {
+              kill(element.author)
+              ambushDone = true
+              }
+            }
+            //Envoyer un message ici
+          }
+          if(element.author.serverRoles.has(vivant))
+          {
+            switch(element.type){
+              case "lookout" :
+                break;
+              case "bug" :
+                break;
+              case "remember" :
+                break;
+            }
+          }
+        }
+      }
+    });
+
 
     //reset des valeurs
     actions = []
@@ -2184,7 +2384,7 @@ bot.on('message', async (message) => {
     }
   }
 
-  /*else if(cmd == "action") {
+  /*else if(cmd == author.role.command) {
     //if(god || spec) return
     if(author.user._roles.includes(vivant)) {
       if(partie.time == "nuit") {
@@ -2241,195 +2441,6 @@ bot.on('message', async (message) => {
             }  
 
             let usernameauth = author.displayname
-
-            if(author.role.command == "---") {
-              message.channel.send(new Discord.MessageEmbed()
-              .setDescription("Tu n'as pas d'action!")
-              .setColor(color))
-              author.action = "Actif"
-            }
-
-            else if(author.role.name == "Jailor") {
-              if(numNuit != 1) {
-                if(jailed == "") {
-                  message.channel.send("Il n'y a personne de jailed")
-                  actions.push(author.role.action(author, "actif"))
-                  author.action = (author.role.action(author, "actif"))
-                  message.react("👍")
-                  author.actiondone = true
-                }else{
-                  actions.push(author.role.action(author, jailed))
-                  author.action = (author.role.action(author, jailed))
-                  message.channel.send(new Discord.MessageEmbed()
-                  .setDescription(`Tu as décidé d'exécuter **${jailed.displayname}**`)
-                  .setColor(color))
-                  message.react("👍")
-                  author.actiondone = true
-
-                  jailedChan.send(`Le Jailor à décider de vous éxécuter ce soir, ${jailed.displayname}.`)
-                }
-                
-              }else{
-                message.channel.send(new Discord.MessageEmbed()
-                .setDescription("Tu ne peut pas exécuter la **nuit 1**")
-                .setColor(color))
-              }
-            }
-                  
-            else if(author.role.name == "Bodyguard") {
-              if(author.role.use != 0) {
-                if(author.role.displayname != username[0].displayname) {
-                  author.action = (author.role.action(author, joueurvisé1))
-                  actions.push(author.role.action(author, joueurvisé1))
-                  message.channel.send(new Discord.MessageEmbed()
-                  .setDescription(`Tu a décidé de protéger **${username[0]}**`)
-                  .setColor(color))
-                  author.role.use --
-                  message.react("👍")
-                  author.actiondone = true
-                }else{
-                  message.channel.send(new Discord.MessageEmbed()
-                  .setDescription("Tu as décidé de te protégé cette nuit!")
-                  .setColor(color))
-                  author.action = (author.role.action(author, author))
-                  actions.push(author.role.action(author, author))
-                  author.role.use --
-                  message.react("👍")
-                  author.actiondone = true
-                }
-              }else{
-                message.channel.send(new Discord.MessageEmbed()
-                .setDescription("Tu ne peut plus te protéger!")
-                .setColor(color))
-              }
-            }
-
-            else if(author.role.name == "Docteur") {
-              if(author.role.use != 0) {
-                if(author.role.displayname != username[0].displayname) {
-                  message.react("👍")
-                  actions.push(author.role.action(author, joueurvisé1))
-                  author.action = (author.role.action(author, joueurvisé1))
-                  message.channel.send(new Discord.MessageEmbed()
-                  .setDescription(`Tu a décidé de heal **${username[0]}**`)
-                  .setColor(color))
-                  author.actiondone = true
-                }else{
-                  message.react("👍")
-                  message.channel.send(new Discord.MessageEmbed()
-                  .setDescription("Tu as décidé de te heal cette nuit!")
-                  .setColor(color))
-                  author.role.use --
-                  actions.push(author.role.action(author, author))
-                  author.action = (author.role.action(author, author))
-                  author.actiondone = true
-                }
-              }else{
-                message.channel.send(new Discord.MessageEmbed()
-                .setDescription("Tu ne peut plus heah!")
-                .setColor(color))
-              }
-            }
-
-            else if(author.role.name == ("Escorte") || author.role.name == ("Investigator") || author.role.name == ("Lookout") || author.role.name == ("Sheriff") || author.role.name == ("Spy") || author.role.name == ("Vampire-Hunter")) {
-              if(author.displayname != joueurvisé1.displayname) {
-                actions.push(author.role.action(author, joueurvisé1))
-                message.react("👍")
-                author.actiondone = true
-              }else{
-                message.channel.send(new Discord.MessageEmbed()
-                .setDescription("Tu ne peut pas faire ton action sur toi-même!")
-                .setColor(color))
-              }
-            }
-            
-            else if(author.role.name == "Maire") {
-              message.channel.send(new Discord.MessageEmbed()
-              .setDescription("Fait **!reveal** pour faire ton action!")
-              .setColor(color))
-            }
-
-            else if(author.role.name == "Retributionist") { // tocheck a 2
-              if(joueurvisé1.role.alignement == (("Town Investigative") || ("Town Protective") || ("Town Support") || ("Town Killing"))) {
-                let retriplayer = ""
-                alive().forEach(joueur => {
-                  if(joueur.number == args[0]) {
-                  retriplayer = joueur
-                  }
-                })
-                if(joueurvisé1.user.roles.cache.has(mort)) {
-                  actions.push(author.role.action(author, retriplayer))
-                  author.action = (author.role.action(author, retriplayer))
-                  message.react("👍")
-                  author.actiondone = true
-                }else{
-                  message.channel.send(new Discord.MessageEmbed()
-                  .setDescription("Ce joueur n'est pas mort!")
-                  .setColor(color))
-                }
-              }else{
-                message.channel.send(new Discord.MessageEmbed()
-                .setDescription("Tu dois choisir un joueur avec un rôle town!")
-                .setColor(color))
-              }
-            }
-
-            else if(author.role.name == "Transporteur") {
-              if(joueurvisé1 != joueurvisé2) {
-                actions.push(author.role.action(author, joueurvisé1, joueurvisé2))
-                author.action = (author.role.action(author, joueurvisé1, joueurvisé2))
-                author.actiondone = true
-                message.react("👍")
-              }else{
-                message.channel.send(new Discord.MessageEmbed()
-                .setDescription("Tu as transport le même joueur!")
-                .setColor(color))
-              }
-            }
-
-            else if(author.role.name == "Vétéran") {
-              if(author.role.use != 0) {
-                message.channel.send(new Discord.MessageEmbed()
-                .setDescription("Tu as décidé d'être en alerte cette nuit!")
-                .setColor(color))
-                author.role.use --
-                actions.push(author.role.action(author, author))
-                author.action = (author.role.action(author, author))
-                author.actiondone = true
-                message.react("👍")
-              }else{
-                message.channel.send(new Discord.MessageEmbed()
-                .setDescription("Tu ne peut plus être en alerte!")
-                .setColor(color))
-              }
-            }
-
-            else if(author.role.name == "Vigilante") {
-              if(author.role.use != 0) {
-                author.role.use --
-                actions.push(author.role.action(author, joueurvisé1))
-                author.action = (author.role.action(author, joueurvisé1))
-                author.actiondone = true
-                message.react("👍")
-              }else{
-                message.channel.send(new Discord.MessageEmbed()
-                .setDescription("Tu peut attaquer que 3 fois!")
-                .setColor(color))
-              }
-            }
-                  
-            else if(author.role.name == "Jester") {
-              if(author.user._roles.includes(mort)) {
-
-                actions.push(author.role.action(author, joueurvisé1.user))
-                adminchannel.send(`**${usernameauth}** à décidé d'exécuter **${username[0]}**!`)
-
-              }else{
-                message.channel.send(new Discord.MessageEmbed()
-                .setDescription("Tu ne peut pas encore faire cette action! Tu n'est pas mort.")
-                .setColor(color))
-              }
-            }
 
           }else{
             message.delete()

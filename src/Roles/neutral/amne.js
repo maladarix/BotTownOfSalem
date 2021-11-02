@@ -17,7 +17,7 @@ class amne {
     }
 
     action(author, target){
-        return new Action("chose", author, target)
+        return new Action("remember", author, target)
     }
 }
 
