@@ -1302,11 +1302,12 @@ bot.on("message", (message) => {
           player.id,
           {VIEW_CHANNEL: true}
         )
-      }else if(player.role.name == "Agent infiltré") {
+      }else if(player.role.name == "Agent-infiltre") {
         spyChan.updateOverwrite(
           player.id,
           {VIEW_CHANNEL: true}
         )
+        mafiaChan.send(`Vous sentez que vous pouvez parler en privé. <@&${vivant}>`)
       }else if(player.role.name == "Vampire") {
         vampirechan.updateOverwrite(
           player.id,
@@ -1345,7 +1346,7 @@ bot.on("message", (message) => {
         do{
           cible = alive()[Math.floor(Math.random() * alive().length)]
           if(cible.name != player.name) {
-            if(!(cible.role.name == "Executionner") || (cible.role.name == "Jester") || (cible.role.name == "Guardian Angel")) {
+            if(!(cible.role.name == "Executionner") || (cible.role.name == "Jester") || (cible.role.name == "Guardian-Angel")) {
               good = true 
             }
           }
@@ -1975,10 +1976,20 @@ bot.on('message', async (message) => {
 
   else if(cmd == "jail") {
     if(partie.isStarted == false) return message.channel.send(pascomme)
-    if(!args[0]) return message.channel.send(qui)
     if(author.interface == message.channel.id) {
       if(author.role.name == "Jailor") {
         let joueurvisé = ""
+
+        if(!args[0]) {
+          jailed = ""
+          message.channel.send(new Discord.MessageEmbed()
+        .setDescription("Plus personne n'est **Jailed**")
+        .setColor(color)).then((sent) => {
+          setTimeout(function () {
+            sent.delete();
+          }, 2000);
+        });
+        }
 
         alive().forEach(joueur => {
           if(joueur.number == args[0]) {
