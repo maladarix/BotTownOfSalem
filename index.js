@@ -55,10 +55,10 @@ let listeroleid = "824731870628413480"    "833229701190385676"
 */
 
 // serveur officiel
-let arrayId = ["824726156141658132", "825029496305614927", "824749359118811187","824725851198849075","824726635902271518","824725623346954271","824761075387727912","824728100645896314","839977061384978492","839977410966847539","824731087863021588","850422940646506617","824727128758943795","824726760808513606","824727077366005800","824732131678617600","824732131678617600","824762348396216401","830113799763525642", "830114000448258058" ,"824725152692174879" ,"825868136782757918","824726713605947403","832301102236958770","829870229470838814","824731870628413480"]
+//let arrayId = ["824726156141658132", "825029496305614927", "824749359118811187","824725851198849075","824726635902271518","824725623346954271","824761075387727912","824728100645896314","839977061384978492","839977410966847539","824731087863021588","850422940646506617","824727128758943795","824726760808513606","824727077366005800","824732131678617600","824732131678617600","824762348396216401","830113799763525642", "830114000448258058" ,"824725152692174879" ,"825868136782757918","824726713605947403","832301102236958770","829870229470838814","824731870628413480"]
 
 // serveur test
-//let arrayId = ["829832421825708064","829254726495240214","829254687630557185","829205364444364800","829250418244321280", null ,"829873265194303498","830240201111896135","830240173727547424","839977899581767700","839977922328526858","830240221584687104","849541121846935592","829269425290215463","829216633205424128","837575217907105813","837499365835669536","830240252248850433","830121244208267334","830121185885945880","829228486660063262","835014782594711593" ,"829239671925637150","829239671925637150","833229701190385676","833229701190385676"]
+let arrayId = ["829832421825708064","829254726495240214","829254687630557185","829205364444364800","829250418244321280", null ,"829873265194303498","830240201111896135","830240173727547424","839977899581767700","830240221584687104","830240221584687104","849541121846935592","829269425290215463","829216633205424128","837575217907105813","837499365835669536","830240252248850433","830121244208267334","830121185885945880","829228486660063262","835014782594711593" ,"829239671925637150","829239671925637150","833229701190385676","833229701190385676"]
 
 //           id serv officiel                   id serv test
 let mort = arrayId[0]           
@@ -91,6 +91,10 @@ let numJour = -1
 let numNuit = 0
 var nbWhispJour = 1
 let commencer = false
+let voteEmbed = new Discord.MessageEmbed()
+.setDescription("Aucun vote pour l'instant.")
+.setColor(color)
+let voteMsgId = null
 
 let rolesEtAlig = ["Investigateur", "Lookout", "Sheriff", "Spy", "Agent-Infiltre", "Jailor", "Vampire-Hunter", "Veteran", "Vigilante", "Bodyguard", "Docteur", "Escorte"
 , "Maire", "Retributionist", "Transporteur", "Disguiser", "Forger", "Framer", "Hypnotiseur", "Consierge", "Ambusher", "Godfather", "Mafioso", "Blackmailer"
@@ -1257,22 +1261,22 @@ bot.on("message", (message) => {
       if(player.role.alignement == "Mafia Support" || player.role.alignement == "Mafia Killing" || player.role.alignement == "Mafia Deception") {
         mafiaChan.updateOverwrite(
           player.id,
-          {"VIEW_CHANNEL": false}
+          {"VIEW_CHANNEL": true, "SEND_MESSAGES" : false}
         )
       }else if(player.role.name == "Vampire") {
         vampirechan.updateOverwrite(
           player.id,
-          {"VIEW_CHANNEL": false}
+          {"VIEW_CHANNEL": true, "SEND_MESSAGES" : false}
         )
       }else if(player.role.name == "Vampire-Hunter") {
         observatoirechan.updateOverwrite(
           player.id,
-          {"VIEW_CHANNEL": false}
+          {"VIEW_CHANNEL": true, "SEND_MESSAGES" : false}
         )
       }else if(player.role.alignement == "Coven Evil") {
         covenchan.updateOverwrite(
           player.id,
-          {"VIEW_CHANNEL" : false}
+          {"VIEW_CHANNEL": true, "SEND_MESSAGES" : false}
         )  
       } 
     });
@@ -1280,6 +1284,10 @@ bot.on("message", (message) => {
     pendChan.send(new Discord.MessageEmbed()
     .setDescription(`**${Math.floor((alive().length + votemaire) / 2) + 1}** votes sont nécéssaire pour pendre aujourd'hui.`)
     .setColor(color))
+    pendChan.send(voteEmbed).then((sent) => {
+      console.log(sent)
+      voteMsgId = sent.id
+    })
   }
 
   else if(cmd == "nuit") {
@@ -1360,22 +1368,22 @@ bot.on("message", (message) => {
       if(player.role.alignement == (("Mafia Support") || ("Mafia Killing") || ("Mafia Deception"))) {
         mafiaChan.updateOverwrite(
           player.id,
-          {"VIEW_CHANNEL": true}
+          {"VIEW_CHANNEL": true, "SEND_MESSAGES" : false}
         )
       }else if(player.role.name == "Vampire") {
         vampirechan.updateOverwrite(
           player.id,
-          {"VIEW_CHANNEL": true}
+          {"VIEW_CHANNEL": true, "SEND_MESSAGES" : false}
         )
       }else if(player.role.name == "Vampire-Hunter") {
         observatoirechan.updateOverwrite(
           player.id,
-          {"VIEW_CHANNEL": true}
+          {"VIEW_CHANNEL": true, "SEND_MESSAGES" : false}
         )
       }else if(player.role.alignement == "Coven Evil") {
         covenchan.updateOverwrite(
           player.id,
-          {"VIEW_CHANNEL" : true}
+          {"VIEW_CHANNEL": true, "SEND_MESSAGES" : false}
         )  
       }
     });
@@ -1494,6 +1502,10 @@ bot.on("message", (message) => {
     roles.forEach(role => {
       listeroles.push(role.name)
     });
+  
+    if(listeroles.includes("Agent-Infiltre")) {
+      mafiaChan.send(`Vous sentez que vous ne pouvez pas parler en privé. <@&${vivant}>`)
+    }
 
     alive().forEach(player => {
       console.log(player.displayname)
@@ -1507,7 +1519,7 @@ bot.on("message", (message) => {
           player.id,
           {VIEW_CHANNEL: true}
         )
-        mafiaChan.send(`Vous sentez que vous pouvez parler en privé. <@&${vivant}>`)
+        mafiaChan.send(`Vous sentez que vous ne pouvez pas parler en privé. <@&${vivant}>`)
       }else if(player.role.name == "Vampire") {
         vampirechan.updateOverwrite(
           player.id,
@@ -2320,7 +2332,7 @@ bot.on('message', async (message) => {
     .setDescription("Tu ne peut pas voter pour toi même")
     .setColor(color))
     if(!taggedUser[0].roles.cache.has(vivant)) return message.channel.send(pasVivant)
-    
+
     if(author.role.name == "Maire") {
       if(author.role.isreveal == true) {
         if(!author.hasVoted) {
@@ -2353,34 +2365,6 @@ bot.on('message', async (message) => {
         author.registeredVote.votesFor --
         tagged.votesFor ++
       }  
-    }
-
-    if(tagged.votesFor < 10) {
-      message.react(reactions[tagged.votesFor])
-
-    }else if(tagged.votesFor == 10) {
-      message.react(reactions[1])
-      message.react(reactions[0])
-
-    }else if(tagged.votesFor == 11) {
-      message.react(message.guild.emojis.cache.find(emoji => emoji.name === "1_"))
-      message.react(reactions[1])
-
-    }else if(tagged.votesFor == 20) {
-      message.react(reactions[2])
-      message.react(reactions[0])
-
-    }else if(tagged.votesFor > 11 && tagged.votesFor < 20) {
-      message.react(reactions[1])
-      message.react(reactions[tagged.votesFor - 10])
-
-    }else if(tagged.votesFor == 22) {
-      message.react(message.guild.emojis.cache.find(emoji => emoji.name === "2_"))
-      message.react(reactions[2])
-
-    }else if((tagged.votesFor != 22) && (tagged.votesFor > 20) && (tagged.votesFor < 30)) {
-      message.react(reactions[2])
-      message.react(reactions[tagged.votesFor - 20])
     }
   }
 
