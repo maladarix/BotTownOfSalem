@@ -171,6 +171,14 @@ let alive = function (){
   return alive
 }
 
+let clearJail = function(jailedChan){
+  for(i = 0; i<3; i++){
+    await jailedChan.messages.fetch({limit: 100}).then(messages =>{
+      jailedChan.bulkDelete(messages)
+    })
+  }
+}
+
 bot.on('ready', () => {
   console.log("bot online")
   console.log(new Date().toLocaleString())
@@ -2307,6 +2315,8 @@ bot.on('message', async (message) => {
     pendChan.send(resultsVotes.setDescription("Aucun vote pour le moment")).then(message => {
       resultID = message.id;
     })
+
+    await clearJail(jailedChan);
   }
 
 
