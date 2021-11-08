@@ -91,10 +91,10 @@ let numJour = -1
 let numNuit = 0
 var nbWhispJour = 1
 let commencer = false
-let voteEmbed = new Discord.MessageEmbed()
-.setDescription("Aucun vote pour l'instant.")
-.setColor(color)
-let voteMsgId = null
+let color = "#f0b71a";
+let prefix = "!";
+let resultsVotes = new Discord.MessageEmbed().setTitle("Compilation des votes").setColor(color)
+let resultID = null
 
 let rolesEtAlig = ["Investigateur", "Lookout", "Sheriff", "Spy", "Agent-Infiltre", "Jailor", "Vampire-Hunter", "Veteran", "Vigilante", "Bodyguard", "Docteur", "Escorte"
 , "Maire", "Retributionist", "Transporteur", "Disguiser", "Forger", "Framer", "Hypnotiseur", "Consierge", "Ambusher", "Godfather", "Mafioso", "Blackmailer"
@@ -123,8 +123,6 @@ let classique15Coven = ["Jailor", "Town Investigative", "Town Support", "Town Pr
 
 let listeGm = [{name : "classique15", list : classique15, coven : false}, {name : "allanyballanced15", list : Allanyballenced15, coven : false}, {name : "classique20", list : classique20, coven : false}, {name : "classique15coven", list : classique15Coven, coven : true}]
 
-let color = "#f0b71a";
-let prefix = "!";
 var tagged = null
 var author = null  
 let messageJouer = new Discord.MessageEmbed()
@@ -1207,89 +1205,6 @@ bot.on("message", (message) => {
     message.react("👍")
   }
 
-  else if(cmd == "jour") {
-    if(!god && !dev) return message.channel.send(pasGod)
-    if(partie.isStarted == false) return message.channel.send(pascomme)
-    if(partie.time == "jour") return message.channel.send(new Discord.MessageEmbed()
-    .setDescription("C'est déja le **jour**!")
-    .setColor(color))
-
-    let votemaire = 0
-
-    if(args[0]) {
-      let messagejour = ""
-      args.forEach(mots => {
-        messagejour += mots + " "
-      });
-      gameannoncchan.send(messagejour)
-      
-    }
-    actions.forEach(action => {
-    });
-
-    partie.time = "jour"
-    numJour = numJour + 1
-    jailed = ""
-    actions = []
-
-    villagechan.send(`<@&${vivant}>, Jour **${numJour}**`)
-    adminchannel.send(new Discord.MessageEmbed()
-    .setDescription(`Jour **${numJour}**`)
-    .setColor(color))
-
-    alive().forEach(player => {
-      player.user.roles.add(jour)
-      player.user.roles.remove(nuit)
-      player.whispRemaining = nbWhispJour
-      player.hasVoted = false
-      player.isjailed = false
-      player.isframed = false
-      player.action = null
-      player.lastwillappear = player.lastwill
-      player.roleappear = player.role.name
-
-      if(player.role.name == "Maire") {
-        if(player.role.isreveal == true) {
-          votemaire = 2
-        }
-      }
-
-      jailedChan.updateOverwrite(
-        player.id,
-        {"VIEW_CHANNEL": false}
-      )
-      if(player.role.alignement == "Mafia Support" || player.role.alignement == "Mafia Killing" || player.role.alignement == "Mafia Deception") {
-        mafiaChan.updateOverwrite(
-          player.id,
-          {"VIEW_CHANNEL": true, "SEND_MESSAGES" : false}
-        )
-      }else if(player.role.name == "Vampire") {
-        vampirechan.updateOverwrite(
-          player.id,
-          {"VIEW_CHANNEL": true, "SEND_MESSAGES" : false}
-        )
-      }else if(player.role.name == "Vampire-Hunter") {
-        observatoirechan.updateOverwrite(
-          player.id,
-          {"VIEW_CHANNEL": true, "SEND_MESSAGES" : false}
-        )
-      }else if(player.role.alignement == "Coven Evil") {
-        covenchan.updateOverwrite(
-          player.id,
-          {"VIEW_CHANNEL": true, "SEND_MESSAGES" : false}
-        )  
-      } 
-    });
-
-    pendChan.send(new Discord.MessageEmbed()
-    .setDescription(`**${Math.floor((alive().length + votemaire) / 2) + 1}** votes sont nécéssaire pour pendre aujourd'hui.`)
-    .setColor(color))
-    pendChan.send(voteEmbed).then((sent) => {
-      console.log(sent)
-      voteMsgId = sent.id
-    })
-  }
-
   else if(cmd == "nuit") {
     if(!god && !dev) return message.channel.send(pasGod)
     if(partie.isStarted == false) return message.channel.send(pascomme)
@@ -2059,7 +1974,6 @@ bot.on("message", (message) => {
       message.channel.send(helpcommandsvivant); 
     }
   }
-  
 });
 
 bot.on('message', async (message) => {
@@ -2315,6 +2229,89 @@ bot.on('message', async (message) => {
 
   }
 
+  else if(cmd == "jour") {
+    if(!god && !dev) return message.channel.send(pasGod)
+    if(partie.isStarted == false) return message.channel.send(pascomme)
+    if(partie.time == "jour") return message.channel.send(new Discord.MessageEmbed()
+    .setDescription("C'est déja le **jour**!")
+    .setColor(color))
+
+    let votemaire = 0
+
+    if(args[0]) {
+      let messagejour = ""
+      args.forEach(mots => {
+        messagejour += mots + " "
+      });
+      gameannoncchan.send(messagejour)
+      
+    }
+    actions.forEach(action => {
+    });
+
+    partie.time = "jour"
+    numJour = numJour + 1
+    jailed = ""
+    actions = []
+
+    villagechan.send(`<@&${vivant}>, Jour **${numJour}**`)
+    adminchannel.send(new Discord.MessageEmbed()
+    .setDescription(`Jour **${numJour}**`)
+    .setColor(color))
+
+    alive().forEach(player => {
+      player.user.roles.add(jour)
+      player.user.roles.remove(nuit)
+      player.whispRemaining = nbWhispJour
+      player.hasVoted = false
+      player.isjailed = false
+      player.isframed = false
+      player.action = null
+      player.lastwillappear = player.lastwill
+      player.roleappear = player.role.name
+
+      if(player.role.name == "Maire") {
+        if(player.role.isreveal == true) {
+          votemaire = 2
+        }
+      }
+
+      jailedChan.updateOverwrite(
+        player.id,
+        {"VIEW_CHANNEL": false}
+      )
+      if(player.role.alignement == "Mafia Support" || player.role.alignement == "Mafia Killing" || player.role.alignement == "Mafia Deception") {
+        mafiaChan.updateOverwrite(
+          player.id,
+          {"VIEW_CHANNEL": true, "SEND_MESSAGES" : false}
+        )
+      }else if(player.role.name == "Vampire") {
+        vampirechan.updateOverwrite(
+          player.id,
+          {"VIEW_CHANNEL": true, "SEND_MESSAGES" : false}
+        )
+      }else if(player.role.name == "Vampire-Hunter") {
+        observatoirechan.updateOverwrite(
+          player.id,
+          {"VIEW_CHANNEL": true, "SEND_MESSAGES" : false}
+        )
+      }else if(player.role.alignement == "Coven Evil") {
+        covenchan.updateOverwrite(
+          player.id,
+          {"VIEW_CHANNEL": true, "SEND_MESSAGES" : false}
+        )  
+      } 
+    });
+
+    pendChan.send(new Discord.MessageEmbed()
+    .setDescription(`**${Math.floor((alive().length + votemaire) / 2) + 1}** votes sont nécéssaire pour pendre aujourd'hui.`)
+    .setColor(color))
+    pendChan.send(resultsVotes.setDescription("Aucun vote pour le moment")).then(message => {
+      resultID = message.id;
+    })
+  }
+
+
   else if(cmd == "p") {
     let pendrChan = new Discord.MessageEmbed()
       .setDescription("#vote-pour-pendre SVP")
@@ -2366,6 +2363,17 @@ bot.on('message', async (message) => {
         tagged.votesFor ++
       }  
     }
+
+    let listesVotes = []
+    alive.forEach(player => {
+      if(tagged.votesFor > 0) {
+        listesVotes.push(tagged)
+      }else if(player.votesFor == 0) {
+        if(listesVotes.includes(player)) {
+          listesVotes.indexOf(player)
+        }
+      }
+    });
   }
 
   /*else if(cmd == author.role.command) {
