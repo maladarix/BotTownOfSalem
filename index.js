@@ -19,7 +19,6 @@ var interfaces = []
 var listejoueur = []
 let listeroles = []
 let joueurroles = []
-let votelist = []
 let username = []
 let actions = []
 let joueurCoven = []
@@ -834,7 +833,6 @@ bot.on("message", (message) => {
     nouvgmoffi = []
     whispersChannels = []
     interfaces = []
-    votelist = []
     killlist = []
     username = []
     jailedkill = ""
@@ -2330,50 +2328,36 @@ bot.on('message', async (message) => {
     .setColor(color))
     if(!taggedUser[0].roles.cache.has(vivant)) return message.channel.send(pasVivant)
 
-    if(author.role.name == "Maire") {
-      if(author.role.isreveal == true) {
-        if(!author.hasVoted) {
-          tagged.votesFor += 3
-          author.hasVoted = true
-          author.registeredVote = tagged
-          votelist.push(author.name)
-        }else{
-          author.registeredVote.votesFor -= 3
-          tagged.votesFor += 3
-        }
+    if(author.role.name == "Maire" && author.role.isreveal == true) {
+      if(!author.hasVoted) {
+        tagged.votesFor += 3
+        author.hasVoted = true
+        author.registeredVote = tagged
       }else{
-        if(!author.hasVoted) {
-          tagged.votesFor ++
-          author.hasVoted = true
-          author.registeredVote = tagged
-          votelist.push(author.name)
-        }else{
-          author.registeredVote.votesFor --
-          tagged.votesFor ++
-        }
+        author.registeredVote.votesFor -= 3
+        author.registeredVote = tagged
+        tagged.votesFor += 3
       }
     }else{
       if(!author.hasVoted) {
         tagged.votesFor ++
         author.hasVoted = true
         author.registeredVote = tagged
-        votelist.push(author.name)
       }else{
         author.registeredVote.votesFor --
+        author.registeredVote = tagged
         tagged.votesFor ++
       }  
     }
 
-    let listesVotes = []
+    let listesVotes = ""
     alive.forEach(player => {
-      if(tagged.votesFor > 0) {
-        listesVotes.push(tagged)
-      }else if(player.votesFor == 0) {
-        if(listesVotes.includes(player)) {
-          listesVotes.indexOf(player)
-        }
+      if(player.votesFor > 0) {
+        listesVotes += player.name + " : " + player.votesFor + "\n"
       }
     });
+
+    resultsVotes.setDescription(listesVotes)
   }
 
   /*else if(cmd == author.role.command) {
