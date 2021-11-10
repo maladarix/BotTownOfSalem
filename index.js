@@ -54,10 +54,10 @@ let listeroleid = "824731870628413480"    "833229701190385676"
 */
 
 // serveur officiel
-//let arrayId = ["824726156141658132", "825029496305614927", "824749359118811187","824725851198849075","824726635902271518","824725623346954271","824761075387727912","824728100645896314","839977061384978492","839977410966847539","824731087863021588","850422940646506617","824727128758943795","824726760808513606","824727077366005800","824732131678617600","824732131678617600","824762348396216401","830113799763525642", "830114000448258058" ,"824725152692174879" ,"825868136782757918","824726713605947403","832301102236958770","829870229470838814","824731870628413480"]
+let arrayId = ["824726156141658132", "825029496305614927", "824749359118811187","824725851198849075","824726635902271518","824725623346954271","824761075387727912","824728100645896314","839977061384978492","839977410966847539","824731087863021588","850422940646506617","824727128758943795","824726760808513606","824727077366005800","824732131678617600","824732131678617600","824762348396216401","830113799763525642", "830114000448258058" ,"824725152692174879" ,"825868136782757918","824726713605947403","832301102236958770","829870229470838814","824731870628413480"]
 
 // serveur test
-let arrayId = ["829832421825708064","829254726495240214","829254687630557185","829205364444364800","829250418244321280", null ,"829873265194303498","830240201111896135","830240173727547424","839977899581767700","830240221584687104","830240221584687104","849541121846935592","829269425290215463","829216633205424128","837575217907105813","837499365835669536","830240252248850433","830121244208267334","830121185885945880","829228486660063262","835014782594711593" ,"829239671925637150","829239671925637150","833229701190385676","833229701190385676"]
+//let arrayId = ["829832421825708064","829254726495240214","829254687630557185","829205364444364800","829250418244321280", null ,"829873265194303498","830240201111896135","830240173727547424","839977899581767700","830240221584687104","830240221584687104","849541121846935592","829269425290215463","829216633205424128","837575217907105813","837499365835669536","830240252248850433","830121244208267334","830121185885945880","829228486660063262","835014782594711593" ,"829239671925637150","829239671925637150","833229701190385676","833229701190385676"]
 
 //           id serv officiel                   id serv test
 let mort = arrayId[0]           
@@ -171,7 +171,7 @@ let alive = function (){
   return alive
 }
 
-let clearJail = function(jailedChan){
+let clearJail = async function(jailedChan){
   for(i = 0; i<3; i++){
     await jailedChan.messages.fetch({limit: 100}).then(messages =>{
       jailedChan.bulkDelete(messages)
@@ -1424,8 +1424,8 @@ bot.on("message", (message) => {
       listeroles.push(role.name)
     });
   
-    if(listeroles.includes("Agent-Infiltre")) {
-      mafiaChan.send(`Vous sentez que vous ne pouvez pas parler en privé. <@&${vivant}>`)
+    if(!listeroles.includes("Agent-Infiltre")) {
+      mafiaChan.send(`Vous sentez que vous pouvez parler en privé. <@&${vivant}>`)
     }
 
     alive().forEach(player => {
@@ -1435,7 +1435,7 @@ bot.on("message", (message) => {
           player.id,
           {VIEW_CHANNEL: true}
         )
-      }else if(player.role.name == "Agent-infiltre") {
+      }else if(player.role.name == "Agent-Infiltre") {
         spyChan.updateOverwrite(
           player.id,
           {VIEW_CHANNEL: true}
@@ -1998,10 +1998,29 @@ bot.on('message', async (message) => {
   let adminchannel = message.guild.channels.cache.get(adminchat)
   let listerolechan = message.guild.channels.cache.get(listeroleid)
   let pendChan = message.guild.channels.cache.get(panchanid)
+  let mafiaChan = message.guild.channels.cache.get(mafiaChat)
   let qvjChan = message.guild.channels.cache.get(quiVeutJouer);
   let MessageArray = message.content.split(" ");
   let cmd = MessageArray[0].slice(prefix.length);
   let args = MessageArray.slice(1);
+
+  alive().forEach(player =>{
+    if(player.witch != null)
+    {
+      //player.witch.interface.send()
+      player.witch = null
+    }
+    player.roleappear = player.role
+    player.lastwillappear = player.lastwill
+    player.isroleblocked = false
+    player.isjailed = false
+    player.isAlert = false
+    player.guarded = null
+    player.healed = null
+    player.trans = player
+    player.ambushed = null
+    player.ambushDone = false
+  })
 
   let kill = function(died) {
     let graveyardmot = new Discord.MessageEmbed()
@@ -2361,13 +2380,13 @@ bot.on('message', async (message) => {
     }
 
     let listesVotes = ""
-    alive.forEach(player => {
+    alive().forEach(player => {
       if(player.votesFor > 0) {
         listesVotes += player.name + " : " + player.votesFor + "\n"
       }
     });
-
     resultsVotes.setDescription(listesVotes)
+    pendChan.send(resultsVotes)
   }
 
   /*else if(cmd == author.role.command) {
