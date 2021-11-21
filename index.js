@@ -13,6 +13,8 @@ var nomgamemode = null
 let start = false
 let traitor = false
 let jailed = ""
+var heurePendre = new Date()
+let HeureResults = ""
 let traitre = null
 let nouvgmoffi = []
 let resultsactions = []
@@ -58,10 +60,10 @@ let listeroleid = "824731870628413480"    "833229701190385676"
 */
 
 // serveur officiel
-let arrayId = ["824726156141658132", "825029496305614927", "824749359118811187","824725851198849075","824726635902271518", "830253971637665832", "824725623346954271","824761075387727912","824728100645896314","839977061384978492","839977410966847539","824731087863021588","850422940646506617","824727128758943795","824726760808513606","824727077366005800","824732131678617600","824762348396216401","830113799763525642", "830114000448258058" ,"824725152692174879" ,"825868136782757918","824726713605947403","832301102236958770","829870229470838814","824731870628413480"]
+//let arrayId = ["824726156141658132", "825029496305614927", "824749359118811187","824725851198849075","824726635902271518", "830253971637665832", "824725623346954271","824761075387727912","824728100645896314","839977061384978492","839977410966847539","824731087863021588","850422940646506617","824727128758943795","824726760808513606","824727077366005800","824732131678617600","824762348396216401","830113799763525642", "830114000448258058" ,"824725152692174879" ,"825868136782757918","824726713605947403","832301102236958770","829870229470838814","824731870628413480"]
 
 // serveur test
-//let arrayId = ["829832421825708064","829254726495240214","829254687630557185","829205364444364800","829250418244321280", null ,"829873265194303498","830240201111896135","830240173727547424","839977899581767700","830240221584687104","830240221584687104","849541121846935592","829269425290215463","829216633205424128","837575217907105813","837499365835669536","830240252248850433","830121244208267334","830121185885945880","829228486660063262","835014782594711593" ,"829239671925637150","829239671925637150","833229701190385676","833229701190385676"]
+let arrayId = ["829832421825708064","829254726495240214","829254687630557185","829205364444364800","829250418244321280", null ,"829873265194303498","830240201111896135","830240173727547424","839977899581767700","830240221584687104","830240221584687104","849541121846935592","829269425290215463","829216633205424128","837575217907105813","837499365835669536","830240252248850433","830121244208267334","830121185885945880","829228486660063262","835014782594711593" ,"829239671925637150","829239671925637150","833229701190385676","833229701190385676"]
 
 //           id serv officiel                   id serv test
 let mort = arrayId[0]           
@@ -205,11 +207,93 @@ let clearJail = async function(jailedChan){
   }
 }
 
+var kill = function(died) {
+  let graveyardmot = new Discord.MessageEmbed()
+  .setDescription(`Le lastwill de **${died.displayname}** était: **${died.lastwillappear}**`)
+  .addField("Son rôle était: ", died.roleappear.name)
+  .setColor(color)
+
+  let pasLW = new Discord.MessageEmbed()
+  .setDescription(`**${died.displayname}** n'a pas de lastwill`)
+  .addField("Son rôle était: ", died.roleappear.name)
+  .setColor(color)
+
+  if(died.lastwillappear == null) {
+    died.serverRoles = [mort]
+    bot.channels.cache.get(graveyard).send(pasLW)   
+  }else{
+    bot.channels.cache.get(graveyard).send(graveyardmot)      
+  }
+
+  if(died.role.alignement == "Coven Evil") {
+    for( var i = 0; i < joueurCoven.length; i++){ 
+      if ( joueurCoven[i] === died) { 
+        joueurCoven.splice(i, 1); 
+      }
+    }
+  }
+
+  died.necro = false
+  died.user.roles.add(mort)
+  died.user.roles.add(spec)
+  died.user.roles.remove(vivant)
+  died.user.roles.remove(nuit)
+  died.user.roles.remove(jour)
+}
+
+setInterval( //!résults automatique
+  () => {
+    if(numJour == 0 || numJour == -1) return
+    if(new Date().toUTCString().split(" ")[4] == HeureResults) {
+      var targetedPlayer = [alive()[0]]
+      alive().forEach(player => {
+            player.id,
+            {VIEW_CHANNEL: true, SEND_MESSAGES: false}
+        if (player.id != targetedPlayer[0].id){
+          if(targetedPlayer[0].votesFor < player.votesFor){
+            targetedPlayer = [player]
+          }
+          else if (targetedPlayer[0].votesFor == player.votesFor) {
+            targetedPlayer.push(player) 
+          }
+        }
+      });  
+      if(targetedPlayer.length == alive().length) {
+        return bot.channels.cache.get(panchanid).send(new Discord.MessageEmbed()
+        .setDescription("Il n'y a pas eu de vote aujourd'hui")
+        .setColor(color))
+      }else if (targetedPlayer.length == 1){
+        if(targetedPlayer[0].votesFor > (alive().length + votemaire) / 2){
+          bot.channels.cache.get(panchanid).send(new Discord.MessageEmbed()
+          .setDescription(`Le village a décidé de pendre **${targetedPlayer[0].displayname}** par un vote de **${targetedPlayer[0].votesFor}** - **${(alive().length - targetedPlayer[0].votesFor)}**`)
+          .setColor(color))
+          kill(targetedPlayer[0])
+        }
+        else{
+          return bot.channels.cache.get(panchanid).send(new Discord.MessageEmbed()
+        .setDescription(`Le village a décidé d'épargner **${targetedPlayer[0].displayname}** par un vote de **${targetedPlayer[0].votesFor}** - **${(alive().length - targetedPlayer[0].votesFor)}**`)
+        .setColor(color))
+        }
+      }else{
+        var desc = "Il y a une égalité entre "
+        targetedPlayer.forEach(player => {
+          if(player.id != targetedPlayer[0].id){
+            desc += " et "
+          }
+          desc += player.displayname
+        });
+        desc += ". Aucun des deux ne sera pendu"
+        return bot.channels.cache.get(panchanid).send(new Discord.MessageEmbed()
+        .setDescription(desc)
+        .setColor(color))
+      }
+    }
+  }, 1000);
+
 bot.on('ready', () => {
   console.log("bot online")
   console.log(new Date().toLocaleString())
   bot.user.setActivity('Phil pcq y pue', { type: 'WATCHING' })
-  console.log(godId)
 })
 
 bot.on("message", (message) => {
@@ -268,40 +352,6 @@ bot.on("message", (message) => {
     }
   })
   var taggedUser = message.mentions.members.first()
-
-  var kill = function(died) {
-    let graveyardmot = new Discord.MessageEmbed()
-    .setDescription(`Le lastwill de **${died.displayname}** était: **${died.lastwillappear}**`)
-    .addField("Son rôle était: ", died.roleappear)
-    .setColor(color)
-
-    let pasLW = new Discord.MessageEmbed()
-    .setDescription(`**${died.displayname}** n'a pas de lastwill`)
-    .addField("Son rôle était: ", died.roleappear)
-    .setColor(color)
-
-    if(died.lastwillappear == null) {
-      died.serverRoles = [mort]
-      graveyardChan.send(pasLW)   
-    }else{
-      graveyardChan.send(graveyardmot)      
-    }
-
-    if(died.role.alignement == "Coven Evil") {
-      for( var i = 0; i < joueurCoven.length; i++){ 
-        if ( joueurCoven[i] === died) { 
-          joueurCoven.splice(i, 1); 
-        }
-      }
-    }
-
-    died.necro = false
-    died.user.roles.add(mort)
-    died.user.roles.add(spec)
-    died.user.roles.remove(vivant)
-    died.user.roles.remove(nuit)
-    died.user.roles.remove(jour)
-  }
 
   var processActions = function() {
 
@@ -890,16 +940,70 @@ bot.on("message", (message) => {
     message.channel.send(gameend)
 
   }
+  
+  else if(cmd == "heurevote") {
+    if(!god && !dev) return message.channel.send(pasGod)
+    if(start == true) return message.channel.send(commencee)
+    if(!args[0]) return message.channel.send("Quelle heure?")
+    let offset = 5
+    if(new Date().getTimezoneOffset() == 240) {
+      offset = 4
+    }
+    if(args[0].split("").length < 4 || 5 < args[0].split("").length) return message.channel.send(new Discord.MessageEmbed()
+    .setDescription(`Mauvais format! ex: 20:45`)
+    .setColor(color))
 
-  if(cmd == "traitor") {
+    if(args[0].split("").length == 4) {
+      if(!isNaN(args[0].split("")[0]) && args[0].split("")[1] == ":" && !isNaN(args[0].split("")[2]) && !isNaN(args[0].split("")[3])) {
+        let heure = args[0].split(":")[0]
+        let minute = args[0].split(":")[1]
+        if(heure > 23 || heure < 0) return message.channel.send("Entre 0 et 23H")
+        heurePendre.setUTCHours(parseInt(heure) + offset, minute, 0, 0)
+        HeureResults = heurePendre.toUTCString().split(" ")[4]
+        console.log(HeureResults)
+        message.channel.send(new Discord.MessageEmbed()
+        .setDescription(`Le vote passera automatiquement à **${args[0]}** AM`)
+        .setColor(color)) 
+      }else{
+        message.channel.send(new Discord.MessageEmbed()
+        .setDescription(`Mauvais format! ex: 20:45`)
+        .setColor(color))
+      }
+    }else if(args[0].split("").length == 5) {
+      let am_pm = "PM"
+      if(args[0].split(":")[0] < 12) {
+        am_pm = "AM"
+      }
+      if(!isNaN(args[0].split("")[0]) && !isNaN(args[0].split("")[1]) && args[0].split("")[2] == ":" && !isNaN(args[0].split("")[3]) && !isNaN(args[0].split("")[4])) {
+        let heure = args[0].split(":")[0]
+        let minute = args[0].split(":")[1]
+        heurePendre.setUTCHours(parseInt(heure) + offset, minute, 0, 0)
+        HeureResults = heurePendre.toUTCString().split(" ")[4]
+        console.log(HeureResults)
+        message.channel.send(new Discord.MessageEmbed()
+        .setDescription(`Le vote passera automatiquement à **${args[0]}** ${am_pm}`)
+        .setColor(color)) 
+      }else{
+        message.channel.send(new Discord.MessageEmbed()
+        .setDescription(`Mauvais format! ex: 20:45`)
+        .setColor(color))
+      }
+    }
+  }
+
+  else if(cmd == "traitor") {
     if(!god && !dev) return message.channel.send(pasGod)
     if(partie.isStarted == true) return message.channel.send(commencee)
     if(traitor == false) {
       traitor = true
-      message.channel.send(`Mode **Traitor** activé!`)
+      message.channel.send(new Discord.MessageEmbed()
+      .setDescription("Mode **Traitor** activé!")
+      .setColor(color))
     }else{
       traitor = false
-      message.channel.send(`Mode **Traitor** désactivé!`)
+      message.channel.send(new Discord.MessageEmbed()
+      .setDescription("Mode **Traitor** désactivé!")
+      .setColor(color))
     }
   }
   
@@ -1047,24 +1151,32 @@ bot.on("message", (message) => {
   else if(cmd == "kill") {
     if(!god && !dev) return message.channel.send(pasGod)
     if(partie.isStarted == false) return message.channel.send(pascomme)
+    if(commencer == false) return message.channel.send(pascomme)
     if(!args[0]) return message.channel.send(qui)
     if(!taggedUser.roles.cache.has(vivant)) return message.channel.send(pasVivant)
     if(!args[1]) return kill(tagged)
     if(args[1] == "stoned" || "cleaned" || "bloody") {
       if(args[1] == "stoned") {
-        tagged.roleappear = "Stoned"
+        tagged.roleappear.name = "Stoned"
         tagged.lastwillappear = null
         kill(tagged)
       }else if(args[1] == "cleaned") {
         alive().forEach(player => {
           if(player.role.name == "Consierge") {
-            message.guild.channels.cache.get(tagged.interface).send(new Discord.MessageEmbed()
-            .setDescription(`Le rôle de **${tagged.displayname}** était: **${tagged.role.name}**`)
-            .addField(`Son **lastwill** était: ${tagged.lastwill}`)
-            .setColor(color))
+            if(tagged.lastwill == null) {
+              message.guild.channels.cache.get(player.interface).send(new Discord.MessageEmbed()
+              .setDescription(`**${tagged.displayname}** n'a pas de lastwill`)
+              .addField(`Le rôle de **${tagged.displayname}** était: `, `**${tagged.role.name}**`)
+              .setColor(color))
+            }else{
+              message.guild.channels.cache.get(player.interface).send(new Discord.MessageEmbed()
+              .setDescription(`Le rôle de **${tagged.displayname}** était: `, `**${tagged.role.name}**`)
+              .addField(`Son **lastwill** était: ${tagged.lastwill}`)
+              .setColor(color))  
+            }
           }
         });
-        tagged.roleappear = "Cleaned"
+        tagged.roleappear.name = "Cleaned"
         tagged.lastwillappear = null
         kill(tagged)
       }else if(args[1] == "bloody") {
@@ -1118,11 +1230,9 @@ bot.on("message", (message) => {
     .setColor(color))
     let number = Math.random() * 1
     if(number >= 0.3) {
-      console.log(args[1])
       commands.prototype.getAllRoles().forEach(role => {
         if(role.name == args[1]){
           tagged.scroll = role
-          console.log(tagged.scroll)
         }
       });  
     }
@@ -1480,7 +1590,6 @@ bot.on("message", (message) => {
     }
 
     alive().forEach(player => {
-      console.log(player.displayname)
       if(player.role.name == "Jailor") {
         jailChan.updateOverwrite(
           player.id,
@@ -1598,17 +1707,21 @@ bot.on("message", (message) => {
       if(player.role.alignement == "Town Support" || player.role.alignement == "Town Killing" || player.role.alignement == "Town Investigative") {
         listeTown.push(player)
       }
-
+      console.log(player.role.name)
       player.roleappear = player.role.name
       
     });
 
     if(traitor == true) {
       traitre = shuffle(listeTown)[Math.floor(Math.random() * listeTown.length)]
+      console.log(traitre.id)
       mafiaChan.updateOverwrite(
         traitre.id,
         {VIEW_CHANNEL: true, SEND_MESSAGES: true}
       )
+      bot.channels.cache.get(traitre.interface).send(new Discord.MessageEmbed()
+        .setDescription("**Tu es le traitre de la town! Tu es en équipe avec la mafia!**")
+        .setColor(color))
     }
 
     let ordreJoueurs = alive()
@@ -1653,6 +1766,10 @@ bot.on("message", (message) => {
     if(!god && !dev) return message.channel.send(pasGod)
     var targetedPlayer = [alive()[0]]
     alive().forEach(player => {
+      pendChan.updateOverwrite(
+        player.id,
+        {VIEW_CHANNEL: true, SEND_MESSAGES: false}
+      )
       if (player.id != targetedPlayer[0].id){
         if(targetedPlayer[0].votesFor < player.votesFor){
           targetedPlayer = [player]
@@ -2002,6 +2119,8 @@ bot.on("message", (message) => {
       .addField("!gamemode [gamemode]", "Choisie le gamemode de la partie")
       .addField("!jour (message)", "Permet de mettre le jour")
       .addField("!nuit (message)", "Permet de mettre la nuit")
+      .addField("!traitor", "Toggle le mode town traitor")
+      .addField("!heurevote", "Ajoute une heure dans un format 24H pour que le !results se fasse tout seul.")
       .addField("!roles", "Donne les rôles a chaques joueurs")
       .addField("!info @[User]", "Pour avoir de l'info sur le joueur")
       .addField("!alive @[User]", "Pour mettre quelqu'un en vie")
@@ -2122,17 +2241,20 @@ bot.on('message', async (message) => {
   catch(err){tagged = null}
 
   if(cmd == "start"){
-    let class20 = ""
-    let class15 = ""
-    let any15 = ""
-    let slineNum = 0
-
+    if(!god && !dev) return message.channel.send(pasGod)
     if(partie.isStarted == true) return message.channel.send(new Discord.MessageEmbed()
     .setDescription("La partie est déja commencée!")
     .setColor(color))
     if(start) return message.channel.send(new Discord.MessageEmbed()
     .setDescription("Tu as déja envoyer un start")
     .setColor(color))
+    /*if(HeureResults == "") return message.channel.send(new Discord.MessageEmbed()
+    .setDescription("À quelle heure le vote passe? **!heurevote**")
+    .setColor(color))*/
+    let class20 = ""
+    let class15 = ""
+    let any15 = ""
+    let slineNum = 0
 
     for (let i = 1; i <= classique20.length; i++){
       class20 += i + ". " + classique20[i-1] + "\n"
@@ -2149,9 +2271,7 @@ bot.on('message', async (message) => {
     .setColor(color)
     if(partie.gamemode == null) return message.channel.send(quelgm)
 
-    let messagestart = ""
-    if(!god && !dev) return message.channel.send(pasGod)
-    
+    let messagestart = ""    
     if(!(isNaN(args[0]))) {
       nbrJoueurMax = args[0]
       slineNum = 1
@@ -2339,6 +2459,8 @@ bot.on('message', async (message) => {
     actions.forEach(action => {
     });
 
+    console.log(alive())
+
     partie.time = "jour"
     numJour = numJour + 1
     jailed = ""
@@ -2365,6 +2487,10 @@ bot.on('message', async (message) => {
           votemaire = 2
         }
       }
+      pendChan.updateOverwrite(
+        player.id,
+        {VIEW_CHANNEL: true, SEND_MESSAGES: false}
+      )
 
       jailedChan.updateOverwrite(
         player.id,

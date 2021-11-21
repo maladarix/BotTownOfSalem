@@ -100,7 +100,6 @@ class commands{
     players.forEach(player =>{
       if(player.scroll != null){
         scrolls.push({player : player, role : player.scroll, position : null})
-        console.log(scrolls[0].role)
       }
     })
     scrolls.forEach(x => {
@@ -129,7 +128,6 @@ class commands{
       currentgamemode[found] = x.role.name
       x.position = found
     })
-    console.log(currentgamemode)
     currentgamemode.forEach(role => {
     if(role == "Jailor") {
       this.getJailor()
@@ -310,15 +308,13 @@ class commands{
     listerandom[pos] = listerandom[x.position];
     listerandom[x.position] = t;
   })
-  console.log(listerandom.length)
   this.distributeRoles(partie)
   
   }
   
   distributeRoles(partie){
     for (let index = 0; index < listerandom.length; index++) {
-      listerandom[index].role = partie.listeroles[index]
-      console.log(listerandom[index].name +  " " + partie.listeroles[index].name)      
+      listerandom[index].role = partie.listeroles[index]    
     }
   }
 
@@ -438,7 +434,6 @@ class commands{
 
   getNeutralEvil(){
     gameroles.push(shuffle(neutralevil)[Math.floor(Math.random() * neutralevil.length)])
-    console.log(gameroles)
   }
 
   getCovenEvil(){
@@ -463,7 +458,6 @@ class commands{
       }
     }while (!good)
     gameroles.push(randomneutralkill)
-    console.log(gameroles)
   }
 
   getNeutralKillingCoven(){
