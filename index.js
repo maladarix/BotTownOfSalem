@@ -8,14 +8,18 @@ require("dotenv").config()
 
 var nbrJoueurMax = 0
 let numjoueur = 0
+let votemaire = 0
 var nomgamemode = null
 let start = false
+let traitor = false
 let jailed = ""
+let traitre = null
 let nouvgmoffi = []
 let resultsactions = []
 var whispersChannels = []
 let whispmaire = []
 var interfaces = []
+var listeTown = []
 var listejoueur = []
 let listeroles = []
 let joueurroles = []
@@ -54,7 +58,7 @@ let listeroleid = "824731870628413480"    "833229701190385676"
 */
 
 // serveur officiel
-let arrayId = ["824726156141658132", "825029496305614927", "824749359118811187","824725851198849075","824726635902271518", "830253971637665832", "824725623346954271","824761075387727912","824728100645896314","839977061384978492","839977410966847539","824731087863021588","850422940646506617","824727128758943795","824726760808513606","824727077366005800","824732131678617600","824732131678617600","824762348396216401","830113799763525642", "830114000448258058" ,"824725152692174879" ,"825868136782757918","824726713605947403","832301102236958770","829870229470838814","824731870628413480"]
+let arrayId = ["824726156141658132", "825029496305614927", "824749359118811187","824725851198849075","824726635902271518", "830253971637665832", "824725623346954271","824761075387727912","824728100645896314","839977061384978492","839977410966847539","824731087863021588","850422940646506617","824727128758943795","824726760808513606","824727077366005800","824732131678617600","824762348396216401","830113799763525642", "830114000448258058" ,"824725152692174879" ,"825868136782757918","824726713605947403","832301102236958770","829870229470838814","824731870628413480"]
 
 // serveur test
 //let arrayId = ["829832421825708064","829254726495240214","829254687630557185","829205364444364800","829250418244321280", null ,"829873265194303498","830240201111896135","830240173727547424","839977899581767700","830240221584687104","830240221584687104","849541121846935592","829269425290215463","829216633205424128","837575217907105813","837499365835669536","830240252248850433","830121244208267334","830121185885945880","829228486660063262","835014782594711593" ,"829239671925637150","829239671925637150","833229701190385676","833229701190385676"]
@@ -161,6 +165,28 @@ let nuitembed = new Discord.MessageEmbed()
 .setDescription("C'est la nuit! Regarde l'heure!")
 .setColor(color);
 
+let commencee = new Discord.MessageEmbed()
+.setDescription("La partie est déja commencée!")
+.setColor(color);
+
+var shuffle = function (array) {
+  var m = array.length, t, i;
+    
+  // While there remain elements to shuffle…
+  while (m) {
+    
+  // Pick a remaining element…
+  i = Math.floor(Math.random() * m--);
+       
+  // And swap it with the current element.
+  t = array[m];
+  array[m] = array[i];
+  array[i] = t;
+  }
+        
+  return array;
+}
+
 let alive = function (){
   let alive = new Array()
   listejoueur.forEach(player => {
@@ -183,6 +209,7 @@ bot.on('ready', () => {
   console.log("bot online")
   console.log(new Date().toLocaleString())
   bot.user.setActivity('Phil pcq y pue', { type: 'WATCHING' })
+  console.log(godId)
 })
 
 bot.on("message", (message) => {
@@ -863,6 +890,18 @@ bot.on("message", (message) => {
     message.channel.send(gameend)
 
   }
+
+  if(cmd == "traitor") {
+    if(!god && !dev) return message.channel.send(pasGod)
+    if(partie.isStarted == true) return message.channel.send(commencee)
+    if(traitor == false) {
+      traitor = true
+      message.channel.send(`Mode **Traitor** activé!`)
+    }else{
+      traitor = false
+      message.channel.send(`Mode **Traitor** désactivé!`)
+    }
+  }
   
   else if(cmd == "lastwill") {
     if(partie.isStarted == false) return message.channel.send(pascomme)
@@ -1011,7 +1050,7 @@ bot.on("message", (message) => {
     if(!args[0]) return message.channel.send(qui)
     if(!taggedUser.roles.cache.has(vivant)) return message.channel.send(pasVivant)
     if(!args[1]) return kill(tagged)
-    if(args[1] == "stoned" || "cleaned") {
+    if(args[1] == "stoned" || "cleaned" || "bloody") {
       if(args[1] == "stoned") {
         tagged.roleappear = "Stoned"
         tagged.lastwillappear = null
@@ -1028,9 +1067,12 @@ bot.on("message", (message) => {
         tagged.roleappear = "Cleaned"
         tagged.lastwillappear = null
         kill(tagged)
+      }else if(args[1] == "bloody") {
+        tagged.lastwillappear = "Le lastwill était ensanglanté"
+        kill(tagged)
       }
     }else{
-      message.channel.send("stoned ou cleaned?")
+      message.channel.send("stoned, cleaned ou blood?")
     }
   }
   
@@ -1289,25 +1331,32 @@ bot.on("message", (message) => {
       if(player.role.alignement == (("Mafia Support") || ("Mafia Killing") || ("Mafia Deception"))) {
         mafiaChan.updateOverwrite(
           player.id,
-          {"VIEW_CHANNEL": true, "SEND_MESSAGES" : false}
+          {VIEW_CHANNEL: true, SEND_MESSAGES: true}
         )
       }else if(player.role.name == "Vampire") {
         vampirechan.updateOverwrite(
           player.id,
-          {"VIEW_CHANNEL": true, "SEND_MESSAGES" : false}
+          {VIEW_CHANNEL: true, SEND_MESSAGES: true}
         )
       }else if(player.role.name == "Vampire-Hunter") {
         observatoirechan.updateOverwrite(
           player.id,
-          {"VIEW_CHANNEL": true, "SEND_MESSAGES" : false}
+          {VIEW_CHANNEL: true, SEND_MESSAGES: true}
         )
       }else if(player.role.alignement == "Coven Evil") {
         covenchan.updateOverwrite(
           player.id,
-          {"VIEW_CHANNEL": true, "SEND_MESSAGES" : false}
+          {VIEW_CHANNEL: true, SEND_MESSAGES: true}
         )  
       }
     });
+
+    if(traitor == true) {
+      mafiaChan.updateOverwrite(
+        traitre.id,
+        {VIEW_CHANNEL: true, SEND_MESSAGES: true}
+      )
+    }
 
     whispersChannels.forEach(whisper => {
       let chan = message.guild.channels.cache.get(whisper);
@@ -1399,9 +1448,11 @@ bot.on("message", (message) => {
       deny: ['SEND_MESSAGES'],
     }
     ])
+    if(author.role.name == "Maire") {
+      whispmaire.push(channel.id)
+    }
     whispersChannels.push(channel.id)
-    whispmaire.push(channel.id)
-    }) 
+    })
   }
 
   else if(cmd == "roles") {
@@ -1544,9 +1595,21 @@ bot.on("message", (message) => {
         joueurCoven.push(player)
       }
 
+      if(player.role.alignement == "Town Support" || player.role.alignement == "Town Killing" || player.role.alignement == "Town Investigative") {
+        listeTown.push(player)
+      }
+
       player.roleappear = player.role.name
       
     });
+
+    if(traitor == true) {
+      traitre = shuffle(listeTown)[Math.floor(Math.random() * listeTown.length)]
+      mafiaChan.updateOverwrite(
+        traitre.id,
+        {VIEW_CHANNEL: true, SEND_MESSAGES: true}
+      )
+    }
 
     let ordreJoueurs = alive()
     ordreJoueurs.sort(function(a, b){return a.number - b.number});
@@ -1604,7 +1667,7 @@ bot.on("message", (message) => {
       .setDescription("Il n'y a pas eu de vote aujourd'hui")
       .setColor(color))
     }else if (targetedPlayer.length == 1){
-      if(targetedPlayer[0].votesFor > (alive().length/2)){
+      if(targetedPlayer[0].votesFor > (alive().length + votemaire) / 2){
         message.channel.send(new Discord.MessageEmbed()
         .setDescription(`Le village a décidé de pendre **${targetedPlayer[0].displayname}** par un vote de **${targetedPlayer[0].votesFor}** - **${(alive().length - targetedPlayer[0].votesFor)}**`)
         .setColor(color))
@@ -1632,6 +1695,7 @@ bot.on("message", (message) => {
 
   else if(cmd == "coven") {
     if(!god && !dev) return message.channel.send(pasGod)
+    if(partie.isStarted == true) return message.channel.send(commencee)
     if(partie.coven == true) {
       partie.coven = false
       message.channel.send("Le coven à été désactivé!")
@@ -1934,6 +1998,7 @@ bot.on("message", (message) => {
       .setTitle("**Commandes God**")
       .addField("!swhisp [nbWhisp]", "Mettre la limite de whisp par jour")
       .addField("!coven", "Toggle le mode coven")
+      .addField("!traitor", "Toggle le mode traitor")
       .addField("!gamemode [gamemode]", "Choisie le gamemode de la partie")
       .addField("!jour (message)", "Permet de mettre le jour")
       .addField("!nuit (message)", "Permet de mettre la nuit")
@@ -2261,7 +2326,7 @@ bot.on('message', async (message) => {
     .setDescription("C'est déja le **jour**!")
     .setColor(color))
 
-    let votemaire = 0
+    votemaire = 0
 
     if(args[0]) {
       let messagejour = ""
@@ -2308,25 +2373,32 @@ bot.on('message', async (message) => {
       if(player.role.alignement == "Mafia Support" || player.role.alignement == "Mafia Killing" || player.role.alignement == "Mafia Deception") {
         mafiaChan.updateOverwrite(
           player.id,
-          {"VIEW_CHANNEL": true, "SEND_MESSAGES" : false}
+          {"VIEW_CHANNEL": true, "SEND_MESSAGES": false}
         )
       }else if(player.role.name == "Vampire") {
         vampirechan.updateOverwrite(
           player.id,
-          {"VIEW_CHANNEL": true, "SEND_MESSAGES" : false}
+          {"VIEW_CHANNEL": true, "SEND_MESSAGES": false}
         )
       }else if(player.role.name == "Vampire-Hunter") {
         observatoirechan.updateOverwrite(
           player.id,
-          {"VIEW_CHANNEL": true, "SEND_MESSAGES" : false}
+          {"VIEW_CHANNEL": true, "SEND_MESSAGES": false}
         )
       }else if(player.role.alignement == "Coven Evil") {
         covenchan.updateOverwrite(
           player.id,
-          {"VIEW_CHANNEL": true, "SEND_MESSAGES" : false}
+          {"VIEW_CHANNEL": true, "SEND_MESSAGES": false}
         )  
       } 
     });
+
+    if(traitor == true) {
+      mafiaChan.updateOverwrite(
+        traitre.id,
+        {VIEW_CHANNEL: true, SEND_MESSAGES: false}
+      )
+    }
 
     pendChan.send(new Discord.MessageEmbed()
     .setDescription(`**${Math.floor((alive().length + votemaire) / 2) + 1}** votes sont nécéssaire pour pendre aujourd'hui.`)
@@ -2337,7 +2409,6 @@ bot.on('message', async (message) => {
 
     await clearJail(jailedChan);
   }
-
 
   else if(cmd == "p") {
     let pendrChan = new Discord.MessageEmbed()
@@ -2503,7 +2574,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
     });
     if(reaction.emoji.id == turtleId){
       if(!reactor.serverRoles.includes(vivant)) {
-        //if(!reactor.serverRoles.includes(godId)) {
+        if(!reactor.serverRoles.includes(godId)) {
           if(alive().length < nbrJoueurMax) {
             reactor.user.roles.add(vivant)
             reactor.serverRoles.push(vivant)
@@ -2562,7 +2633,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
               }, 5000);
             });
           }  
-        /*}else{
+        }else{
           reaction.message.channel.send(new Discord.MessageEmbed()
           .setDescription(`<@${reactor.id}>, tu es god.`)
           .setColor(color)).then((sent) => {
@@ -2570,7 +2641,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
               sent.delete();
             }, 5000);
           });
-        }*/ 
+        }
       }else{
         reaction.message.channel.send(new Discord.MessageEmbed()
           .setDescription(`<@${reactor.id}>, vous faites déjà partie de la partie!`)
