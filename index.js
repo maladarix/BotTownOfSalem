@@ -3,7 +3,6 @@ const Commands = require('./src/commands.js');
 const Player = require('./src/player.js');
 const Partie = require('./src/game.js');
 const commands = require('./src/commands.js');
-const plague = require('./src/Roles/neutral/plague.js');
 const bot = new Discord.Client();
 require("dotenv").config()
 
