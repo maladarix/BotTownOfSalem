@@ -33,40 +33,11 @@ let actions = []
 let joueurCoven = []
 let listeSpect = []
 
-/*           id serv officiel                   id serv test
-let mort = "824726156141658132"           "829832421825708064"      
-let jour = "825029496305614927"           "829254726495240214"
-let nuit = "824749359118811187"           "829254687630557185"
-let vivant = "824725851198849075"         "829205364444364800"
-let spec = "824726635902271518"           "829250418244321280"
-let devid = "830253971637665832"
-let quiVeutJouer = "824725623346954271"   "829873265194303498"
-let jailedid = "824761075387727912"       "830240201111896135"
-let jail = "824728100645896314"           "830240173727547424"
-let vampirechat = "839977061384978492     "839977899581767700"
-let observatoire = "839977410966847539"   "839977922328526858"
-let mafiaChat = "824731087863021588"      "830240221584687104"
-let covenid = "850422940646506617"        "849541121846935592"
-let panchanid = "824727128758943795"      "829269425290215463"
-let dmchanid = "824726760808513606"       "829216633205424128"
-let villageid = "824727077366005800"      "837575217907105813"
-let gameannoncid = "824732131678617600"   "837499365835669536"
-let spyHideout = "824762348396216401"     "830240252248850433"
-let turtleId = "830113799763525642"       "830121244208267334"
-let eyesId = "830114000448258058"         "830121185885945880"
-let godId = "824725152692174879"          "829228486660063262"
-let graveyard = "825868136782757918"      "835014782594711593"    
-let parentwhisp = "824726713605947403"    "829239671925637150"
-let parentInterface="832301102236958770"  "829239671925637150"
-let adminchat = "829870229470838814"      "833229701190385676"
-let listeroleid = "824731870628413480"    "833229701190385676" 
-*/
-
 // serveur officiel
-//let arrayId = ["824726156141658132","825029496305614927","824749359118811187","824725851198849075","824726635902271518","830253971637665832","824725623346954271","824761075387727912","824728100645896314","839977061384978492","839977410966847539","824731087863021588","850422940646506617","824727128758943795","824726760808513606","824727077366005800","824732131678617600","824762348396216401","830113799763525642", "830114000448258058" ,"824725152692174879" ,"825868136782757918","824726713605947403","832301102236958770","829870229470838814","824731870628413480"]
+let arrayId = ["824726156141658132","825029496305614927","824749359118811187","824725851198849075","824726635902271518","830253971637665832","824725623346954271","824761075387727912","824728100645896314","839977061384978492","839977410966847539","824731087863021588","850422940646506617","824727128758943795","824726760808513606","824727077366005800","824732131678617600","824762348396216401","830113799763525642", "830114000448258058" ,"824725152692174879" ,"825868136782757918","824726713605947403","832301102236958770","829870229470838814","824731870628413480"]
 
 // serveur test
-let arrayId = ["829832421825708064","829254726495240214","829254687630557185","829205364444364800","829250418244321280", null ,"829873265194303498","830240201111896135","830240173727547424","839977899581767700","830240221584687104","830240221584687104","849541121846935592","829269425290215463","829216633205424128","837575217907105813","837499365835669536","830240252248850433","830121244208267334","830121185885945880","829228486660063262","835014782594711593" ,"829239671925637150","829239671925637150","833229701190385676","833229701190385676"]
+//let arrayId = ["829832421825708064","829254726495240214","829254687630557185","829205364444364800","829250418244321280", null ,"829873265194303498","830240201111896135","830240173727547424","839977899581767700","830240221584687104","830240221584687104","849541121846935592","829269425290215463","829216633205424128","837575217907105813","837499365835669536","830240252248850433","830121244208267334","830121185885945880","829228486660063262","835014782594711593" ,"829239671925637150","829239671925637150","833229701190385676","833229701190385676"]
 
 let mort = arrayId[0]           
 let jour = arrayId[1]          
@@ -224,6 +195,7 @@ var kill = function(died) {
     died.serverRoles = [mort]
     bot.channels.cache.get(graveyard).send(pasLW)   
   }else{
+    died.serverRoles = [mort]
     bot.channels.cache.get(graveyard).send(graveyardmot)      
   }
 
@@ -365,11 +337,13 @@ bot.on("message", (message) => {
       if(element.author.role.priority == 1) {
         if(element.target1.isjailed || element.target2.isjailed )
         {
-          message.guild.channels.cache.get(element.author.interface).send("Votre action a échoué! Votre cible était en prison.")
+          resultsactions.push({player : `${element.author.name}`, message : "Votre action a échoué! Votre cible était en prison."})
+          //message.guild.channels.cache.get(element.author.interface).send("Votre action a échoué! Votre cible était en prison.")
         }
         else if(element.author.isjailed)
         {
-          message.guild.channels.cache.get(element.author.interface).send("Votre action a échoué! Vous étiez en prison.")
+          resultsactions.push({player : `${element.author.name}`, message : "Votre action a échoué! Vous étiez en prison."})
+          //message.guild.channels.cache.get(element.author.interface).send("Votre action a échoué! Vous étiez en prison.")
         }
         else if(element.author.witch != null)
         {
@@ -378,66 +352,28 @@ bot.on("message", (message) => {
         else{
           switch(element.type){
             case "onalert" :
-              if(element.author.actionsRemaining != 0)
-              {
+              if(element.author.actionsRemaining != 0) {
                 element.author.isAlert = true
                 element.author.actionsRemaining --
-                //Message de confirmation d'action
-              }
-              else{
-                //Message d'erreur ici
+                resultsactions.push({player : `${element.author.name}`, message : `Il vous reste ${element.author.actionsRemaining} alerte.`})
+              }else{
+                resultsactions.push({player : `${element.author.name}` , message : `Votre action a échoué. Vous naviez plus d'alerte.`})
               }
               break;
             case "transport" :
               element.target1.trans = element.target2
               element.target2.trans = element.target1
-              //Message de confirmation d'action
+              resultsactions.push({player : `${element.author.name}`, message : `Votre action a été effectuée avec succès!`})
+              resultsactions.push({player : `${element.target1.name}`, message : `Vous avez été transporté vers un autre endroit.`})
+              resultsactions.push({player : `${element.target2.name}`, message : `Vous avez été transporté vers un autre endroit.`})
               break;
             case "jestExecute" :
-              kill(element.target1)
-              //Message de confirmation d'action
+              //kill(element.target1)
+              resultsactions.push({player : `${element.target1.name}`, message : `Vous avez été hanté par le Jester. Vous vous êtes suicidé de remords.`})
               break;
             case "ambush" :
               element.target1.ambushed = element.author
-              //Message de confirmation d'action
-              break;
-            case "seance" :
-              if(!element.author.seanceUsed)
-              {
-                let channelName = `seance ` + target1.user.username 
-                element.author.seanceUsed = true
-            
-                message.guild.channels.create(channelName,{type:"text",})
-                .then((channel) => {
-                  channel.setParent(parentwhisp)
-                  channel.overwritePermissions([
-                  {
-                    id: channel.guild.id,
-                    deny: ['VIEW_CHANNEL'],
-                  },{
-                    id: vivant,
-                    deny: ['VIEW_CHANNEL'],
-                  },{
-                    id: author.id,
-                    allow: ['VIEW_CHANNEL'],
-                  },{
-                    id: tagged.id,
-                    allow: ['VIEW_CHANNEL'],
-                  },{
-                    id: spec,
-                    allow: ['VIEW_CHANNEL'],
-                    deny: ['SEND_MESSAGES'],
-                  },{
-                    id: mort,
-                    deny: ['VIEW_CHANNEL'],
-                  }
-                  ])
-                })
-                //Message de confirmation ici
-              }
-              else{
-                //message d'erreur ici
-              }
+              resultsactions.push({player : `${element.author.name}`, message : `Votre action a été effectuée avec succès!`})
               break;
           }
         }
@@ -450,38 +386,36 @@ bot.on("message", (message) => {
       {
         if(element.target1.isjailed)
         {
-          message.guild.channels.cache.get(element.author.interface).send("Votre action a échoué! Votre cible était en prison.")
+          resultsactions.push({player : `${element.author.name}`, message : "Votre action a échoué! Votre cible était en prison."})
+          //message.guild.channels.cache.get(element.author.interface).send("Votre action a échoué! Votre cible était en prison.")
         }
         else if(element.author.isjailed)
         {
-          message.guild.channels.cache.get(element.author.interface).send("Votre action a échoué! Vous étiez en prison.")
+          resultsactions.push({player : `${element.author.name}`, message : "Votre action a échoué! Vous étiez en prison."})
+          //message.guild.channels.cache.get(element.author.interface).send("Votre action a échoué! Vous étiez en prison.")
         }
         else if(element.author.witch != null)
         {
           //Envoyer un message ici
         }
-        else if (element.target1.role.name == "Veteran" && element.target1.role.isAlert)
-        {
+        else if (element.target1.role.name == "Veteran" && element.target1.role.isAlert) {
           let healed = false
           actions.forEach(heal => {
-            if (heal.type == "heal" && heal.target1 == element.target1){
+            if (heal.type == "heal" && heal.target1 == element.target1) {
               healed = true
             }
           })
-          if(healed)
-          {
-            //Envoyer un message ici
+          if(healed) {
+            resultsactions.push({player : `${element.author.name}`, message : `Vous avez été attaqué, mais quelqu’un vous a ramené à la vie.`})
+            resultsactions.push({player : `${element.target1.name}`, message : `Vous avez essayer de tuer quelqu'un mais il a été soigné par un docteur.`})
+          }else {
+            resultsactions.push({player : `${element.author.name}`, message : `Vous avez été tué par le Vétéran que vous avez visité.`})
+            resultsactions.push({player : `${element.target1.name}`, message : `Vous avez tué quelqu’un qui vous a visité.`})
+            //kill(element.author)
           }
-          else
-          {
-          kill(element.author)
-          }
-        }
-        else { 
-          if (element.target1.ambushed != null)
-          {
-            if(!element.target1.ambushDone)
-            {
+        }else {
+          if (element.target1.ambushed != null) {
+            if(!element.target1.ambushDone) {
               let healed = false
               actions.forEach(heal => {
                 if (heal.type == "heal" && heal.target1 == element.target1){
@@ -494,21 +428,19 @@ bot.on("message", (message) => {
               }
               else
               {
-              kill(element.author)
+              //kill(element.author)
               ambushDone = true
               }
             }
             //Envoyer un message ici
           }
-          if(element.author.serverRoles.has(vivant))
-          {
+
+          if(element.author.serverRoles.has(vivant)) {
             element.target1.isroleblocked = true
             //Message de confirmation d'action
           }
           
         }
-         
-        
       }
     });
 
@@ -520,11 +452,13 @@ bot.on("message", (message) => {
       {
         if(element.target1.isjailed)
         {
-          message.guild.channels.cache.get(element.author.interface).send("Votre action a échoué! Votre cible était en prison.")
+          resultsactions.push({player : `${element.author.name}`, message : "Votre action a échoué! Votre cible était en prison."})
+          //message.guild.channels.cache.get(element.author.interface).send("Votre action a échoué! Votre cible était en prison.")
         }
         else if(element.author.isjailed)
         {
-          message.guild.channels.cache.get(element.author.interface).send("Votre action a échoué! Vous étiez en prison.")
+          resultsactions.push({player : `${element.author.name}`, message : "Votre action a échoué! Vous étiez en prison."})
+          //message.guild.channels.cache.get(element.author.interface).send("Votre action a échoué! Vous étiez en prison.")
         }
         else if(element.author.witch != null)
         {
@@ -532,11 +466,10 @@ bot.on("message", (message) => {
         }
         else if(element.author.isroleblocked)
         {
-          //Envoyer un message ici
+          resultsactions.push({player : `${element.author.name}`, message : `Quelqu’un a occupé votre nuit. Vous avez été roleblocked.`})
         }
-        else if (element.target1.role.name == "Veteran" && element.target1.role.isAlert)
-        {
-          kill(element.author)
+        else if (element.target1.role.name == "Veteran" && element.target1.role.isAlert) {
+          //kill(element.author)
           //Envoyer un message ici
         }
         else{
@@ -562,30 +495,36 @@ bot.on("message", (message) => {
             }
             //Envoyer un message ici
           }
-          if(element.author.serverRoles.has(vivant))
-          {
+          if(element.author.serverRoles.has(vivant)) {
             switch(element.type){
               case "guard" :
                 element.target1.guarded = element.author
-                //Message de confirmation d'action
+                resultsactions.push({player : `${element.author.name}`, message : `Votre action a été effectuée avec succès!`})
                 break;
               case "heal" :
                 element.target1.healed = element.author
-                //Message de confirmation d'action
+                resultsactions.push({player : `${element.author.name}`, message : `Votre action a été effectuée avec succès!`})
                 break;
               case "disguise" :
+                resultsactions.push({player : `${element.author.name}`, message : `Votre action a été effectuée avec succès!`})
                 break;
               case "rewrite" :
+                resultsactions.push({player : `${element.author.name}`, message : `Votre action a été effectuée avec succès!`})
                 break;
               case "frame" :
+                resultsactions.push({player : `${element.author.name}`, message : `Votre action a été effectuée avec succès!`})
                 break;
               case "clean" :
+                resultsactions.push({player : `${element.author.name}`, message : `Votre action a été effectuée avec succès!`})
                 break;
               case "blackmail" :
+                resultsactions.push({player : `${element.author.name}`, message : `Votre action a été effectuée avec succès!`})
                 break;
               case "vest" :
+                resultsactions.push({player : `${element.author.name}`, message : `Votre action a été effectuée avec succès!`})
                 break;
               case "douse" :
+                resultsactions.push({player : `${element.author.name}`, message : `Votre action a été effectuée avec succès!`})
                 break;
             }
           }
@@ -1196,17 +1135,12 @@ bot.on("message", (message) => {
   else if(cmd == "listeactions") {
     if(!god && !dev) return message.channel.send(pasGod)
     let messageaction = ""
-    let a = 0
-    actions.forEach(action => {
-      if(actions.target2 == undefined) {
-        resultsactions.push({author: action.author.displayname, type: action.type , cible1: action.target1.displayname})
-        messageaction += `${resultsactions[a].author} ${resultsactions[a].type} -> ${resultsactions[a].cible1} \n`
-      }else{
-        resultsactions.push({author: action.author.displayname, type: action.type , cible1: action.target1.displayname, cible2: action.target2.displayname})
-        messageaction += `${resultsactions[a].author} ${resultsactions[a].type} -> ${resultsactions[a].cible1} et ${resultsactions[a].cible2} \n`
-      }
-      a ++
-    });
+
+    processActions()
+    
+    for (let i = 0; i < resultsactions.length; i++) {
+      messageaction = `${messageaction} ${resultsactions[i].player}: ${resultsactions[i].message} \n`
+    }
 
     adminchannel.send(messageaction)
   }
