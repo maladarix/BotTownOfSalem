@@ -361,8 +361,18 @@ bot.on("message", (message) => {
               }
               break;
             case "transport" :
-              element.target1.trans = element.target2
-              element.target2.trans = element.target1
+              actions.forEach(el => {
+                if(el.author.role.priority > 1){
+                  if(element.target1 == el.target1)
+                    el.target1 = element.target2
+                  else if (element.target2 == el.target1)
+                    el.target1 = element.target1
+                  if(element.target1 == el.target2)
+                    el.target2 = element.target2
+                  else if (element.target2 == el.target2)
+                    el.target2 = element.target1
+                }
+              });
               resultsactions.push({player : `${element.author.name}`, message : `Votre action a été effectuée avec succès!`})
               resultsactions.push({player : `${element.target1.name}`, message : `Vous avez été transporté vers un autre endroit.`})
               resultsactions.push({player : `${element.target2.name}`, message : `Vous avez été transporté vers un autre endroit.`})
@@ -380,7 +390,7 @@ bot.on("message", (message) => {
       }
     });
 
-    //Priorité 2
+    //Priorité 2 TODO : WITCH
     actions.forEach(element => {
       if(element.author.role.priority == 2)
       {
@@ -396,7 +406,7 @@ bot.on("message", (message) => {
         }
         else if(element.author.witch != null)
         {
-          //Envoyer un message ici
+          //message
         }
         else if (element.target1.role.name == "Veteran" && element.target1.role.isAlert) {
           let healed = false
@@ -406,8 +416,8 @@ bot.on("message", (message) => {
             }
           })
           if(healed) {
-            resultsactions.push({player : `${element.author.name}`, message : `Vous avez été attaqué, mais quelqu’un vous a ramené à la vie.`})
-            resultsactions.push({player : `${element.target1.name}`, message : `Vous avez essayer de tuer quelqu'un mais il a été soigné par un docteur.`})
+            resultsactions.push({player : `${element.author.name}`, message : `Vous avez été attaqué par le vétéran que vous visitiez, mais quelqu’un vous a ramené à la vie.`})
+            resultsactions.push({player : `${element.target1.name}`, message : `Vous avez tiré la personne qui vous a visité, mais il a été soigné par un docteur.`})
           }else {
             resultsactions.push({player : `${element.author.name}`, message : `Vous avez été tué par le Vétéran que vous avez visité.`})
             resultsactions.push({player : `${element.target1.name}`, message : `Vous avez tué quelqu’un qui vous a visité.`})
@@ -446,7 +456,7 @@ bot.on("message", (message) => {
 
         
 
-    //Priorité 3
+    //Priorité 3 TODO : Disguiser, Forger
     actions.forEach(element => {
       if(element.author.role.priority == 3)
       {
@@ -506,15 +516,20 @@ bot.on("message", (message) => {
                 resultsactions.push({player : `${element.author.name}`, message : `Votre action a été effectuée avec succès!`})
                 break;
               case "disguise" :
+                //TODO
                 resultsactions.push({player : `${element.author.name}`, message : `Votre action a été effectuée avec succès!`})
                 break;
               case "rewrite" :
+                //TODO
                 resultsactions.push({player : `${element.author.name}`, message : `Votre action a été effectuée avec succès!`})
                 break;
               case "frame" :
+                target1.roleappear = author.role
                 resultsactions.push({player : `${element.author.name}`, message : `Votre action a été effectuée avec succès!`})
                 break;
               case "clean" :
+                target1.roleappear = null
+                target1.lastwill = null
                 resultsactions.push({player : `${element.author.name}`, message : `Votre action a été effectuée avec succès!`})
                 break;
               case "blackmail" :
@@ -597,7 +612,7 @@ bot.on("message", (message) => {
 
     //priorité 5
     actions.forEach(element => {
-      if(element.author.role.priority == 5 || element.type == ignite)
+      if(element.author.role.priority == 5 || element.type == "ignite")
       {
         if(element.target1.isjailed)
         {
