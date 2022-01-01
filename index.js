@@ -2115,30 +2115,6 @@ bot.on('message', async (message) => {
   let cmd = MessageArray[0].slice(prefix.length);
   let args = MessageArray.slice(1);
 
-  let kill = function(died) {
-    let graveyardmot = new Discord.MessageEmbed()
-    .setDescription(`Le lastwill de **${died.displayname}** était: **${died.lastwillappear}**`)
-    .addField("Son rôle était: ", died.role.name)
-    .setColor(color)
-
-    let pasLW = new Discord.MessageEmbed()
-    .setDescription(`**${died.displayname}** n'a pas de lastwill`)
-    .addField("Son rôle était: ", died.role.name)
-    .setColor(color)
-
-    if(died.lastwill == null) {
-      died.serverRoles = [mort]
-      graveyardChan.send(pasLW)   
-    }else{
-      graveyardChan.send(graveyardmot)      
-    }
-
-    died.user.roles.add(mort)
-    died.user.roles.remove(vivant)
-    died.user.roles.remove(nuit)
-    died.user.roles.remove(jour)
-  }
-
   try{
     listejoueur.forEach(player => {
       if (message.mentions.members.first().user.username == player.name){
@@ -2190,7 +2166,7 @@ bot.on('message', async (message) => {
         args.slice(slineNum).forEach(mots => {
         messagestart += mots + " "
       });
-      messageJouer = messagestart
+      messageJouer.setDescription(messagestart)
     }
     let confirmGame = new Discord.MessageEmbed()
     .setTitle("Paramètre de la partie")
@@ -2200,7 +2176,7 @@ bot.on('message', async (message) => {
     **Traitor:** ${traitor}
     **Nombre de joueurs:** ${nbrJoueurMax}
     **Whisp par jour:** ${nbWhispJour}
-    **Message start:** ${messageJouer}
+    **Message start:** ${messageJouer.description}
     **Liste de rôles:** ${partie.gamemode.list}`)
     .setFooter("Cliquez sur le pouce si tout est correct!")
     .setColor(color)
