@@ -34,10 +34,10 @@ let joueurCoven = []
 let listeSpect = []
 
 // serveur officiel
-//let arrayId = ["824726156141658132","825029496305614927","824749359118811187","824725851198849075","824726635902271518","830253971637665832","824725623346954271","824761075387727912","824728100645896314","839977061384978492","839977410966847539","824731087863021588","850422940646506617","824727128758943795","824726760808513606","824727077366005800","824732131678617600","824762348396216401","830113799763525642", "830114000448258058" ,"824725152692174879" ,"825868136782757918","824726713605947403","832301102236958770","829870229470838814","824731870628413480"]
+let arrayId = ["824726156141658132","825029496305614927","824749359118811187","824725851198849075","824726635902271518","830253971637665832","824725623346954271","824761075387727912","824728100645896314","839977061384978492","839977410966847539","824731087863021588","850422940646506617","824727128758943795","824726760808513606","824727077366005800","824732131678617600","824762348396216401","830113799763525642", "830114000448258058" ,"824725152692174879" ,"825868136782757918","824726713605947403","832301102236958770","829870229470838814","824731870628413480"]
 
 // serveur test
-let arrayId = ["829832421825708064","829254726495240214","829254687630557185","829205364444364800","829250418244321280", null ,"829873265194303498","830240201111896135","830240173727547424","839977899581767700","830240221584687104","830240221584687104","849541121846935592","829269425290215463","829216633205424128","837575217907105813","837499365835669536","830240252248850433","830121244208267334","830121185885945880","829228486660063262","835014782594711593" ,"829239671925637150","829239671925637150","833229701190385676","833229701190385676"]
+//let arrayId = ["829832421825708064","829254726495240214","829254687630557185","829205364444364800","829250418244321280", null ,"829873265194303498","830240201111896135","830240173727547424","839977899581767700","830240221584687104","830240221584687104","849541121846935592","829269425290215463","829216633205424128","837575217907105813","837499365835669536","830240252248850433","830121244208267334","830121185885945880","829228486660063262","835014782594711593" ,"829239671925637150","829239671925637150","833229701190385676","833229701190385676"]
 
 let mort = arrayId[0]           
 let jour = arrayId[1]          
@@ -103,9 +103,8 @@ let listeGm = [{name : "classique15", list : classique15, coven : false}, {name 
 
 var tagged = null
 var author = null  
-let messageJouer = new Discord.MessageEmbed()
-.setDescription("Hey! Nouvelle game! Réagissez avec une tortue 🐢 si vous voulez **jouer** et avec des yeux 👀 si vous voulez **spectate**.")
-.setColor(color)
+let messageJouer = "Hey! Nouvelle game! Réagissez avec une tortue 🐢 si vous voulez **jouer** et avec des yeux 👀 si vous voulez **spectate**."
+
 const partie = new Partie()
 
 let pascomme = new Discord.MessageEmbed()
@@ -272,7 +271,7 @@ setInterval( //!résults automatique
 bot.on('ready', () => {
   console.log("bot online")
   console.log(new Date().toLocaleString())
-  bot.user.setActivity('Phil pcq y pue', { type: 'WATCHING' })
+  bot.user.setActivity("BING BONG", { type: "WATCHING" })
 })
 
 bot.on("message", (message) => {
@@ -1536,7 +1535,7 @@ bot.on("message", (message) => {
     .setColor(color))
 
     listerolechan.send(new Discord.MessageEmbed()
-    .setTitle(`**Partie en cour: ${partie.gamemode.name}**`)
+    .setTitle(`**Partie en cours: ${partie.gamemode.name}**`)
     .setDescription(partie.gamemode.list)
     .setColor(color))
 
@@ -2166,7 +2165,7 @@ bot.on('message', async (message) => {
         args.slice(slineNum).forEach(mots => {
         messagestart += mots + " "
       });
-      messageJouer.setDescription(messagestart)
+      messageJouer = messagestart
     }
     let confirmGame = new Discord.MessageEmbed()
     .setTitle("Paramètre de la partie")
@@ -2176,7 +2175,7 @@ bot.on('message', async (message) => {
     **Traitor:** ${traitor}
     **Nombre de joueurs:** ${nbrJoueurMax}
     **Whisp par jour:** ${nbWhispJour}
-    **Message start:** ${messageJouer.description}
+    **Message start:** ${messageJouer}
     **Liste de rôles:** ${partie.gamemode.list}`)
     .setFooter("Cliquez sur le pouce si tout est correct!")
     .setColor(color)
@@ -2545,7 +2544,7 @@ bot.on('message', async (message) => {
               .setColor(color)).then((sent) => {
                 setTimeout(function () {
                   sent.delete();
-                }, 2000);
+                }, 3000);
               });
             }
           }    
@@ -2565,7 +2564,7 @@ bot.on('message', async (message) => {
         .setColor(color)).then((sent) => {
           setTimeout(function () {
             sent.delete();
-          }, 2000);
+          }, 3000);
         });
       }  
     }
@@ -2591,7 +2590,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
 
     if(reaction.emoji.id == turtleId){
       if(!reactor.serverRoles.includes(vivant)) {
-        if(reactor.serverRoles.includes(godId)) { //!
+        if(!reactor.serverRoles.includes(godId)) { //!
           if(alive().length < nbrJoueurMax) {
             reactor.user.roles.add(vivant)
             reactor.serverRoles.push(vivant)
