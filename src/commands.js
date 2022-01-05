@@ -44,19 +44,19 @@ let covenevil = [roles.prototype.getCovenlead(), roles.prototype.getHexmas(), ro
 
 
 let anyrole = [roles.prototype.getInvest(),roles.prototype.getLoukout(), roles.prototype.getSheriff(), roles.prototype.getAgent(), roles.prototype.getSpy(), roles.prototype.getBg(), 
-    roles.prototype.getDoc(), roles.prototype.getEscort(), roles.prototype.getMaire(), roles.prototype.getRetri(), roles.prototype.getTrans(), 
-    roles.prototype.getVig(), roles.prototype.getVet(), roles.prototype.getWerewolf(), roles.prototype.getJailor(), roles.prototype.getDisg(), 
-    roles.prototype.getForger(), roles.prototype.getFramer(), roles.prototype.getJani(), roles.prototype.getHypno(), roles.prototype.getBlackmail(), roles.prototype.getConsig(), 
-    roles.prototype.getConsort(), roles.prototype.getGodfather(), roles.prototype.getMafioso(), roles.prototype.getAmb(), roles.prototype.getAmne(), roles.prototype.getSurv(), 
-    roles.prototype.getArso(), roles.prototype.getSerialk(), roles.prototype.getExec(), roles.prototype.getJester(), roles.prototype.getWitch()]
+  roles.prototype.getDoc(), roles.prototype.getEscort(), roles.prototype.getMaire(), roles.prototype.getRetri(), roles.prototype.getTrans(), 
+  roles.prototype.getVig(), roles.prototype.getVet(), roles.prototype.getWerewolf(), roles.prototype.getJailor(), roles.prototype.getDisg(), 
+  roles.prototype.getForger(), roles.prototype.getFramer(), roles.prototype.getJani(), roles.prototype.getHypno(), roles.prototype.getBlackmail(), roles.prototype.getConsig(), 
+  roles.prototype.getConsort(), roles.prototype.getGodfather(), roles.prototype.getMafioso(), roles.prototype.getAmb(), roles.prototype.getAmne(), roles.prototype.getSurv(), 
+  roles.prototype.getArso(), roles.prototype.getSerialk(), roles.prototype.getExec(), roles.prototype.getJester(), roles.prototype.getWitch()]
 
 let anycoven = [roles.prototype.getInvest(), roles.prototype.getLoukout(), roles.prototype.getSheriff(), roles.prototype.getSpy(), roles.prototype.getBg(), 
-    roles.prototype.getDoc(), roles.prototype.getEscort(), roles.prototype.getMaire(), roles.prototype.getRetri(), roles.prototype.getTrans(), 
-    roles.prototype.getVig(), roles.prototype.getVet(), roles.prototype.getWerewolf(), roles.prototype.getJailor(), roles.prototype.getAmne(), roles.prototype.getSurv(), 
-    roles.prototype.getArso(), roles.prototype.getSerialk(), roles.prototype.getExec(), roles.prototype.getJester(), roles.prototype.getWitch(), roles.prototype.getCovenlead(),
-    roles.prototype.getHexmas(), roles.prototype.getMedusa(), roles.prototype.getNecro(), roles.prototype.getPoiso(), roles.prototype.getPotion(), roles.prototype.getGuardian(),
-    roles.prototype.getJugger(), roles.prototype.getPira(), roles.prototype.getPlague(), roles.prototype.getCrusa(), roles.prototype.getPsy(), roles.prototype.getTracker(),
-    roles.prototype.getTrapper(),roles.prototype.getAgent()]
+  roles.prototype.getDoc(), roles.prototype.getEscort(), roles.prototype.getMaire(), roles.prototype.getRetri(), roles.prototype.getTrans(), 
+  roles.prototype.getVig(), roles.prototype.getVet(), roles.prototype.getWerewolf(), roles.prototype.getJailor(), roles.prototype.getAmne(), roles.prototype.getSurv(), 
+  roles.prototype.getArso(), roles.prototype.getSerialk(), roles.prototype.getExec(), roles.prototype.getJester(), roles.prototype.getWitch(), roles.prototype.getCovenlead(),
+  roles.prototype.getHexmas(), roles.prototype.getMedusa(), roles.prototype.getNecro(), roles.prototype.getPoiso(), roles.prototype.getPotion(), roles.prototype.getGuardian(),
+  roles.prototype.getJugger(), roles.prototype.getPira(), roles.prototype.getPlague(), roles.prototype.getCrusa(), roles.prototype.getPsy(), roles.prototype.getTracker(),
+  roles.prototype.getTrapper(),roles.prototype.getAgent()]
 
 let anyTout = [roles.prototype.getInvest(), roles.prototype.getLoukout(), roles.prototype.getSheriff(), roles.prototype.getSpy(), roles.prototype.getBg(), 
   roles.prototype.getDoc(), roles.prototype.getEscort(), roles.prototype.getMaire(), roles.prototype.getRetri(), roles.prototype.getTrans(), 
@@ -824,9 +824,6 @@ class commands{
     return anyTout
   }
 
-  getAnyCoven(){
-    return anycoven
-  }
 }
 
 

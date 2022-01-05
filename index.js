@@ -1546,7 +1546,7 @@ bot.on("message", (message) => {
     roles.forEach(role => {
       listeroles.push(role.name)
     });
-  
+    console.log(listeroles)
     if(!listeroles.includes("Agent-Infiltre")) {
       mafiaChan.send(`Vous sentez que vous pouvez parler en privé. <@&${vivant}>`)
     }
@@ -2467,7 +2467,7 @@ bot.on('message', async (message) => {
     pendChan.send(resultsVotes)
   }
 
-  if(partie.isStarted) {
+  /*if(partie.isStarted) {
     if(!message.member.roles._roles.has(vivant)) return message.channel.send(tpasvivant)
     if(cmd == author.role.command) {
       console.log("allo")
@@ -2568,7 +2568,7 @@ bot.on('message', async (message) => {
         });
       }  
     }
-  }
+  }**/
 });
 
 bot.on("messageReactionAdd", async (reaction, user) => {
@@ -2590,7 +2590,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
 
     if(reaction.emoji.id == turtleId){
       if(!reactor.serverRoles.includes(vivant)) {
-        if(!reactor.serverRoles.includes(godId)) { //!
+        if(reactor.serverRoles.includes(godId)) { //!
           if(alive().length < nbrJoueurMax) {
             reactor.user.roles.add(vivant)
             reactor.serverRoles.push(vivant)
