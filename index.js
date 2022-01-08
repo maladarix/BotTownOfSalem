@@ -181,13 +181,13 @@ let clearJail = async function(jailedChan){
 
 var kill = function(died) {
   let graveyardmot = new Discord.MessageEmbed()
-  .setDescription(`Le lastwill de **${died.displayname}** était: **${died.lastwillappear}**`)
-  .addField("Son rôle était: ", died.roleappear.name)
+  .setDescription(`Le lastwill de **${died.displayname}** était: `, `**${died.lastwillappear}**`)
+  .addField("Son rôle était: ", `**${died.roleappear}**`)
   .setColor(color)
 
   let pasLW = new Discord.MessageEmbed()
   .setDescription(`Nous n'avons pas pu trouver de lastwill.`)
-  .addField(`Le rôle de ${died.displayname} était:, ${died.roleappear.name}`)
+  .addField(`Le rôle de **${died.displayname}** était:`, `${died.roleappear}`)
   .setColor(color)
 
   if(died.lastwillappear == null) {
@@ -199,7 +199,7 @@ var kill = function(died) {
   }
 
   if(died.role.alignement == "Coven Evil") {
-    for( var i = 0; i < joueurCoven.length; i++){ 
+    for( var i = 0; i < joueurCoven.length; i++){
       if ( joueurCoven[i] === died) { 
         joueurCoven.splice(i, 1); 
       }
@@ -1058,7 +1058,11 @@ bot.on("message", (message) => {
         tagged.role = role
         tagged.roleappear = role.name
       }
-    });  
+    });
+
+    if(tagged.role.alignement == "Coven Evil") {
+      joueurCoven.push(tagged)
+    }
   }
 
   else if(cmd == "forger") {
@@ -1356,8 +1360,8 @@ bot.on("message", (message) => {
         villagechan.send("1 nuit avant que les coven aient le **Necronomicon**")
       }else if(numNuit == 3) {
         villagechan.send("Les coven ont maintenant le **Necronomicon**")
+        
         alive().forEach(player => {
-
           if(player.necro == true) {
             covenchan.send(`${player.displayname} a le necronomicon`)
 
@@ -1369,7 +1373,7 @@ bot.on("message", (message) => {
             let good = false
             let joueurChoisi = null
             do {
-              joueurChoisi = joueurCoven[Math.floor(Math.random) * joueurCoven.length]
+              joueurChoisi = joueurCoven[Math.floor(Math.random() * joueurCoven.length)]
               if(joueurChoisi.serverRoles.includes(vivant)) {
                 if(joueurChoisi.role.name == "Meduse") {
                   good = false
@@ -1546,7 +1550,6 @@ bot.on("message", (message) => {
     roles.forEach(role => {
       listeroles.push(role.name)
     });
-    console.log(listeroles)
     if(!listeroles.includes("Agent-Infiltre")) {
       mafiaChan.send(`Vous sentez que vous pouvez parler en privé. <@&${vivant}>`)
     }
@@ -1665,15 +1668,14 @@ bot.on("message", (message) => {
         joueurroles.push(player.displayname + ", " + player.role.name)
       }
 
-      if(player.role.alignement == "Coven Evil") {
+      /*if(player.role.alignement == "Coven Evil") {
         joueurCoven.push(player)
-      }
+      }*/
 
       if(player.role.alignement == "Town Support" || player.role.alignement == "Town Killing" || player.role.alignement == "Town Investigative") {
         listeTown.push(player)
       }
       player.roleappear = player.role.name
-      interfacechan.send("doot")
     });
 
     if(traitor == true) {
@@ -1707,11 +1709,6 @@ bot.on("message", (message) => {
     .setTitle("Le numéro des joueurs")
       .setDescription(joueuretnum)
       .setColor(color))
-
-    villagechan.send("doot")
-    pendChan.send("doot")
-    mafiaChan.send("doot")
-    jailChan.send("doot")
 
     partie.time = "jour"
     numJour = numJour + 1
@@ -2109,6 +2106,9 @@ bot.on('message', async (message) => {
   let adminchannel = message.guild.channels.cache.get(adminchat)
   let pendChan = message.guild.channels.cache.get(panchanid)
   let mafiaChan = message.guild.channels.cache.get(mafiaChat)
+  let covenchan = message.guild.channels.cache.get(covenid)
+  let vampirechan = message.guild.channels.cache.get(vampirechat)
+  let observatoirechan = message.guild.channels.cache.get(observatoire)
   let qvjChan = message.guild.channels.cache.get(quiVeutJouer)
   let MessageArray = message.content.split(" ");
   let cmd = MessageArray[0].slice(prefix.length);
