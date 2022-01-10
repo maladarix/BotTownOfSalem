@@ -13,7 +13,7 @@ let randomtown = [roles.prototype.getInvest(), roles.prototype.getLoukout(), rol
   roles.prototype.getBg(), roles.prototype.getDoc(), roles.prototype.getEscort(), roles.prototype.getMaire(), roles.prototype.getRetri(),
   roles.prototype.getTrans(), roles.prototype.getVig(), roles.prototype.getVet(), roles.prototype.getJailor()]
 
-let randomtownCoven = [roles.prototype.getInvest(), roles.prototype.getLoukout(), roles.prototype.getSheriff(), roles.prototype.getAgent(), roles.prototype.getSpy(),
+let randomtownCoven = [roles.prototype.getInvest(), roles.prototype.getLoukout(), roles.prototype.getSheriff(), roles.prototype.getSpy(),
   roles.prototype.getBg(), roles.prototype.getDoc(), roles.prototype.getEscort(), roles.prototype.getMaire(), roles.prototype.getRetri(),
   roles.prototype.getTrans(), roles.prototype.getVig(), roles.prototype.getVet(), roles.prototype.getJailor(), roles.prototype.getCrusa(), roles.prototype.getTrapper(), roles.prototype.getPsy(), roles.prototype.getTracker()]
 
@@ -56,7 +56,7 @@ let anycoven = [roles.prototype.getInvest(), roles.prototype.getLoukout(), roles
   roles.prototype.getArso(), roles.prototype.getSerialk(), roles.prototype.getExec(), roles.prototype.getJester(), roles.prototype.getWitch(), roles.prototype.getCovenlead(),
   roles.prototype.getHexmas(), roles.prototype.getMedusa(), roles.prototype.getNecro(), roles.prototype.getPoiso(), roles.prototype.getPotion(), roles.prototype.getGuardian(),
   roles.prototype.getJugger(), roles.prototype.getPira(), roles.prototype.getPlague(), roles.prototype.getCrusa(), roles.prototype.getPsy(), roles.prototype.getTracker(),
-  roles.prototype.getTrapper(),roles.prototype.getAgent()]
+  roles.prototype.getTrapper()]
 
 let anyTout = [roles.prototype.getInvest(), roles.prototype.getLoukout(), roles.prototype.getSheriff(), roles.prototype.getSpy(), roles.prototype.getBg(), 
   roles.prototype.getDoc(), roles.prototype.getEscort(), roles.prototype.getMaire(), roles.prototype.getRetri(), roles.prototype.getTrans(), 

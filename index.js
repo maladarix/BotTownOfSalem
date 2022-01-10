@@ -1118,7 +1118,7 @@ bot.on("message", (message) => {
     if(!args[1]) return kill(tagged)
     if(args[1] == "stoned" || "cleaned" || "bloody") {
       if(args[1] == "stoned") {
-        tagged.roleappear.name = "Stoned"
+        tagged.roleappear = "Stoned"
         tagged.lastwillappear = null
         kill(tagged)
       }else if(args[1] == "cleaned") {
@@ -1137,7 +1137,7 @@ bot.on("message", (message) => {
             }
           }
         });
-        tagged.roleappear.name = "Cleaned"
+        tagged.roleappear = "Cleaned"
         tagged.lastwillappear = null
         kill(tagged)
       }else if(args[1] == "bloody") {
@@ -1203,7 +1203,7 @@ bot.on("message", (message) => {
       .setColor(color))
   }
 
-  else if (cmd == "alive") {
+  else if(cmd == "alive") {
     if(!god && !dev) return message.channel.send(pasGod);
     if(!args[0]) return message.channel.send(qui)
     if(!listejoueur.includes(new Player(taggedUser))){
@@ -1358,37 +1358,40 @@ bot.on("message", (message) => {
         villagechan.send("2 nuits avant que les coven aient le **Necronomicon**")
       }else if(numNuit == 2) {
         villagechan.send("1 nuit avant que les coven aient le **Necronomicon**")
-      }else if(numNuit == 3) {
-        villagechan.send("Les coven ont maintenant le **Necronomicon**")
+      }else if(numNuit >= 3) {
+        if(numNuit == 3) {
+          villagechan.send("Les coven ont maintenant le **Necronomicon**")  
+        }
+  
+        let playerNecro = null
         
-        alive().forEach(player => {
-          if(player.necro == true) {
-            covenchan.send(`${player.displayname} a le necronomicon`)
-
-          }else if(player.role.name == "Coven-Leader") {
-            covenchan.send(`**${player.displayname}** a le necronomicon.`)
-            player.necro = true
-
-          }else if(joueurCoven.length > 1) {
-            let good = false
-            let joueurChoisi = null
-            do {
-              joueurChoisi = joueurCoven[Math.floor(Math.random() * joueurCoven.length)]
-              if(joueurChoisi.serverRoles.includes(vivant)) {
-                if(joueurChoisi.role.name == "Meduse") {
-                  good = false
-                }else{
-                  good = true
-                }  
-              }
-            } while (good);
-            covenchan.send(`**${joueurChoisi.displayname}** a le necronomicon.`)
-            joueurChoisi.necro = true
-            
-          }else {
-            covenchan.send(`**${joueurCoven[0].displayname}** a le necronomicon.`) 
+        joueurCoven.forEach(joueur => {
+          joueur.necro = false
+          if(joueur.role.name == "Coven-Leader") {
+            playerNecro = joueur
           }
         });
+
+        if(joueurCoven.length > 1 && playerNecro == null) {
+          let good = false
+          do {
+            playerNecro = joueurCoven[Math.floor(Math.random() * joueurCoven.length)]
+            if(playerNecro.serverRoles.includes(vivant)) {
+              if(playerNecro.role.name == "Meduse") {
+                good = false
+              }else{
+                good = true
+              }  
+            }
+          } while (good);
+        }else if(playerNecro == null) {
+          playerNecro = joueurCoven[0]
+        }
+
+        if(playerNecro != null) {
+          playerNecro.necro = true
+          covenchan.send(`**${playerNecro.displayname}** a le necronomicron`)
+        }
       }
     }
 
@@ -1597,6 +1600,8 @@ bot.on("message", (message) => {
           player.id,
           {VIEW_CHANNEL: true, SEND_MESSAGES: true}
         )
+
+        joueurCoven.push(player)
       }
 
       if(player.role.name == "Guardian-Angel") {
@@ -1667,10 +1672,6 @@ bot.on("message", (message) => {
         .setColor(color))
         joueurroles.push(player.displayname + ", " + player.role.name)
       }
-
-      /*if(player.role.alignement == "Coven Evil") {
-        joueurCoven.push(player)
-      }*/
 
       if(player.role.alignement == "Town Support" || player.role.alignement == "Town Killing" || player.role.alignement == "Town Investigative") {
         listeTown.push(player)
