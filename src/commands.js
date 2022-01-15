@@ -269,7 +269,7 @@ class commands{
       this.getHexmas()
     }else if(role == "Meduse") {
       this.getMedusa()
-    }else if(role == "Necromane") {
+    }else if(role == "Necromancien") {
       this.getNecro()
     }else if(role == "Poisoner") {
       this.getPoiso()
@@ -753,7 +753,7 @@ class commands{
   }
 
   getNecro(){
-    if(gameroles.some(role => role.name == "Necromane")) {
+    if(gameroles.some(role => role.name == "Necromancien")) {
       this.getCovenEvil()
     }else{
       gameroles.push(roles.prototype.getNecro())

@@ -3,6 +3,7 @@ const Commands = require('./src/commands.js');
 const Player = require('./src/player.js');
 const Partie = require('./src/game.js');
 const commands = require('./src/commands.js');
+const action = require('./src/action.js');
 const bot = new Discord.Client();
 require("dotenv").config()
 
@@ -77,15 +78,15 @@ let resultID = null
 let rolesEtAlig = ["Investigateur", "Lookout", "Sheriff", "Spy", "Agent-Infiltre", "Jailor", "Vampire-Hunter", "Veteran", "Vigilante", "Bodyguard", "Docteur", "Escorte"
 , "Maire", "Retributionist", "Transporteur", "Disguiser", "Forger", "Framer", "Hypnotiseur", "Consierge", "Ambusher", "Godfather", "Mafioso", "Blackmailer"
 , "Conseiller", "Consort", "Amnesiac", "Survivant", "Vampire", "Executionner", "Jester", "Sorciere", "Arsonist", "Serial-Killer", "Loup-Garou", "Coven-Leader", "Hex-Master",
-"Meduse", "Necromane", "Poisoner", "Potion-Master", "Guardian-Angel", "Juggernaut", "Pirate", "Plaguebearer", "Crusader", "Psychic", "Tracker", "Trapper",
+"Meduse", "Necromancien", "Poisoner", "Potion-Master", "Guardian-Angel", "Juggernaut", "Pirate", "Plaguebearer", "Crusader", "Psychic", "Tracker", "Trapper",
 "ti" ,"tp", "ts", "tk", "md", "ms", "mk", "nb", "nk", "ne", "nc", "rt", "rm", "rn", "ce", "any"]
 
 let roles = ["Investigateur", "Lookout", "Sherif", "Spy", "Agent-Infiltre", "Jailor", "Vampire-Hunter", "Veteran", "Vigilante", "Bodyguard", "Docteur", "Escorte"
 , "Maire", "Retributionist", "Transporteur", "Disguiser", "Forger", "Framer", "Hypnotiseur", "Consierge", "Ambusher", "Godfather", "Mafioso", "Blackmailer"
 , "Conseiller", "Consort", "Amnesiac", "Survivant", "Vampire", "Executionner", "Jester", "Sorciere", "Arsonist", "Serial-Killer", "Loup-Garou", "Coven-Leader", "Hex-Master",
-"Meduse", "Necromane", "Poisoner", "Potion-Master", "Guardian-Angel", "Juggernaut", "Pirate", "Plaguebearer", "Crusader", "Psychic", "Tracker", "Trapper"]
+"Meduse", "Necromancien", "Poisoner", "Potion-Master", "Guardian-Angel", "Juggernaut", "Pirate", "Plaguebearer", "Crusader", "Psychic", "Tracker", "Trapper"]
 
-let rolesunique = ["Jailor", "Maire", "Retributionist", "Veteran", "Godfather", "Mafioso", "Ambusher", "Loup-Garou", "Coven-leader", "hex-master", "Meduse", "Necromane", "Poisoner", 
+let rolesunique = ["Jailor", "Maire", "Retributionist", "Veteran", "Godfather", "Mafioso", "Ambusher", "Loup-Garou", "Coven-leader", "hex-master", "Meduse", "Necromancien", "Poisoner", 
 "posion-master", "Juggernaut", "Pirate", "Plaguebearer"]
 
 let classique15 = ["Jailor", "Town Investigative", "Town Investigative", "Town Protective", "Town Killing", "Town Support", "Random Town", "Random Town", "Godfather", "Mafioso", 
@@ -112,7 +113,7 @@ let pascomme = new Discord.MessageEmbed()
 .setColor(color)
 
 let pasGod = new Discord.MessageEmbed()
-.setDescription("Tu n'est pas " + `<@&${godId}>` )
+.setDescription("Tu n'es pas " + `<@&${godId}>` )
 .setColor(color)
 
 let qui = new Discord.MessageEmbed()
@@ -181,7 +182,8 @@ let clearJail = async function(jailedChan){
 
 var kill = function(died) {
   let graveyardmot = new Discord.MessageEmbed()
-  .setDescription(`Le lastwill de **${died.displayname}** était: `, `**${died.lastwillappear}**`)
+  .setDescription(`Le lastwill de **${died.displayname}** était: 
+  ${died.lastwillappear}`)
   .addField("Son rôle était: ", `**${died.roleappear}**`)
   .setColor(color)
 
@@ -915,6 +917,7 @@ bot.on("message", (message) => {
         let heure = args[0].split(":")[0]
         let minute = args[0].split(":")[1]
         if(heure > 23 || heure < 0) return message.channel.send("Entre 0 et 23H")
+        if(minute > 59 || minute < 0) return message.channel.send("Entre 0 et 59MIN")
         heurePendre.setUTCHours(parseInt(heure) + offset, minute, 0, 0)
         HeureResults = heurePendre.toUTCString().split(" ")[4]
         message.channel.send(new Discord.MessageEmbed()
@@ -933,6 +936,8 @@ bot.on("message", (message) => {
       if(!isNaN(args[0].split("")[0]) && !isNaN(args[0].split("")[1]) && args[0].split("")[2] == ":" && !isNaN(args[0].split("")[3]) && !isNaN(args[0].split("")[4])) {
         let heure = args[0].split(":")[0]
         let minute = args[0].split(":")[1]
+        if(heure > 23 || heure < 0) return message.channel.send("Entre 0 et 23H")
+        if(minute > 59 || minute < 0) return message.channel.send("Entre 0 et 59MIN")
         heurePendre.setUTCHours(parseInt(heure) + offset, minute, 0, 0)
         HeureResults = heurePendre.toUTCString().split(" ")[4]
         message.channel.send(new Discord.MessageEmbed()
@@ -1150,11 +1155,20 @@ bot.on("message", (message) => {
     if(!god && !dev) return message.channel.send(pasGod)
     let messageaction = ""
 
-    processActions()
+    for (let i = 0; i < alive().length; i++) {
+      if(alive()[i].action.target2 == undefined) {
+        messageaction = `${messageaction} **${alive()[i].action.author.displayname}**: ${alive()[i].action.type} ${alive()[i].action.target1.displayname}\n`  
+      }else{
+        messageaction = `${messageaction} **${alive()[i].action.author.displayname}**: ${alive()[i].action.type} ${alive()[i].action.target1.displayname} vers ${alive()[i].action.target2.displayname}\n`
+      }
+      
+      
+    }
+    /*processActions()
     
     for (let i = 0; i < resultsactions.length; i++) {
       messageaction = `${messageaction} ${resultsactions[i].player}: ${resultsactions[i].message} \n`
-    }
+    }*/
 
     adminchannel.send(messageaction)
   }
@@ -1178,6 +1192,10 @@ bot.on("message", (message) => {
   else if(cmd == "scroll") {
     if(!god && !dev) return message.channel.send(pasGod)
     if(!tagged) return message.channel.send(qui)
+    if(!args[1]) {
+      tagged.scroll = null
+      message.react("❌")
+    }
     if(!roles.includes(args[1])) return message.channel.send(new Discord.MessageEmbed()
     .setDescription("Je ne trouve pas ce rôle")
     .setColor(color))
@@ -1442,8 +1460,18 @@ bot.on("message", (message) => {
       spyChan.updateOverwrite(
       jailed.id,
       {"VIEW_CHANNEL": false})
+
+      covenchan.updateOverwrite(
+      jailed.id,
+      {"VIEW_CHANNEL": false})
      
-      jailedChan.send("Vous êtes en prison, défendez vous pour éviter que le jailor vous exécute! ⛓️")
+      jailedChan.send(`<@${jailed.id}> Vous êtes en prison, défendez vous pour éviter que le jailor vous exécute! ⛓️`)
+      console.log(jailed.role.alignement)
+      if(jailed.role.alignement == "Coven Evil") {
+        covenchan.send(`${jailed.displayname} est en prison!`)
+      }else if(jailed.role.alignement == "Mafia Deception" || jailed.role.alignement == "Mafia Killing" || jailed.role.alignement == "Mafia Support") {
+        mafiaChan.send(`${jailed.displayname} est en prison!`)
+      }
     }
   }
 
@@ -1458,7 +1486,7 @@ bot.on("message", (message) => {
       .setColor(color);
 
     let whisp0 = new Discord.MessageEmbed()
-    .setDescription("Tu ne peut pas whisp jour **0**")
+    .setDescription("Tu ne peux pas whisp jour **0**")
     .setColor(color)
     
     if(partie.isStarted == false) return message.channel.send(pascomme)
@@ -1963,12 +1991,12 @@ bot.on("message", (message) => {
     .addField("**Explications des commandes**", "=================================")
     .addField("!coven", `Permet d'activer le coven si c'est un partie Coven.`)
     .addField("!traitor", `Permet d'activer le traitor si c'est un partie town traitor.`)
-    .addField("!gamemode", `Cette commande est utile pour sélectionner un gamemode avant de débuter la partie. Si tu fait juste la commande, tu verras tous les gamemodes disponibles (en parenthèse).
+    .addField("!gamemode", `Cette commande est utile pour sélectionner un gamemode avant de débuter la partie. Si tu fais juste la commande, tu verras tous les gamemodes disponibles (en parenthèse).
     Tu as juste à faire ex: !gamemode classique15`)
     .addField("!heurevote", `Permet de faire passer automatiquement le résultat de pendaison.`)
     .addField("!swhisp", `C'est tout simplement pour mettre une limite de whisp par jour. Présentement, la valeur est de **${nbWhispJour}**.`)
     .addField("!start", `La commande !start permet de démarer la partie. (Le mode de jeux doit être choisi avant) Le nombre de joueurs maximum se détermine avec le nombre de rôle qu'il y a dans le mode de jeux. (Même les modes perso)
-    Par contre, ont peut l'overwrite en tappant un nombre comme premier "mot". Aussi, il est possible de personnalisé le message du début en inscrivant au moins 2 mots. Ex: !start J'aime Felix`)
+    Par contre, on peut l'overwrite en tappant un nombre comme premier "mot". Aussi, il est possible de personnalisé le message du début en inscrivant au moins 2 mots. Ex: !start J'aime Felix`)
     .addField("!roles", `**IMPORTANT!** Il ne faut pas faire cette commande avant que vous ayez reçu un mot dans le channel admin car sinon les rôles ne seront pas distribués. Les rôles sont automatiquement choisis à l'instant que le nombre de joueurs maximum est attein mais sont donnés seulement losque vous faites la commande !roles`)
     .setColor(color))
   }
@@ -2042,6 +2070,7 @@ bot.on("message", (message) => {
       .addField("!jour (message)", "Permet de mettre le jour")
       .addField("!nuit (message)", "Permet de mettre la nuit")
       .addField("!traitor", "Toggle le mode town traitor")
+      .addField("!listeactions", "Voir la liste de tout les actions")
       .addField("!heurevote", "Ajoute une heure dans un format 24H pour que le !results se fasse tout seul.")
       .addField("!roles", "Donne les rôles a chaques joueurs")
       .addField("!info @[User]", "Pour avoir de l'info sur le joueur")
@@ -2410,7 +2439,7 @@ bot.on('message', async (message) => {
         if(partie.time == "jour") {
           let interfachan = message.guild.channels.cache.get(author.interface)
 
-          interfachan.send(`Vous avez emprisonner avec succès **${jailed.displayname}** ce soir.`)
+          interfachan.send(`Vous avez emprisonné avec succès **${jailed.displayname}** ce soir.`)
           jailed.isjailed = true
 
         }else{
@@ -2552,13 +2581,10 @@ bot.on('message', async (message) => {
           votemaire = 2
         }
       }
-      pendChan.updateOverwrite(
-        player.id,
-        {VIEW_CHANNEL: true, SEND_MESSAGES: true}
-      )
+      
       jailedChan.updateOverwrite(
         player.id,
-        {"VIEW_CHANNEL": false}
+        {"VIEW_CHANNEL": null}
       )
       if(player.role.alignement == "Mafia Support" || player.role.alignement == "Mafia Killing" || player.role.alignement == "Mafia Deception") {
         mafiaChan.updateOverwrite(
@@ -2610,7 +2636,7 @@ bot.on('message', async (message) => {
     .setColor(color)
 
     let jour0 = new Discord.MessageEmbed()
-    .setDescription("Tu ne peut pas voter jour **0**!")
+    .setDescription("Tu ne peux pas voter jour **0**!")
     .setColor(color)
 
     if(partie.isStarted == false) return message.channel.send(pascomme)
@@ -2660,7 +2686,6 @@ bot.on('message', async (message) => {
     if(!message.member.roles._roles.has(vivant)) return
     let command = author.role.command
     if(cmd == command) {
-    if(god || spec) return
       if(author.user._roles.includes(vivant)) {
         if(partie.time == "nuit") {
           if(partie.isStarted == true) {
@@ -2676,13 +2701,19 @@ bot.on('message', async (message) => {
                 });
               }
               
-              if(!isNaN(args[1])) {
-                alive().forEach(joueur => {
-                  if(joueur.number == args[1]) {
-                    joueurvisé2 = joueur
-                  }
-                });
+              if(author.role.needsTwoTargets) {
+                if(args[1]) {
+                  if(!isNaN(args[1])) {
+                    alive().forEach(joueur => {
+                      if(joueur.number == args[1]) {
+                        joueurvisé2 = joueur
+                      }
+                    });
+                  } 
+                }  
               }
+              
+              
 
               if(author.actiondone == true) {
                 author.role.use ++
@@ -2696,10 +2727,10 @@ bot.on('message', async (message) => {
 
               username = []
               if(author.role.needsTwoTargets == true) {
-                if((joueurvisé1 || joueurvisé2) == "") return message.channel.send(new Discord.MessageEmbed()
+                if(joueurvisé1 == "" || joueurvisé2 == "") return message.channel.send(new Discord.MessageEmbed()
                   .setDescription("Il me faut 2 joueurs!")
                   .setColor(color))
-                  if(!joueurvisé2.user.roles.cache.hab(vivant)) return message.channel.send(pasVivant)
+                  if(!joueurvisé2.user.roles.cache.has(vivant)) return message.channel.send(pasVivant)
                   if(!joueurvisé1.user.roles.cache.has(vivant)) return message.channel.send(pasVivant)
                       
               }else if(author.role.needsTwoTargets == false) {
@@ -2719,12 +2750,13 @@ bot.on('message', async (message) => {
 
               if(author.role.needsTwoTargets) {
                 message.channel.send(`Tu as décidé (de/d') ${author.role.command} **${joueurvisé1.displayname}** et **${joueurvisé2.displayname}**`)
+                author.action = {author : author,  target1 : joueurvisé1, target2 : joueurvisé2, type : author.role.command}
               }else{
                 message.channel.send(`Tu as décidé (de/d') ${author.role.command} **${joueurvisé1.displayname}**`)
+                author.action = {author : author,  target1 : joueurvisé1, type : author.role.command}
               }
               
               message.react("👍")
-              actions.push({author : author,  target1 : joueurvisé1, target2 : joueurvisé2, type : author.role.command})
 
             }else{
               message.delete()
@@ -2873,6 +2905,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
   }
 
   else if(reaction.message.channel == adminchannel) {
+    if(reaction.message.id != adminchannel.lastMessageID) return
     start = true
     if(partie.gamemode == "Classique 20 joueurs") {
       listerolechan.send(new Discord.MessageEmbed()
