@@ -1,7 +1,3 @@
-const index = require('../index')
-const Commands = require('./commands.js')
-const roles = require('./Roles/roles');
-
 class Partie{
 
     constructor() {

@@ -1466,7 +1466,6 @@ bot.on("message", (message) => {
       {"VIEW_CHANNEL": false})
      
       jailedChan.send(`<@${jailed.id}> Vous êtes en prison, défendez vous pour éviter que le jailor vous exécute! ⛓️`)
-      console.log(jailed.role.alignement)
       if(jailed.role.alignement == "Coven Evil") {
         covenchan.send(`${jailed.displayname} est en prison!`)
       }else if(jailed.role.alignement == "Mafia Deception" || jailed.role.alignement == "Mafia Killing" || jailed.role.alignement == "Mafia Support") {
