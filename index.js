@@ -35,10 +35,10 @@ let joueurCoven = []
 let listeSpect = []
 
 // serveur officiel
-//let arrayId = ["824726156141658132","825029496305614927","824749359118811187","824725851198849075","824726635902271518","830253971637665832","824725623346954271","824761075387727912","824728100645896314","839977061384978492","839977410966847539","824731087863021588","850422940646506617","824727128758943795","824726760808513606","824727077366005800","824732131678617600","824762348396216401","830113799763525642", "830114000448258058" ,"824725152692174879" ,"825868136782757918","824726713605947403","832301102236958770","829870229470838814","824731870628413480"]
+let arrayId = ["824726156141658132","825029496305614927","824749359118811187","824725851198849075","824726635902271518","830253971637665832","824725623346954271","824761075387727912","824728100645896314","839977061384978492","839977410966847539","824731087863021588","850422940646506617","824727128758943795","824726760808513606","824727077366005800","824732131678617600","824762348396216401","830113799763525642", "830114000448258058" ,"824725152692174879" ,"825868136782757918","824726713605947403","832301102236958770","829870229470838814","824731870628413480"]
 
 // serveur test
-let arrayId = ["829832421825708064","829254726495240214","829254687630557185","829205364444364800","829250418244321280", null ,"829873265194303498","830240201111896135","830240173727547424","839977899581767700","830240221584687104","830240221584687104","849541121846935592","829269425290215463","829216633205424128","837575217907105813","837499365835669536","830240252248850433","830121244208267334","830121185885945880","829228486660063262","835014782594711593" ,"829239671925637150","829239671925637150","833229701190385676","833229701190385676"]
+//let arrayId = ["829832421825708064","829254726495240214","829254687630557185","829205364444364800","829250418244321280", null ,"829873265194303498","830240201111896135","830240173727547424","839977899581767700","830240221584687104","830240221584687104","849541121846935592","829269425290215463","829216633205424128","837575217907105813","837499365835669536","830240252248850433","830121244208267334","830121185885945880","829228486660063262","835014782594711593" ,"829239671925637150","829239671925637150","833229701190385676","833229701190385676"]
 
 let mort = arrayId[0]           
 let jour = arrayId[1]          
@@ -74,6 +74,9 @@ let color = "#f0b71a";
 let prefix = "!";
 let resultsVotes = new Discord.MessageEmbed().setTitle("Compilation des votes").setColor(color)
 let resultID = null
+
+console.log(godId)
+console.log(devid)
 
 let rolesEtAlig = ["Investigateur", "Lookout", "Sheriff", "Spy", "Agent-Infiltre", "Jailor", "Vampire-Hunter", "Veteran", "Vigilante", "Bodyguard", "Docteur", "Escorte"
 , "Maire", "Retributionist", "Transporteur", "Disguiser", "Forger", "Framer", "Hypnotiseur", "Consierge", "Ambusher", "Godfather", "Mafioso", "Blackmailer"
@@ -2810,7 +2813,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
 
     if(reaction.emoji.id == turtleId){
       if(!reactor.serverRoles.includes(vivant)) {
-        if(reactor.serverRoles.includes(godId)) { //!
+        if(!reactor.serverRoles.includes(godId)) { //!
           if(alive().length < nbrJoueurMax) {
             reactor.user.roles.add(vivant)
             reactor.serverRoles.push(vivant)
@@ -2905,27 +2908,29 @@ bot.on("messageReactionAdd", async (reaction, user) => {
 
   else if(reaction.message.channel == adminchannel) {
     if(reaction.message.id != adminchannel.lastMessageID) return
-    start = true
-    if(partie.gamemode == "Classique 20 joueurs") {
-      listerolechan.send(new Discord.MessageEmbed()
-      .setTitle("Partie en cour: **Clasique 20 joueurs**")
-      .setDescription(class20)
-      .setColor(color))
-    }else if(partie.gamemode == "Classique 15 joueurs") {
-      listerolechan.send(new Discord.MessageEmbed()
-      .setTitle("Partie en cour: **Classique 15 joueurs**")
-      .setDescription(class15)
-      .setColor(color))
-    }else if(partie.gamemode == "All Any balanced") {
-      listerolechan.send(new Discord.MessageEmbed()
-      .setTitle("Partie en cour: **All any 15 joueurs**")
-      .setDescription(any15)
-      .setColor(color))
-    }
+    if(reaction.emoji.name == "👍") {
+      start = true
+      if(partie.gamemode == "Classique 20 joueurs") {
+        listerolechan.send(new Discord.MessageEmbed()
+        .setTitle("Partie en cour: **Clasique 20 joueurs**")
+        .setDescription(class20)
+        .setColor(color))
+      }else if(partie.gamemode == "Classique 15 joueurs") {
+        listerolechan.send(new Discord.MessageEmbed()
+        .setTitle("Partie en cour: **Classique 15 joueurs**")
+        .setDescription(class15)
+        .setColor(color))
+      }else if(partie.gamemode == "All Any balanced") {
+        listerolechan.send(new Discord.MessageEmbed()
+        .setTitle("Partie en cour: **All any 15 joueurs**")
+        .setDescription(any15)
+        .setColor(color))
+      }
 
-    const reactionMessage = await qvjChan.send(messageJouer)
-      await reactionMessage.react(turtleId)
-      await reactionMessage.react(eyesId)
+      const reactionMessage = await qvjChan.send(messageJouer)
+        await reactionMessage.react(turtleId)
+        await reactionMessage.react(eyesId)  
+    }
   }
 })
 
