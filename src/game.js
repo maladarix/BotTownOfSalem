@@ -1,7 +1,7 @@
 class Partie{
 
     constructor() {
-
+        this.commencer = false
         this.gamemode = null
         this.isStarted = false
         this.listeroles = []
@@ -10,6 +10,18 @@ class Partie{
         this.time = "nuit"
         this.fullmoon = false
         this.coven = false
+        this.traitor = false
+        this.HeureResults = ""
+        this.whispersChannels = []
+        this.whispmaire = []
+        this.traitre = null
+        this.jailed = ""
+        this.killed = null
+        this.interfaces = []
+        this.joueurCoven = []
+        this.numJour = -1
+        this.numNuit = 0
+        this.nbWhispJour = 1
     }
 }
 

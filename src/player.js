@@ -2,7 +2,6 @@ class Player {
 
     constructor(joueur){
         
-        this.user = joueur
         this.id = joueur.user.id
         this.interface = ""
         this.name = joueur.user.username
@@ -28,9 +27,8 @@ class Player {
         this.ambushed = null
         this.ambushDone = false
         this.isframed = false
-        this.trans = this
+        this.trans = null
         this.witch = null
-        this.mvp = 0
         this.inac = 0
         this.scroll = null
         this.number = null
