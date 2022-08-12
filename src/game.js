@@ -22,6 +22,7 @@ class Partie{
         this.numJour = -1
         this.numNuit = 0
         this.nbWhispJour = 1
+        this.nbMsgWhisp = 40
     }
 }
 

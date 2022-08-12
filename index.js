@@ -345,6 +345,24 @@ bot.on("message", (message) => {
     observatoirechan.send(message.content)
   }
 
+  for (let i = 0; i < partie.whispersChannels.length; i++) {
+    if(partie.whispersChannels[i].id == message.channel.id) {
+      partie.whispersChannels[i].nb --
+      if(partie.whispersChannels[i].nb == 0) {
+        let chan = message.guild.channels.cache.get(partie.whispersChannels[i].id)
+        chan.overwritePermissions([
+          {
+            id: chan.guild.id,
+            deny: "SEND_MESSAGES"
+          }]
+        )
+        message.channel.send(new Discord.MessageEmbed()
+        .setDescription("La limite de message a été atteinte!")
+        .setColor(color))
+      }
+    }
+  }
+
   if(message.content.toLowerCase().includes("charles")) message.channel.send("lowkey jtau pub")    
 
   if(!message.content.startsWith(prefix)) return
@@ -816,11 +834,6 @@ bot.on("message", (message) => {
       joueur.roles.remove(spec)
       joueur.roles.remove(jour)
       joueur.roles.remove(nuit)
-      listejoueur[i].hasVoted = false
-      listejoueur[i].role = null
-      listejoueur[i].lastwill = null
-      listejoueur[i].scroll = null
-      listejoueur[i].registeredVote = null
     }
 
     mafiaChan.overwritePermissions([
@@ -892,42 +905,19 @@ bot.on("message", (message) => {
     ])
 
     partie.whispersChannels.forEach(whisper => {
-      message.guild.channels.cache.get(whisper).delete();
+      message.guild.channels.cache.get(whisper.id).delete();
     });
-    partie.whispersChannels = []
 
     partie.interfaces.forEach(interface => {
       message.guild.channels.cache.get(interface).delete();
     });
-    partie.interfaces = []
 
     let gameend = new Discord.MessageEmbed()
     .setDescription("La partie est terminée!")
     .setColor(color)
 
-    nomgamemode = null
-    partie.jailed = ""
-    nouvgmoffi = []
-    partie.whispersChannels = []
-    partie.interfaces = []
-    killlist = []
-    username = []
-    rolesblocked = []
-    actions = []
-    partie.numJour = 0
-    partie.numNuit = 0
-    partie.nbWhispJour = 1
-    listeroles = []
-    joueurroles = []
-    nbrJoueurMax = 0
-    start = false
-    this.gamemode = null
-    this.isStarted = false
-    this.listeroles = []
-    this.personom = ""
-    this.persoGm = []
-    this.time = "jour"
-    this.fullmoon = false
+    listejoueur = []
+    partie = new Partie()
     message.channel.send(gameend)
 
   }
@@ -1361,17 +1351,33 @@ bot.on("message", (message) => {
   else if(cmd == "swhisp") {
 
     let combien = new Discord.MessageEmbed()
-      .setDescription("Combien de message?")
+      .setDescription("Combien de whisp?")
       .setColor(color);
 
       let wpj = new Discord.MessageEmbed()
         .setDescription(`Le nombre de whisp par jour est maintenant de **${args[0]}**`)
-        .setColor(color);
+        .setColor(color)
 
       if(!god && !dev) return message.channel.send(pasGod);
-      if(!args[0]) return message.channel.send(combien);
-      partie.nbWhispJour = args[0];
-      message.channel.send(wpj);
+      if(!args[0] || isNaN(args[0])) return message.channel.send(combien);
+      partie.nbWhispJour = args[0]
+      message.channel.send(wpj)
+  }
+
+  else if(cmd == "msgwhisp") {
+
+    let combien = new Discord.MessageEmbed()
+      .setDescription("Combien de whisp?")
+      .setColor(color);
+
+    let msgwhisp = new Discord.MessageEmbed()
+    .setDescription(`Le nombre de message par whisp est maintenant de **${args[0]}**`)
+    .setColor(color);
+
+    if(!god && !dev) return message.channel.send(pasGod)
+    if(!args[0] || isNaN(args[0])) return message.channel.send(combien)
+    partie.nbMsgWhisp = args[0]
+    message.channel.send(msgwhisp)
   }
 
   else if(cmd == "vivants") {
@@ -1503,7 +1509,7 @@ bot.on("message", (message) => {
     }
 
     partie.whispersChannels.forEach(whisper => {
-      let chan = message.guild.channels.cache.get(whisper);
+      let chan = message.guild.channels.cache.get(whisper.id);
       if(chan != null) {
         chan.delete()
       }
@@ -1605,7 +1611,7 @@ bot.on("message", (message) => {
     if(author.role.name == "Maire") {
       partie.whispmaire.push(channel.id)
     }
-    partie.whispersChannels.push(channel.id)
+    partie.whispersChannels.push({id: channel.id, nb: partie.nbMsgWhisp})
     })
   }
 
@@ -2259,6 +2265,7 @@ bot.on('message', async (message) => {
     **Traitor:** ${partie.traitor}
     **Nombre de joueurs:** ${nbrJoueurMax}
     **Whisp par jour:** ${partie.nbWhispJour}
+    **Nombre de message par whisp:** ${partie.nbMsgWhisp}
     **Message start:** ${messageJouer}
     **Liste de rôles:** ${partie.gamemode.list}`)
     .setFooter("Cliquez sur le pouce si tout est correct!")
@@ -2362,7 +2369,7 @@ bot.on('message', async (message) => {
 
           for( var i = 0; i < partie.whispersChannels.length; i++){ 
                                     
-            if ( partie.whispersChannels[i] === whisp) { 
+            if ( partie.whispersChannels[i].id === whisp) { 
                 partie.whispersChannels.splice(i, 1); 
                 i--; 
             }
@@ -2548,7 +2555,7 @@ bot.on('message', async (message) => {
     pendChan.send(resultsVotes)
   }
 
-  if(partie.commencer == true) {
+  else if(partie.commencer == true) {
     if(!message.member.roles._roles.has(vivant)) return
     let command = author.role.command
     if(cmd == command) {
