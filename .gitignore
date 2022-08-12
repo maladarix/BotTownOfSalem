@@ -1,5 +1,2 @@
-
 .env
-data/dataGame.json
-data/dataGen.json
-data/dataJoueur.json
+*.json
