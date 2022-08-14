@@ -28,7 +28,7 @@ let genData = []
 let arrayId = []
 let guildId = ""
 
-let test = true
+let test = false
 
 if(test == false) {
   // serveur officiel
@@ -348,14 +348,18 @@ bot.on("message", (message) => {
   for (let i = 0; i < partie.whispersChannels.length; i++) {
     if(partie.whispersChannels[i].id == message.channel.id) {
       partie.whispersChannels[i].nb --
+
+      let chan = message.guild.channels.cache.get(partie.whispersChannels[i].id)
+
+      if(partie.whispersChannels[i].nb == 5) {
+        chan.send(`<@&${vivant}>, plus que 5 messages restants!`)
+      }
       if(partie.whispersChannels[i].nb == 0) {
-        let chan = message.guild.channels.cache.get(partie.whispersChannels[i].id)
-        chan.overwritePermissions([
-          {
-            id: chan.guild.id,
-            deny: "SEND_MESSAGES"
-          }]
-        )
+        chan.permissionOverwrites.forEach(e => {
+          if(e.type == "member") {
+            e.update({"SEND_MESSAGES": false})
+          }
+        });
         message.channel.send(new Discord.MessageEmbed()
         .setDescription("La limite de message a été atteinte!")
         .setColor(color))
@@ -2048,6 +2052,7 @@ bot.on("message", (message) => {
     .setDescription(`Voici les commandes dans **l'ordre**:
     (!coven)
     (!traitor)
+    (!msgwhisp)
     !gamemode [gamemode]
     !heurevote [heure] en format 24h
     !start (nb de joueur) (message)
@@ -2128,37 +2133,97 @@ bot.on("message", (message) => {
 
   else if(cmd == "helpcommands") {
     let helpcommandsgod = new Discord.MessageEmbed()
-      .setTitle("**Commandes God**")
-      .addField("!swhisp [nbWhisp]", "Mettre la limite de whisp par jour")
-      .addField("!coven", "Toggle le mode coven")
-      .addField("!gamemode [gamemode]", "Choisie le gamemode de la partie")
-      .addField("!jour (message)", "Permet de mettre le jour")
-      .addField("!nuit (message)", "Permet de mettre la nuit")
-      .addField("!traitor", "Toggle le mode town traitor")
-      .addField("!listeactions", "Voir la liste de tout les actions")
-      .addField("!heurevote", "Ajoute une heure dans un format 24H pour que le !results se fasse tout seul.")
-      .addField("!roles", "Donne les rôles a chaques joueurs")
-      .addField("!info @[User]", "Pour avoir de l'info sur le joueur")
-      .addField("!alive @[User]", "Pour mettre quelqu'un en vie")
-      .addField("!result", "Pour avoir le résultat du vote")
-      .addField("!no", "Cancell le résultat du vote")
-      .addField("!start (Nb Joueurs)", "Pour commencer la game")
-      .addField("!start (Nb Joueurs) (message)", "Tu peut aussi faire un message personnalisé!")
-      .addField("!end", "Pour finir la game")
-      .addField("!jail @[User]", "Pour mettre quelqu'un en prison")
-      .addField("!nouvgm [Nom] [liste roles]", "Permet de créé un gamemode personnalisé")
-      .addField("!delgm [gamemode]", "Pour supprimé un gamemode")
-      .addField("!kill @[User]", "Pour tuer quelqu'un. Si il est stoned ou cleaned, écrit !kill @[User] stone/cleaned")
-      .addField("!god [User]", "Pour mettre le rôle de GOD à quelqu'un.")
-      .addField("!ungod [User]", "Pour enlever le rôle GOD à quelqu'un.")
-      .addField("!lastwill", "Écrit ton last will ici. Tu peux aussi voir ton last will comme ça: !lastwill")
-      .addField("!lastwill [User]", "Pour voir le lastwill d'un joueur")
-      .addField("!note", "Écrit une note ici. Tu peut aussi voir ta note comme ça: !note ")
-      .addField("!vivants", "Pour afficher la liste des joueurs vivants.")
-      .addField("!speak", "Permet de parler dans le village si tu est blackmailed")
-      .addField("!w @[User]", "Whisper quelqu'un")
-      .addField("!p @[User]", "Pendre quelqu'un")
-      .addField("!help", "Avoir de l'aide")
+      .setDescription(`**Commande GOD**
+
+      **!swhisp [nbWhisp]**
+      Mettre la limite de whisp par jour
+
+      **!msgwhisp [nombre]**
+      Définit le nomdre maximum de message par whisp
+
+      **!coven**
+      Toggle le mode coven
+
+      **!traitor**
+      Toggle le mode town traitor
+      
+      **!gamemode [gamemode]**
+      Choisie le gamemode de la partie
+      
+      **!jour**
+      Permet de mettre le jour
+      
+      **!nuit (message)**
+      Permet de mettre la nuit
+      
+      **!listeactions**
+      Voir la liste de tout les actions
+      
+      **!heurevote**
+      Ajoute une heure dans un format 24H pour que le !results se fasse tout seul.
+      
+      **!roles**
+      Donne les rôles a chaques joueurs
+      
+      **!info @[User]**
+      Pour avoir de l'info sur le joueur
+      
+      **!alive @[User]**
+      Pour mettre quelqu'un en vie
+      
+      **!result**
+      Pour avoir le résultat du vote
+      
+      **!no**
+      Cancell le résultat du vote
+      
+      **!start (Nb Joueurs) (message)**
+      Pour commencer la game
+      
+      **!end**
+      Pour finir la game
+      
+      **!setpresence [nom], (photo URL), (description)**
+      Change le profil du bot *Séparer avec des virgules!
+      
+      **!jail @[User]**
+      Pour mettre quelqu'un en prison
+      
+      **!nouvgm [Nom] [liste roles]**
+      Permet de créé un gamemode personnalisé
+      
+      **!delgm [gamemode]**
+      Pour supprimé un gamemode
+      
+      **!kill @[User] (stoned/cleaned)**
+      Pour tuer quelqu'un. Si il est stoned ou cleaned, !kill @[User] stone/cleaned
+      
+      **!god [User]**
+      Pour mettre le rôle de GOD à quelqu'un.
+      
+      **!ungod [User]**
+      Pour enlever le rôle GOD à quelqu'un.
+      
+      **!lastwill (User)**
+      Voir le lastwill de quelqu'un ou d'écrir son propre lastwill
+      
+      **!note**
+      Écrit une note ici. Tu peut aussi voir ta note comme ça: !note
+      
+      **!vivants**
+      Pour afficher la liste des joueurs vivants.
+      
+      **!speak**
+      Permet de parler dans le village si tu est blackmailed
+      
+      **!w @[User]**
+      Whispe quelqu'un
+      
+      **!p @[User]**
+      Pendre quelqu'un
+      
+      **!help**
+      Avoir de l'aide`)
       .setColor(color);
 
     let helpcommandsvivant = new Discord.MessageEmbed()
@@ -2344,6 +2409,44 @@ bot.on('message', async (message) => {
           sent.delete();
         }, 2000);
       });
+    }
+  }
+
+  if(cmd == "setpresence") {
+    if(!god && !dev) return message.channel.send(pasGod)
+
+    let arguments = message.content.split(", ")
+    if(arguments[0]) {
+
+      bot.user.setUsername(arguments[0].replace(`${prefix}${cmd} `, "")).catch(err => {
+        if(err) {
+          if(err.message == "Invalid Form Body\nusername: Too many users have this username, please try another.") {
+            message.channel.send("Impossible de mettre ce nom! Trop de compte l'utilise.")
+          }else if(err.message == "Invalid Form Body\nusername: You are changing your username or Discord Tag too fast. Try again later.") {
+            message.channel.send("Tu change de nom trop vite")
+          }
+        }
+      })
+      if(arguments[1]) {
+        bot.user.setAvatar(arguments[1]).catch(err => {
+          if(err) {
+            if(err.message == "Invalid Form Body\navatar: You are changing your avatar too fast. Try again later.") {
+              message.channel.send("Tu change de photo trop vite")
+            }
+          }
+        })
+        if(arguments[2]) {
+          bot.user.setActivity({name: arguments[2] ,type: "WATCHING" }).catch(err => {
+            if(err) {
+              console.log(err)
+            }
+          })
+        }
+      }
+    }else{
+      return message.channel.send(new Discord.MessageEmbed()
+      .setDescription("Je n'ai aucune données!")
+      .setColor(color))
     }
   }
 
@@ -2665,6 +2768,7 @@ bot.on('message', async (message) => {
   }
 });
 
+
 bot.on("messageReactionAdd", async (reaction, user) => {
   let adminchannel = reaction.message.guild.channels.cache.get(adminchat)
   let qvjChan = reaction.message.guild.channels.cache.get(quiVeutJouer)
@@ -2684,7 +2788,7 @@ bot.on("messageReactionAdd", async (reaction, user) => {
 
     if(reaction.emoji.id == turtleId){
       if(!reactor.serverRoles.includes(vivant)) {
-        if(reactor.serverRoles.includes(godId)) { //!
+        if(test == true ? reactor.serverRoles.includes(godId) : !reactor.serverRoles.includes(godId)) {
           if(partie.isStarted == false) {
             reactoradd.roles.add(vivant)
             reactor.serverRoles.push(vivant)
