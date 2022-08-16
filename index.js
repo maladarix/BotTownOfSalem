@@ -208,15 +208,13 @@ let alive = function (){
 }
 
 let clearJail = async function(jailedChan){
-  try {
-    for(i = 0; i<3; i++){
-      await jailedChan.messages.fetch({limit: 100}).then(messages =>{
-        jailedChan.bulkDelete(messages, true)
-      })
-    }
-  } catch (err) {
-    return
+
+  for(i = 0; i<3; i++){
+    await jailedChan.messages.fetch({limit: 100}).then(messages =>{
+      jailedChan.bulkDelete(messages, true).catch(console.error)
+    })
   }
+
 }
 
 var kill = function(died) {
@@ -246,7 +244,8 @@ var kill = function(died) {
       }
     }
   }
-  let joueur = bot.guilds.cache.get(guildId).members.cache.get(died.id)
+
+  let joueur = bot.guilds.cache.get(guildId).members.fetch(died.id)
   died.necro = false
   joueur.roles.add(mort)
   joueur.roles.add(spec)
@@ -312,10 +311,10 @@ setInterval( //!résults automatique
 bot.on('ready', () => {
   console.log("bot online")
   console.log(new Date().toLocaleString())
-  bot.user.setActivity("BING BONG", { type: "WATCHING" })
+  bot.user.setActivity("Prépare des twists", { type: "WATCHING" })
 })
 
-bot.on("message", (message) => {
+bot.on("message", async (message) => {
   if(message.author.bot) return
   let jailChan = message.guild.channels.cache.get(jail)
   let jailedChan = message.guild.channels.cache.get(jailedid)
@@ -558,7 +557,7 @@ bot.on("message", (message) => {
                 }
                 else
                 {
-                kill(element.author)
+                //kill(element.author)
                 ambushDone = true
                 }
               }
@@ -568,38 +567,38 @@ bot.on("message", (message) => {
               switch(element.type){
                 case "guard" :
                   element.target1.guarded = element.author
-                  resultsactions.push({player : `${element.author.name}`, message : `Votre action a été effectuée avec succès!`})
+                  resultsactions.push({player : `${element.author.name}`, message :`Votre action a été effectuée avec succès!`})
                   break;
                 case "heal" :
                   element.target1.healed = element.author
-                  resultsactions.push({player : `${element.author.name}`, message : `Votre action a été effectuée avec succès!`})
+                  resultsactions.push({player : `${element.author.name}`, message :`Votre action a été effectuée avec succès!`})
                   break;
                 case "disguise" :
                   //TODO
-                  resultsactions.push({player : `${element.author.name}`, message : `Votre action a été effectuée avec succès!`})
+                  resultsactions.push({player : `${element.author.name}`, message :`Votre action a été effectuée avec succès!`})
                   break;
                 case "rewrite" :
                   //TODO
-                  resultsactions.push({player : `${element.author.name}`, message : `Votre action a été effectuée avec succès!`})
+                  resultsactions.push({player : `${element.author.name}`, message :`Votre action a été effectuée avec succès!`})
                   break;
                 case "frame" :
                   target1.roleappear = author.role
-                  resultsactions.push({player : `${element.author.name}`, message : `Votre action a été effectuée avec succès!`})
+                  resultsactions.push({player : `${element.author.name}`, message :`Votre action a été effectuée avec succès!`})
                   break;
                 case "clean" :
                   target1.roleappear = null
                   target1.lastwill = null
-                  resultsactions.push({player : `${element.author.name}`, message : `Votre action a été effectuée avec succès!`})
+                  resultsactions.push({player : `${element.author.name}`, message :`Votre action a été effectuée avec succès!`})
                   break;
                 case "blackmail" :
-                  resultsactions.push({player : `${element.author.name}`, message : `Votre action a été effectuée avec succès!`})
+                  resultsactions.push({player : `${element.author.name}`, message :`Votre action a été effectuée avec succès!`})
                   break;
                 case "vest" :
-                  resultsactions.push({player : `${element.author.name}`, message : `Votre action a été effectuée avec succès!`})
+                  resultsactions.push({player : `${element.author.name}`, message :`Votre action a été effectuée avec succès!`})
                   break;
                 case "douse" :
                   element.target1.doused = true
-                  resultsactions.push({player : `${element.author.name}`, message : `Votre action a été effectuée avec succès!`})
+                  resultsactions.push({player : `${element.author.name}`, message :`Votre action a été effectuée avec succès!`})
                   break;
               }
             }
@@ -629,7 +628,7 @@ bot.on("message", (message) => {
           }
           else if (element.target1.role.name == "Veteran" && element.target1.role.isAlert)
           {
-            kill(element.author)
+            //kill(element.author)
             //Envoyer un message ici
           }
           else{
@@ -649,7 +648,7 @@ bot.on("message", (message) => {
                 }
                 else
                 {
-                kill(element.author)
+                //kill(element.author)
                 ambushDone = true
                 }
               }
@@ -692,7 +691,7 @@ bot.on("message", (message) => {
           }
           else if (element.target1.role.name == "Veteran" && element.target1.role.isAlert)
           {
-            kill(element.author)
+            //kill(element.author)
             //Envoyer un message ici
           }
           else{
@@ -712,7 +711,7 @@ bot.on("message", (message) => {
                 }
                 else
                 {
-                kill(element.author)
+                //kill(element.author)
                 ambushDone = true
                 }
               }
@@ -765,7 +764,7 @@ bot.on("message", (message) => {
           }
           else if (element.target1.role.name == "Veteran" && element.target1.role.isAlert)
           {
-            kill(element.author)
+            //kill(element.author)
             //Envoyer un message ici
           }
           else{
@@ -785,7 +784,7 @@ bot.on("message", (message) => {
                 }
                 else
                 {
-                kill(element.author)
+                //kill(element.author)
                 ambushDone = true
                 }
               }
@@ -821,7 +820,7 @@ bot.on("message", (message) => {
         player.isAlert = false
         player.guarded = null
         player.healed = null
-        player.trans = player
+        player.trans = null //player
         player.ambushed = null
         player.ambushDone = false
       })
@@ -832,7 +831,7 @@ bot.on("message", (message) => {
     if(!god && !dev) return message.channel.send(pasGod)
     for(let i = 0; i < listejoueur.length; i++)
     {
-      let joueur = message.channel.guild.members.cache.get(listejoueur[i].id)
+      let joueur = await message.guild.members.fetch(listejoueur[i].id)
       joueur.roles.remove(vivant)
       joueur.roles.remove(mort)
       joueur.roles.remove(spec)
@@ -921,9 +920,13 @@ bot.on("message", (message) => {
     .setColor(color)
 
     listejoueur = []
+    start = false
     partie = new Partie()
     message.channel.send(gameend)
 
+  }
+
+  if(cmd == "test") {
   }
   
   else if(cmd == "heurevote") {
@@ -1181,20 +1184,20 @@ bot.on("message", (message) => {
     if(!god && !dev) return message.channel.send(pasGod)
     let messageaction = ""
 
-    for (let i = 0; i < alive().length; i++) {
-      if(alive()[i].action.target2 == undefined) {
-        messageaction = `${messageaction} **${alive()[i].action.author.displayname}**: ${alive()[i].action.type} ${alive()[i].action.target1.displayname}\n`  
+    for (let i = 0; i < actions.length; i++) {
+      if(actions.target2 == undefined) {
+        messageaction = `${messageaction} **${actions[i].author.name}**: ${actions[i].type} ${actions[i].target1.name}\n`  
       }else{
-        messageaction = `${messageaction} **${alive()[i].action.author.displayname}**: ${alive()[i].action.type} ${alive()[i].action.target1.displayname} vers ${alive()[i].action.target2.displayname}\n`
+        messageaction = `${messageaction} **${actions[i].author.name}**: ${actions[i].type} ${actions[i].target1.name} vers ${actions[i].target2.name}\n`
       }
       
       
     }
-    /*processActions()
+    processActions()
     
     for (let i = 0; i < resultsactions.length; i++) {
       messageaction = `${messageaction} ${resultsactions[i].player}: ${resultsactions[i].message} \n`
-    }*/
+    }
 
     adminchannel.send(messageaction)
   }
@@ -1474,8 +1477,8 @@ bot.on("message", (message) => {
       }
     }
 
-    alive().forEach(player => {
-      let joueur = message.channel.guild.members.cache.get(player.id)
+    alive().forEach(async (player) => {
+      let joueur = await message.guild.members.fetch(player.id)
       joueur.roles.remove(jour)
       joueur.roles.add(nuit)
       player.votesFor = 0
@@ -1610,6 +1613,9 @@ bot.on("message", (message) => {
       id: spec,
       allow: ['VIEW_CHANNEL'],
       deny: ['SEND_MESSAGES'],
+    },{
+      id: godId,
+      allow: ['VIEW_CHANNEL']
     }
     ])
     if(author.role.name == "Maire") {
@@ -1804,9 +1810,9 @@ bot.on("message", (message) => {
     .setDescription(`Jour **${partie.numJour}**`)
     .setColor(color))
   
-    alive().forEach(player => {
+    alive().forEach(async (player) => {
       
-      let joueur = message.channel.guild.members.cache.get(player.id)
+      let joueur = await message.guild.members.fetch(player.id)
       joueur.roles.add(jour)
       joueur.roles.remove(nuit)
       player.whispRemaining = partie.nbWhispJour
@@ -2365,8 +2371,8 @@ bot.on('message', async (message) => {
         });
         partie.jailed = joueurvisé
         if(joueurvisé == "") return message.channel.send(trouvePas)
-        if(!joueurvisé.user.roles.cache.has(vivant)) return message.channel.send(pasVivant)
-        if(joueurvisé.user.id == message.author.id) return message.channel.send(new Discord.MessageEmbed()
+        if(!joueurvisé.serverRoles.includes(vivant)) return message.channel.send(pasVivant)
+        if(joueurvisé.id == message.author.id) return message.channel.send(new Discord.MessageEmbed()
         .setDescription("Tu ne peut pas te jailed toi même!")
         .setColor(color)).then((sent) => {
           setTimeout(function () {
@@ -2378,7 +2384,7 @@ bot.on('message', async (message) => {
           let interfachan = message.guild.channels.cache.get(author.interface)
 
           interfachan.send(`Vous avez emprisonné avec succès **${partie.jailed.displayname}** ce soir.`)
-          jailed.isjailed = true
+          partie.jailed.isjailed = true
 
         }else{
           message.delete()
@@ -2540,8 +2546,8 @@ bot.on('message', async (message) => {
     .setDescription(`Jour **${partie.numJour}**`)
     .setColor(color))
 
-    alive().forEach(player => {
-      let joueur = message.channel.guild.members.cache.get(player.id)
+    alive().forEach(async (player) => {
+      let joueur = await message.guild.members.fetch(player.id)
       joueur.roles.add(jour)
       joueur.roles.remove(nuit)
       player.whispRemaining = partie.nbWhispJour
@@ -2658,11 +2664,11 @@ bot.on('message', async (message) => {
     pendChan.send(resultsVotes)
   }
 
-  else if(partie.commencer == true) {
+  /*else if(partie.commencer == true) {
     if(!message.member.roles._roles.has(vivant)) return
     let command = author.role.command
     if(cmd == command) {
-      if(author.user._roles.includes(vivant)) {
+      if(author.serverRoles.includes(vivant)) {
         if(partie.time == "nuit") {
           if(partie.isStarted == true) {
             if(author.interface == message.channel.id) {
@@ -2706,14 +2712,14 @@ bot.on('message', async (message) => {
                 if(joueurvisé1 == "" || joueurvisé2 == "") return message.channel.send(new Discord.MessageEmbed()
                   .setDescription("Il me faut 2 joueurs!")
                   .setColor(color))
-                  if(!joueurvisé2.user.roles.cache.has(vivant)) return message.channel.send(pasVivant)
-                  if(!joueurvisé1.user.roles.cache.has(vivant)) return message.channel.send(pasVivant)
+                  if(!joueurvisé2.serverRoles.includes(vivant)) return message.channel.send(pasVivant)
+                  if(!joueurvisé1.serverRoles.includes(vivant)) return message.channel.send(pasVivant)
                       
               }else if(author.role.needsTwoTargets == false) {
                 if(joueurvisé1 == "") return message.channel.send(new Discord.MessageEmbed()
                   .setDescription("Qui?")
                   .setColor(color))
-                if(!joueurvisé1.user.roles.cache.has(vivant)) return message.channel.send(pasVivant)
+                if(!joueurvisé1.serverRoles.includes(vivant)) return message.channel.send(pasVivant)
               }else if(author.role.needsTwoTargets == null) {
                 joueurvisé1 = ""
               }
@@ -2725,13 +2731,13 @@ bot.on('message', async (message) => {
               }
 
               if(author.role.needsTwoTargets) {
-                message.channel.send(`Tu as décidé (de/d') ${author.role.command} **${joueurvisé1.displayname}** et **${joueurvisé2.displayname}**`)
-                author.action = {author : author,  target1 : joueurvisé1, target2 : joueurvisé2, type : author.role.command}
+                message.channel.send(`Tu as décidé de/d' ${author.role.command} **${joueurvisé1.displayname}** et **${joueurvisé2.displayname}**`)
+                actions.push({author: author, target1: joueurvisé1, target2: joueurvisé2, type: author.role.command})
               }else{
-                message.channel.send(`Tu as décidé (de/d') ${author.role.command} **${joueurvisé1.displayname}**`)
-                author.action = {author : author,  target1 : joueurvisé1, type : author.role.command}
+                message.channel.send(`Tu as décidé de/d' ${author.role.command} **${joueurvisé1.displayname}**`)
+                actions.push({author: author, target1: joueurvisé1, type: author.role.command})
               }
-              
+              console.log(actions)
               message.react("👍")
 
             }else{
@@ -2765,7 +2771,7 @@ bot.on('message', async (message) => {
         });
       }  
     }
-  }
+  }*/
 });
 
 
@@ -2822,6 +2828,9 @@ bot.on("messageReactionAdd", async (reaction, user) => {
                 id: spec,
                 allow: ['VIEW_CHANNEL'],
                 deny: ['SEND_MESSAGES'],
+              },{
+                id: godId,
+                allow: ['VIEW_CHANNEL']
               }
               ])
               .then(setTimeout(() => {
