@@ -32,11 +32,11 @@ let test = false
 
 if(test == false) {
   // serveur officiel
-  guildId = "828485314304933931"
+  guildId = "824720996001906739"
   arrayId = ["824726156141658132","825029496305614927","824749359118811187","824725851198849075","824726635902271518","830253971637665832","824725623346954271","824761075387727912","824728100645896314","839977061384978492","839977410966847539","824731087863021588","850422940646506617","824727128758943795","824726760808513606","824727077366005800","824732131678617600","824762348396216401","830113799763525642", "830114000448258058" ,"824725152692174879" ,"825868136782757918","824726713605947403","832301102236958770","829870229470838814","824731870628413480"]  
 }else{
   // serveur test
-  guildId = "824720996001906739"
+  guildId = "828485314304933931"
   arrayId = ["829832421825708064","829254726495240214","829254687630557185","829205364444364800","829250418244321280", null ,"829873265194303498","830240201111896135","830240173727547424","839977899581767700","830240221584687104","830240221584687104","849541121846935592","829269425290215463","829216633205424128","837575217907105813","837499365835669536","830240252248850433","830121244208267334","830121185885945880","829228486660063262","835014782594711593" ,"829239671925637150","829239671925637150","833229701190385676","833229701190385676"]
 }
 
@@ -2625,33 +2625,41 @@ bot.on('message', async (message) => {
     if(!message.member.roles._roles.has(vivant)) return message.channel.send(tpasvivant)
     if(message.channel.name != pendChan.name) return message.channel.send(pendrChan)
     if(partie.numJour == 0) return message.channel.send(jour0)
-    if(!args[0]) return message.channel.send(qui)
-    if(!taggedUser[0]) return message.channel.send(trouvePas)
-    if(message.mentions.members.first().id == message.author.id) return message.channel.send(new Discord.MessageEmbed()
-    .setDescription("Tu ne peut pas voter pour toi même")
-    .setColor(color))
-    if(!taggedUser[0].roles.cache.has(vivant)) return message.channel.send(pasVivant)
 
-    if(author.role.name == "Maire" && author.role.isreveal == true) {
-      if(!author.hasVoted) {
-        tagged.votesFor += 3
-        author.hasVoted = true
-        author.registeredVote = tagged
-      }else{
-        author.registeredVote.votesFor -= 3
-        author.registeredVote = tagged
-        tagged.votesFor += 3
+    if(!args[0]) {
+      if(author.hasVoted == true) {
+        author.registeredVote.votesFor --
+        author.registeredVote = null
+        author.hasVoted = false
       }
     }else{
-      if(!author.hasVoted) {
-        tagged.votesFor ++
-        author.hasVoted = true
-        author.registeredVote = tagged
+      if(message.mentions.members.first().id == message.author.id) return message.channel.send(new Discord.MessageEmbed()
+      .setDescription("Tu ne peut pas voter pour toi même")
+      .setColor(color))
+      if(!taggedUser[0].roles.cache.has(vivant)) return message.channel.send(pasVivant)
+      if(!taggedUser[0]) return message.channel.send(trouvePas)
+
+      if(author.role.name == "Maire" && author.role.isreveal == true) {
+        if(!author.hasVoted) {
+          tagged.votesFor += 3
+          author.hasVoted = true
+          author.registeredVote = tagged
+        }else{
+          author.registeredVote.votesFor -= 3
+          author.registeredVote = tagged
+          tagged.votesFor += 3
+        }
       }else{
-        author.registeredVote.votesFor --
-        author.registeredVote = tagged
-        tagged.votesFor ++
-      }  
+        if(!author.hasVoted) {
+          tagged.votesFor ++
+          author.hasVoted = true
+          author.registeredVote = tagged
+        }else{
+          author.registeredVote.votesFor --
+          author.registeredVote = tagged
+          tagged.votesFor ++
+        }  
+      }
     }
 
     let listesVotes = ""
