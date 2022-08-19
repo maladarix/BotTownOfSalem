@@ -2901,27 +2901,29 @@ bot.on("messageReactionAdd", async (reaction, user) => {
   else if(reaction.message.channel == adminchannel) {
     if(reaction.message.id != adminchannel.lastMessageID) return
     if(reaction.emoji.name == "👍") {
-      start = true
-      if(partie.gamemode == "Classique 20 joueurs") {
-        listerolechan.send(new Discord.MessageEmbed()
-        .setTitle("Partie en cour: **Clasique 20 joueurs**")
-        .setDescription(class20)
-        .setColor(color))
-      }else if(partie.gamemode == "Classique 15 joueurs") {
-        listerolechan.send(new Discord.MessageEmbed()
-        .setTitle("Partie en cour: **Classique 15 joueurs**")
-        .setDescription(class15)
-        .setColor(color))
-      }else if(partie.gamemode == "All Any balanced") {
-        listerolechan.send(new Discord.MessageEmbed()
-        .setTitle("Partie en cour: **All any 15 joueurs**")
-        .setDescription(any15)
-        .setColor(color))
+      if(partie.commencer == false) {
+        start = true
+        if(partie.gamemode == "Classique 20 joueurs") {
+          listerolechan.send(new Discord.MessageEmbed()
+          .setTitle("Partie en cour: **Clasique 20 joueurs**")
+          .setDescription(class20)
+          .setColor(color))
+        }else if(partie.gamemode == "Classique 15 joueurs") {
+          listerolechan.send(new Discord.MessageEmbed()
+          .setTitle("Partie en cour: **Classique 15 joueurs**")
+          .setDescription(class15)
+          .setColor(color))
+        }else if(partie.gamemode == "All Any balanced") {
+          listerolechan.send(new Discord.MessageEmbed()
+          .setTitle("Partie en cour: **All any 15 joueurs**")
+          .setDescription(any15)
+          .setColor(color))
+        }
+  
+        const reactionMessage = await qvjChan.send(messageJouer)
+          await reactionMessage.react(turtleId)
+          await reactionMessage.react(eyesId)  
       }
-
-      const reactionMessage = await qvjChan.send(messageJouer)
-        await reactionMessage.react(turtleId)
-        await reactionMessage.react(eyesId)  
     }
   }
 })
